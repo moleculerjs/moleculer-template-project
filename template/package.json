@@ -16,35 +16,35 @@
   "author": "",
   "devDependencies": {
     {{#lint}}
-    "eslint": "^5.0.1",
+    "eslint": "^5.10.0",
     {{/lint}}
     {{#jest}}
-    "jest": "^23.3.0",
-    "jest-cli": "^23.3.0",
+    "jest": "^23.6.0",
+    "jest-cli": "^23.6.0",
     {{/jest}}
-    "moleculer-repl": "^0.5.0"
+    "moleculer-repl": "^0.5.3"
   },
   "dependencies": {
     {{#apiGW}}
     "moleculer-web": "^0.8.0",
     {{/apiGW}}
     {{#if_eq transporter "NATS"}}
-    "nats": "^1.0.0",
+    "nats": "^1.0.1",
     {{/if_eq}}
     {{#if_eq transporter "MQTT"}}
-    "mqtt": "^2.18.2",
+    "mqtt": "^2.18.8",
     {{/if_eq}}
     {{#if_eq transporter "AMQP"}}
-    "amqplib": "^0.5.2",
+    "amqplib": "^0.5.3",
     {{/if_eq}}    
     {{#if_eq transporter "STAN"}}
-    "node-nats-streaming": "0.0.40",
+    "node-nats-streaming": "0.0.51",
     {{/if_eq}}    
     {{#if_eq transporter "Kafka"}}
-    "kafka-node": "2.6.1",
+    "kafka-node": "3.0.1",
     {{/if_eq}}    
     {{#redis}}
-    "ioredis": "^3.2.2",
+    "ioredis": "^4.2.0",
     {{/redis}}
     "moleculer": "^0.13.0"
   },
