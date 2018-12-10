@@ -1,15 +1,15 @@
 # Moleculer template: `project`
-:mortar_board: Moleculer based microservices project template
+:mortar_board: Moleculer-based microservices project template.
 
 ## Features
-- Moleculer v0.12.x with `moleculer.config.js`
-- Common project with a demo `greeter` service
-- Optional API Gateway service
-- Optional Transporter & Cacher
-- Docker & Docker Compose files
-- Unit tests with [Jest](http://facebook.github.io/jest/)
-- Lint with [ESLint](http://eslint.org/)
-- Launch file for debugging in [VSCode](https://code.visualstudio.com/)
+- Moleculer v0.13.x with full-detailed `moleculer.config.js` file.
+- Common project with a demo `greeter` service.
+- Optional API Gateway service.
+- Optional Transporter & Cacher.
+- Docker & Docker Compose files.
+- Unit tests with [Jest](http://facebook.github.io/jest/).
+- Lint with [ESLint](http://eslint.org/).
+- Launch file for debugging in [VSCode](https://code.visualstudio.com/).
 
 
 ## Install
@@ -36,14 +36,17 @@ Create 'moleculer-demo' folder...
 ```
 
 ## NPM scripts
-- `npm run dev` - Start service.js with hot-reload and start REPL
-- `npm run lint` - Run ESLint
-- `npm run ci` - Start testing in watch mode
-- `npm start` - Start services in production mode
-- `npm test` - Run tests & coverage
+- `npm run dev`: Start development mode (load all services locally with hot-reload & REPL)
+- `npm run start`: Start production mode (set `SERVICES` env variable to load certain services)
+- `npm run cli`: Start a CLI and connect to production. Don't forget to set production namespace with `--ns` argument in script
+- `npm run lint`: Run ESLint
+- `npm run ci`: Run continuous test mode with watching
+- `npm test`: Run tests & generate coverage report
+- `npm run dc:up`: Start the stack with Docker Compose
+- `npm run dc:down`: Stop the stack with Docker Compose
 
 ## License
-Moleculer-template-project is available under the [MIT license](https://tldrlegal.com/license/mit-license).
+moleculer-template-project is available under the [MIT license](https://tldrlegal.com/license/mit-license).
 
 ## Contact
 Copyright (c) 2018 MoleculerJS
