@@ -4,10 +4,13 @@
   "description": "My Moleculer microservices project",
   "scripts": {
     "dev": "moleculer-runner --repl --hot services",
-    "start": "moleculer-runner"{{#jest}},
+    "start": "moleculer-runner",
+    "cli": "moleculer connect {{transporter}}"{{#jest}},
     "ci": "jest --watch",
     "test": "jest --coverage"{{/jest}}{{#lint}},
-    "lint": "eslint services"{{/lint}}
+    "lint": "eslint services"{{/lint}}{{#docker}},
+    "dc:up": "docker-compose up --build -d",
+    "dc:down": "docker-compose down"{{/docker}}
   },
   "keywords": [
     "microservices",
