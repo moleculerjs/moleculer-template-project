@@ -32,14 +32,14 @@ services:
 {{#if_eq transporter "Kafka"}}
       - zookeeper
 {{/if_eq}}
-  labels:
-    - "traefik.enable=true"
-    - "traefik.backend=api"
-    - "traefik.port=3000"
-    - "traefik.frontend.entryPoints=http"
-    - "traefik.frontend.rule=PathPrefix:/"
-  networks:
-    - internal
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=api"
+      - "traefik.port=3000"
+      - "traefik.frontend.entryPoints=http"
+      - "traefik.frontend.rule=PathPrefix:/"
+    networks:
+      - internal
 
   greeter:
     build:
@@ -159,7 +159,6 @@ services:
     networks:
       - internal
       - default
-
 
 networks:
   internal:
