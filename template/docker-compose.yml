@@ -12,27 +12,6 @@ services:
       SERVICES: api
       PORT: 3000
 {{#hasDepends}}
-    links:
-{{/hasDepends}}
-{{#if_eq transporter "NATS"}}
-      - nats
-{{/if_eq}}
-{{#redis}}
-      - redis
-{{/redis}}
-{{#if_eq transporter "MQTT"}}
-      - mqtt
-{{/if_eq}}
-{{#if_eq transporter "AMQP"}}
-      - amqp
-{{/if_eq}}
-{{#if_eq transporter "STAN"}}
-      - stan
-{{/if_eq}}
-{{#if_eq transporter "Kafka"}}
-      - zookeeper
-{{/if_eq}}
-{{#hasDepends}}
     depends_on:
 {{/hasDepends}}
 {{#if_eq transporter "NATS"}}
@@ -53,15 +32,18 @@ services:
 {{#if_eq transporter "Kafka"}}
       - zookeeper
 {{/if_eq}}
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=internal"
-      - "traefik.backend=api"
-      - "traefik.port=3000"
-      - "traefik.frontend.entryPoints=http"
-      - "traefik.frontend.rule=PathPrefix:/"
+  labels:
+    - "traefik.enable=true"
+    - "traefik.backend=api"
+    - "traefik.port=3000"
+    - "traefik.frontend.entryPoints=http"
+    - "traefik.frontend.rule=PathPrefix:/"
+  networks:
+    - internal
 
   greeter:
+    build:
+      context: .
     image: {{projectName}}
     container_name: {{projectName}}-greeter
     env_file: docker-compose.env
@@ -69,28 +51,6 @@ services:
       SERVICES: greeter
     labels:
       - "traefik.enable=false"
-      - "traefik.docker.network=internal"
-{{#hasDepends}}
-    links:
-{{/hasDepends}}
-{{#if_eq transporter "NATS"}}
-      - nats
-{{/if_eq}}
-{{#redis}}
-      - redis
-{{/redis}}
-{{#if_eq transporter "MQTT"}}
-      - mqtt
-{{/if_eq}}
-{{#if_eq transporter "AMQP"}}
-      - amqp
-{{/if_eq}}
-{{#if_eq transporter "STAN"}}
-      - stan
-{{/if_eq}}
-{{#if_eq transporter "Kafka"}}
-      - zookeeper
-{{/if_eq}}
 {{#hasDepends}}
     depends_on:
 {{/hasDepends}}
@@ -114,13 +74,13 @@ services:
 {{/if_eq}}
 
 {{#if_eq transporter "NATS"}}
+  networks:
+    - internal
 
   nats:
     image: nats
-    container_name: NATS
     labels:
       - "traefik.enable=false"
-      - "traefik.docker.network=internal"
     networks:
       - internal
 {{/if_eq}}
@@ -128,37 +88,35 @@ services:
 
   redis:
     image: redis:alpine
-    container_name: Redis
     labels:
       - "traefik.enable=false"
-      - "traefik.docker.network=internal"
+    networks:
+      - internal
 {{/redis}}
 {{#if_eq transporter "MQTT"}}
 
   mqtt:
     image: ncarlier/mqtt
-    container_name: MQTT
     labels:
       - "traefik.enable=false"
-      - "traefik.docker.network=internal"
+    networks:
+      - internal
 {{/if_eq}}
 {{#if_eq transporter "AMQP"}}
 
   amqp:
     image: rabbitmq:3
-    container_name: RabbitMQ
     labels:
       - "traefik.enable=false"
-      - "traefik.docker.network=internal"
+    networks:
+      - internal
 {{/if_eq}}
 {{#if_eq transporter "STAN"}}
 
   stan:
     image: nats-streaming
-    container_name: STAN
     labels:
       - "traefik.enable=false"
-      - "traefik.docker.network=internal"
 {{/if_eq}}
 {{#if_eq transporter "Kafka"}}
 
@@ -166,11 +124,19 @@ services:
     image: bitnami/zookeeper
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
+    labels:
+      - "traefik.enable=false"
+    networks:
+      - internal
   kafka:
     image: bitnami/kafka
     environment:
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
+    labels:
+      - "traefik.enable=false"
+    networks:
+      - internal
 {{/if_eq}}
 
   traefik:
@@ -179,12 +145,11 @@ services:
     command:
       - "--api"
       - "--docker"
-      - "--docker.usebindportip"
-      - "--docker.exposedbydefault=false"
-      - "--docker.domain=docker.localhost"
       - "--docker.watch"
-      - "--logLevel=INFO"
-      - "--docker.network=web"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=traefik"
+      - "traefik.port=8080"
     ports:
       - 3000:80
       - 3001:8080
@@ -193,19 +158,8 @@ services:
       - /dev/null:/traefik.toml
     networks:
       - internal
-      - web
-    deploy:
-      mode: global
-      placement:
-        constraints:
-          - node.role == manager
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-        condition: on-failure
+      - default
+
 
 networks:
   internal:
-  web:
-    external: true
