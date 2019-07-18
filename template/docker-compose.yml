@@ -128,6 +128,7 @@ services:
       - "traefik.enable=false"
     networks:
       - internal
+
   kafka:
     image: bitnami/kafka
     environment:
@@ -135,6 +136,8 @@ services:
       - ALLOW_PLAINTEXT_LISTENER=yes
     labels:
       - "traefik.enable=false"
+    depends_on:
+      - zookeeper
     networks:
       - internal
 {{/if_eq}}
