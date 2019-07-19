@@ -1,4 +1,4 @@
-version: "3.0"
+version: "3.7"
 
 services:
 
@@ -6,153 +6,162 @@ services:
     build:
       context: .
     image: {{projectName}}
+    container_name: {{projectName}}-api
     env_file: docker-compose.env
     environment:
       SERVICES: api
       PORT: 3000
 {{#hasDepends}}
-    links:
-{{/hasDepends}}
-{{#if_eq transporter "NATS"}}
-      - nats
-{{/if_eq}}      
-{{#redis}}
-      - redis
-{{/redis}}
-{{#if_eq transporter "MQTT"}}
-      - mqtt
-{{/if_eq}}      
-{{#if_eq transporter "AMQP"}}
-      - amqp
-{{/if_eq}}      
-{{#if_eq transporter "STAN"}}
-      - stan
-{{/if_eq}}      
-{{#if_eq transporter "Kafka"}}
-      - zookeeper
-{{/if_eq}}  
-{{#hasDepends}}
     depends_on:
 {{/hasDepends}}
 {{#if_eq transporter "NATS"}}
       - nats
-{{/if_eq}}      
+{{/if_eq}}
 {{#redis}}
       - redis
 {{/redis}}
 {{#if_eq transporter "MQTT"}}
       - mqtt
-{{/if_eq}}      
+{{/if_eq}}
 {{#if_eq transporter "AMQP"}}
       - amqp
-{{/if_eq}}      
+{{/if_eq}}
 {{#if_eq transporter "STAN"}}
       - stan
-{{/if_eq}}      
+{{/if_eq}}
 {{#if_eq transporter "Kafka"}}
       - zookeeper
-{{/if_eq}}      
+{{/if_eq}}
     labels:
-      - "traefik.enable=true"   
+      - "traefik.enable=true"
       - "traefik.backend=api"
       - "traefik.port=3000"
       - "traefik.frontend.entryPoints=http"
       - "traefik.frontend.rule=PathPrefix:/"
+    networks:
+      - internal
 
   greeter:
     build:
       context: .
     image: {{projectName}}
+    container_name: {{projectName}}-greeter
     env_file: docker-compose.env
     environment:
       SERVICES: greeter
-{{#hasDepends}}
-    links:
-{{/hasDepends}}
-{{#if_eq transporter "NATS"}}
-      - nats
-{{/if_eq}}      
-{{#redis}}
-      - redis
-{{/redis}}
-{{#if_eq transporter "MQTT"}}
-      - mqtt
-{{/if_eq}}      
-{{#if_eq transporter "AMQP"}}
-      - amqp
-{{/if_eq}}      
-{{#if_eq transporter "STAN"}}
-      - stan
-{{/if_eq}}      
-{{#if_eq transporter "Kafka"}}
-      - zookeeper
-{{/if_eq}}      
+    labels:
+      - "traefik.enable=false"
 {{#hasDepends}}
     depends_on:
 {{/hasDepends}}
 {{#if_eq transporter "NATS"}}
       - nats
-{{/if_eq}}      
+{{/if_eq}}
 {{#redis}}
       - redis
 {{/redis}}
 {{#if_eq transporter "MQTT"}}
       - mqtt
-{{/if_eq}}      
+{{/if_eq}}
 {{#if_eq transporter "AMQP"}}
       - amqp
-{{/if_eq}}      
+{{/if_eq}}
 {{#if_eq transporter "STAN"}}
       - stan
-{{/if_eq}}      
+{{/if_eq}}
 {{#if_eq transporter "Kafka"}}
       - zookeeper
-{{/if_eq}}      
+{{/if_eq}}
 
 {{#if_eq transporter "NATS"}}
+  networks:
+    - internal
 
   nats:
     image: nats
-{{/if_eq}}      
+    labels:
+      - "traefik.enable=false"
+    networks:
+      - internal
+{{/if_eq}}
 {{#redis}}
 
   redis:
     image: redis:alpine
+    labels:
+      - "traefik.enable=false"
+    networks:
+      - internal
 {{/redis}}
 {{#if_eq transporter "MQTT"}}
-    
+
   mqtt:
     image: ncarlier/mqtt
-{{/if_eq}}      
+    labels:
+      - "traefik.enable=false"
+    networks:
+      - internal
+{{/if_eq}}
 {{#if_eq transporter "AMQP"}}
 
   amqp:
     image: rabbitmq:3
-{{/if_eq}}      
+    labels:
+      - "traefik.enable=false"
+    networks:
+      - internal
+{{/if_eq}}
 {{#if_eq transporter "STAN"}}
 
   stan:
     image: nats-streaming
-{{/if_eq}}      
+    labels:
+      - "traefik.enable=false"
+{{/if_eq}}
 {{#if_eq transporter "Kafka"}}
 
   zookeeper:
     image: bitnami/zookeeper
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
+    labels:
+      - "traefik.enable=false"
+    networks:
+      - internal
+
   kafka:
     image: bitnami/kafka
     environment:
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
-{{/if_eq}}      
+    labels:
+      - "traefik.enable=false"
+    depends_on:
+      - zookeeper
+    networks:
+      - internal
+{{/if_eq}}
 
   traefik:
     image: traefik
-    command: --web --docker --docker.domain=docker.localhost --logLevel=INFO --docker.exposedbydefault=false
+    container_name: traefik
+    command:
+      - "--api"
+      - "--docker"
+      - "--docker.watch"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=traefik"
+      - "traefik.port=8080"
     ports:
-      - "3000:80"
-      - "3001:8080"
+      - 3000:80
+      - 3001:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /dev/null:/traefik.toml
+    networks:
+      - internal
+      - default
+
+networks:
+  internal:
