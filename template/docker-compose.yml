@@ -74,8 +74,8 @@ services:
 {{/if_eq}}
 
 {{#if_eq transporter "NATS"}}
-  networks:
-    - internal
+    networks:
+      - internal
 
   nats:
     image: nats
