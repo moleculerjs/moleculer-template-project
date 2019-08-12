@@ -72,10 +72,9 @@ services:
 {{#if_eq transporter "Kafka"}}
       - zookeeper
 {{/if_eq}}
-
-{{#if_eq transporter "NATS"}}
     networks:
       - internal
+{{#if_eq transporter "NATS"}}
 
   nats:
     image: nats
@@ -117,6 +116,8 @@ services:
     image: nats-streaming
     labels:
       - "traefik.enable=false"
+    networks:
+      - internal
 {{/if_eq}}
 {{#if_eq transporter "Kafka"}}
 
