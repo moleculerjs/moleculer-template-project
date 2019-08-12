@@ -48,7 +48,6 @@
     {{/if_eq}}    
     {{#redis}}
     "ioredis": "^4.14.0",
-    "redlock": "^4.0.0",
     {{/redis}}
     "moleculer": "^0.13.9"
   },
