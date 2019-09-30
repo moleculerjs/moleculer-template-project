@@ -144,7 +144,7 @@ services:
 {{/if_eq}}
 
   traefik:
-    image: traefik
+    image: traefik:1.7
     container_name: traefik
     command:
       - "--api"
