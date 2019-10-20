@@ -33,11 +33,10 @@ services:
       - zookeeper
 {{/if_eq}}
     labels:
-      - "traefik.enable=true"
-      - "traefik.backend=api"
-      - "traefik.port=3000"
-      - "traefik.frontend.entryPoints=http"
-      - "traefik.frontend.rule=PathPrefix:/"
+      - traefik.enable=true
+      - traefik.port=3000
+      - traefik.http.routers.web-api.rule=Host(`localhost`)
+      - traefik.http.routers.web-api.entrypoints=web
     networks:
       - internal
 
@@ -144,12 +143,16 @@ services:
 {{/if_eq}}
 
   traefik:
-    image: traefik:1.7
+    image: traefik
     container_name: traefik
     command:
-      - "--api"
-      - "--docker"
-      - "--docker.watch"
+      # - --log.level=DEBUG
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - traefik.http.routers.web.rule=Host(`localhost`)
+      - traefik.http.routers.web.entrypoints=web
     labels:
       - "traefik.enable=true"
       - "traefik.backend=traefik"
@@ -158,8 +161,7 @@ services:
       - 3000:80
       - 3001:8080
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /dev/null:/traefik.toml
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
       - internal
       - default
