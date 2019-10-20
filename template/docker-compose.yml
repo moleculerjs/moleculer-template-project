@@ -34,7 +34,6 @@ services:
 {{/if_eq}}
     labels:
       - traefik.enable=true
-      - traefik.port=3000
       - traefik.http.routers.web-api.rule=Host(`localhost`)
       - traefik.http.routers.web-api.entrypoints=web
     networks:
