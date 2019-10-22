@@ -141,9 +141,9 @@ services:
       - internal
 {{/if_eq}}
 
-  traefik:
+  gateway:
     image: traefik
-    container_name: traefik
+    container_name: gateway
     command:
       # - --log.level=DEBUG
       - --api.insecure=true
