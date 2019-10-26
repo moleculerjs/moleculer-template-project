@@ -39,13 +39,13 @@
     {{/if_eq}}
     {{#if_eq transporter "AMQP"}}
     "amqplib": "^0.5.5",
-    {{/if_eq}}    
+    {{/if_eq}}
     {{#if_eq transporter "STAN"}}
     "node-nats-streaming": "^0.2.6",
-    {{/if_eq}}    
+    {{/if_eq}}
     {{#if_eq transporter "Kafka"}}
-    "kafka-node": "^4.1.3",
-    {{/if_eq}}    
+    "kafka-node": "^3.0.1",
+    {{/if_eq}}
     {{#redis}}
     "ioredis": "^4.14.0",
     {{/redis}}
