@@ -4,7 +4,7 @@
   "description": "Project template for Moleculer-based projects",
   "main": "meta.js",
   "scripts": {
-    "dev": "moleculer init . tmp"
+    "dev": "rimraf tmp && moleculer init . tmp"
   },
   "repository": {
     "type": "git",

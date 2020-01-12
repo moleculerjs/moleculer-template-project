@@ -27,8 +27,9 @@ module.exports = {
 		 */
 		hello: {
 			rest: "/hello",
-			handler() {
-			return "Hello Moleculer";
+			async handler() {
+				return "Hello Moleculer";
+			}
 		},
 
 		/**
@@ -41,7 +42,7 @@ module.exports = {
 			params: {
 				name: "string"
 			},
-			handler(ctx) {
+			async handler(ctx) {
 				return `Welcome, ${ctx.params.name}`;
 			}
 		}
@@ -71,14 +72,14 @@ module.exports = {
 	/**
 	 * Service started lifecycle event handler
 	 */
-	started() {
+	async started() {
 
 	},
 
 	/**
 	 * Service stopped lifecycle event handler
 	 */
-	stopped() {
+	async stopped() {
 
 	}
 };

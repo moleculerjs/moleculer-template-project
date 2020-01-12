@@ -48,15 +48,15 @@ module.exports = {
 				/* // Before call hook.
 				// You can check the request.
 				onBeforeCall(ctx, route, req, res) {
-                    // Set request headers to context meta
-                    ctx.meta.userAgent = req.headers["user-agent"];
-                }, */
+					// Set request headers to context meta
+					ctx.meta.userAgent = req.headers["user-agent"];
+				}, */
 
 				/* After call hook. You can modify the data.
-                onAfterCall(ctx, route, req, res, data) {
-                    // Async function which return with Promise
-                    return doSomething(ctx, res, data);
-                }, */
+				onAfterCall(ctx, route, req, res, data) {
+					// Async function which return with Promise
+					return doSomething(ctx, res, data);
+				}, */
 
 				// Calling options. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Calling-options
 				callingOptions: {},
@@ -89,8 +89,8 @@ module.exports = {
 		assets: {
 			folder: "public",
 
-    	   	// Options to `server-static` module
-	        options: {}			
+		   	// Options to `server-static` module
+			options: {}			
 		}
 	},
 
@@ -110,26 +110,26 @@ module.exports = {
 		 */
 		async authenticate(ctx, route, req) {
 			// Read the token from header
-            const auth = req.headers["authorization"];
+			const auth = req.headers["authorization"];
 
-            if (auth && auth.startsWith("Bearer")) {
-                const token = auth.slice(7);
+			if (auth && auth.startsWith("Bearer")) {
+				const token = auth.slice(7);
 
-                // Check the token. Tip: call a service which verify the token. E.g. `accounts.resolveToken`
-                if (token == "123456") {
-                    // Returns the resolved user. It will be set to the `ctx.meta.user`
-                    return { id: 1, name: "John Doe" };
+				// Check the token. Tip: call a service which verify the token. E.g. `accounts.resolveToken`
+				if (token == "123456") {
+					// Returns the resolved user. It will be set to the `ctx.meta.user`
+					return { id: 1, name: "John Doe" };
 
-                } else {
-                    // Invalid token
-                    throw new ApiGateway.Errors.UnAuthorizedError(E.ERR_INVALID_TOKEN);
-                }
+				} else {
+					// Invalid token
+					throw new ApiGateway.Errors.UnAuthorizedError(E.ERR_INVALID_TOKEN);
+				}
 
-            } else {
-                // No token. Throw an error or do nothing if anonymous access is allowed.
-                // throw new E.UnAuthorizedError(E.ERR_NO_TOKEN);
+			} else {
+				// No token. Throw an error or do nothing if anonymous access is allowed.
+				// throw new E.UnAuthorizedError(E.ERR_NO_TOKEN);
 				return null;
-            }
+			}
 		},
 
 		/**

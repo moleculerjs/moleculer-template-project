@@ -41,7 +41,7 @@ module.exports = {
 			// Using colors on the output
 			colors: true,
 			// Print module names with different colors (like docker-compose for containers)
-			moduleColors: true,
+			moduleColors: false,
 			// Line formatter. It can be "json", "short", "simple", "full", a `Function` or a template string like "{timestamp} {level} {nodeID}/{mod}: {msg}"
 			formatter: "full",
 			// Custom object printer. If not defined, it uses the `util.inspect` method.
@@ -153,7 +153,7 @@ module.exports = {
 
 	// Enable/disable built-in metrics function. More info: https://moleculer.services/docs/0.14/metrics.html
 	metrics: {
-		enabled: false,
+		enabled: {{#if tracing}}true{{/if}}{{#unless tracing}}false{{/unless}},
 		reporter: {
 			// Available built-in reporters: "Console", "CSV", "Event", "Prometheus", "Datadog", "StatsD"
 			type: "Prometheus",
@@ -173,21 +173,21 @@ module.exports = {
 
 	// Enable built-in tracing function. More info: https://moleculer.services/docs/0.14/tracing.html
 	tracing: {
-		enabled: true,
-        exporter: {
+		enabled: {{#if metrics}}true{{/if}}{{#unless metrics}}false{{/unless}},
+		exporter: {
 			// Available built-in exporters: "Console", "Datadog", "Event", "EventLegacy", "Jaeger", "Zipkin"
-            type: "Console", // Console exporter is only for development!
-            options: {
-                // Custom logger
-                logger: null,
-                // Using colors
-                colors: true,
-                // Width of row
-                width: 100,
-                // Gauge width in the row
-                gaugeWidth: 40
-            }
-        }
+			type: "Console", // Console exporter is only for development!
+			options: {
+				// Custom logger
+				logger: null,
+				// Using colors
+				colors: true,
+				// Width of row
+				width: 100,
+				// Gauge width in the row
+				gaugeWidth: 40
+			}
+		}
 	},
 
 	// Register custom middlewares
@@ -202,12 +202,12 @@ module.exports = {
 	},
 
 	// Called after broker starte.
-	started(broker) {
+	async started(broker) {
 
 	},
 
 	// Called after broker stopped.
-	stopped(broker) {
+	async stopped(broker) {
 
 	}
 };

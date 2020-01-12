@@ -50,6 +50,18 @@ module.exports = function(values) {
 			},
 			{
 				type: "confirm",
+				name: "metrics",
+				message: "Would you like to enable metrics?",
+				default: false
+			},			
+			{
+				type: "confirm",
+				name: "tracing",
+				message: "Would you like to enable tracing?",
+				default: false
+			},			
+			{
+				type: "confirm",
 				name: "docker",
 				message: "Add Docker files?",
 				default: true
@@ -88,7 +100,7 @@ To get started:
 	cd {{projectName}}
 	npm run dev
 
-{{#needTransporter}}{{#unless_eq transporter "TCP"}}Don't forget to start your {{transporter}} server.{{/unless_eq}}{{/needTransporter}}
+{{#needTransporter}}{{#unless_eq transporter "TCP"}}Don't forget to start your transporter.{{/unless_eq}}{{/needTransporter}}
 		`
 	};
 };
