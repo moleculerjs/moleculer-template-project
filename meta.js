@@ -24,9 +24,9 @@ module.exports = function(values) {
 					{ name: "Redis", value: "Redis" },
 					{ name: "MQTT", value: "MQTT" },
 					{ name: "AMQP", value: "AMQP" },
-					{ name: "TCP (experimental)", value: "TCP" },
-					{ name: "NATS Streaming (experimental)", value: "STAN" },
-					{ name: "Kafka (experimental)", value: "Kafka" }
+					{ name: "TCP", value: "TCP" },
+					{ name: "NATS Streaming", value: "STAN" },
+					{ name: "Kafka", value: "Kafka" }
 				],
 				when(answers) { return answers.needTransporter; },
 				default: "NATS"
@@ -59,12 +59,6 @@ module.exports = function(values) {
 				name: "lint",
 				message: "Use ESLint to lint your code?",
 				default: true
-			},
-			{
-				type: "confirm",
-				name: "jest",
-				message: "Setup unit tests with Jest?",
-				default: true
 			}
 		],
 
@@ -82,7 +76,6 @@ module.exports = function(values) {
 			"services/api.service.js": "apiGW",
 			"public/**/*": "apiGW",
 			".eslintrc.js": "lint",
-			"test/**/*": "jest",
 
 			".dockerignore": "docker",
 			"docker-compose.*": "docker",
@@ -95,6 +88,7 @@ To get started:
 	cd {{projectName}}
 	npm run dev
 
+{{#needTransporter}}{{#unless_eq transporter "TCP"}}Don't forget to start your {{transporter}} server.{{/unless_eq}}{{/needTransporter}}
 		`
 	};
 };

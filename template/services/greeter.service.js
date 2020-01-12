@@ -25,7 +25,9 @@ module.exports = {
 		 *
 		 * @returns
 		 */
-		hello() {
+		hello: {
+			rest: "/hello",
+			handler() {
 			return "Hello Moleculer";
 		},
 
@@ -35,6 +37,7 @@ module.exports = {
 		 * @param {String} name - User name
 		 */
 		welcome: {
+			rest: "/welcome",
 			params: {
 				name: "string"
 			},
