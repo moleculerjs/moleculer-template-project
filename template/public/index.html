@@ -166,7 +166,7 @@
 
 	.badge {
 		display: inline-block;
-		background-color: chocolate;
+		background-color: dimgray;
 		color: white;
     	padding: 4px 6px;
 	    border-radius: 7px;
@@ -178,7 +178,7 @@
 		background-color: limegreen;
 	}
 
-	.badge.error {
+	.badge.red {
 		background-color: firebrick;
 	}
 
@@ -255,7 +255,7 @@
 						</div>
 						<div class="response" v-if="item.status">
 							<h4>Response: 
-								<div class="badge" :class="{ green: item.status < 400, red: item.status >= 400 }">{{ item.status }}</div>
+								<div class="badge" :class="{ green: item.status < 400, red: item.status >= 400 || item.status == 'ERR' }">{{ item.status }}</div>
 								<div class="badge time">{{ humanize(item.duration) }}</div>
 							</h4>
 							<pre><code>{{ item.response }}</code></pre>
@@ -402,9 +402,9 @@
 							});
 						})
 						.catch(function (err) {
-							item.status = res.status;
+							item.status = "ERR";
 							item.duration = Date.now() - startTime;
-							self.response = err.message;
+							item.response = err.message;
 							console.log(err);
 						});
 
