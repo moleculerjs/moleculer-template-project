@@ -63,7 +63,7 @@ module.exports = function(values) {
 			{
 				type: "confirm",
 				name: "docker",
-				message: "Add Docker files?",
+				message: "Add Docker & Kubernetes sample files?",
 				default: true
 			},
 			{
@@ -83,7 +83,7 @@ module.exports = function(values) {
 		},
 
 		skipInterpolation: [
-			"public/index.html"
+			//"public/index.html"
 		],
 
 		filters: {
@@ -93,6 +93,7 @@ module.exports = function(values) {
 
 			".dockerignore": "docker",
 			"docker-compose.*": "docker",
+			"k8s.yaml": "docker",
 			"Dockerfile": "docker"
 		},
 

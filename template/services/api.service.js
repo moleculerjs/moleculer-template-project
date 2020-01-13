@@ -73,7 +73,10 @@ module.exports = {
 				},
 
 				// Mapping policy setting. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Mapping-policy
-				mappingPolicy: "all" // Available values: "all", "restrict"
+				mappingPolicy: "all", // Available values: "all", "restrict"
+
+				// Enable/disable logging
+				logging: true
 			}
 		],
 

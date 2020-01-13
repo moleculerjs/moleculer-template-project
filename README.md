@@ -2,10 +2,11 @@
 :mortar_board: Moleculer-based microservices project template.
 
 ## Features
-- Moleculer v0.13.x with full-detailed `moleculer.config.js` file.
+- Moleculer v0.14.x with full-detailed `moleculer.config.js` file.
 - Common project with a demo `greeter` service.
-- Optional API Gateway service.
+- Optional API Gateway service with detailed service settings.
 - Optional Transporter & Cacher.
+- Metrics & Tracing.
 - Docker & Docker Compose files.
 - Unit tests with [Jest](http://facebook.github.io/jest/).
 - Lint with [ESLint](http://eslint.org/).
@@ -24,13 +25,14 @@ $ moleculer init project my-project
 $ moleculer init project moleculer-demo
 
 Template repo: moleculerjs/moleculer-template-project
-? Add API Gateway (moleculer-web) service Yes
+? Add API Gateway (moleculer-web) service? Yes
 ? Would you like to communicate with other nodes? Yes
 ? Select a transporter TCP
 ? Would you like to use cache? No
-? Add Docker files? Yes
+? Would you like to enable metrics? Yes
+? Would you like to enable tracing? Yes
+? Add Docker & Kubernetes sample files? Yes
 ? Use ESLint to lint your code? Yes
-? Setup unit tests with Jest? Yes
 Create 'moleculer-demo' folder...
 ? Would you like to run 'npm install'? Yes
 ```
@@ -49,6 +51,6 @@ Create 'moleculer-demo' folder...
 moleculer-template-project is available under the [MIT license](https://tldrlegal.com/license/mit-license).
 
 ## Contact
-Copyright (c) 2018 MoleculerJS
+Copyright (c) 2019 MoleculerJS
 
 [![@moleculerjs](https://img.shields.io/badge/github-moleculerjs-green.svg)](https://github.com/moleculerjs) [![@MoleculerJS](https://img.shields.io/badge/twitter-MoleculerJS-blue.svg)](https://twitter.com/MoleculerJS)
