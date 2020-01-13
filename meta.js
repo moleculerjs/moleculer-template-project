@@ -82,7 +82,9 @@ module.exports = function(values) {
 			}
 		},
 
-		//skipInterpolation: [],
+		skipInterpolation: [
+			"public/index.html"
+		],
 
 		filters: {
 			"services/api.service.js": "apiGW",
