@@ -251,7 +251,7 @@
 					<div class="content">
 						<div class="request">
 							<h4>Request:</h4>
-							<code>{{ item.method || 'GET' }} {{ item.rest }}   </code>
+							<code>{{ item.method || 'GET' }} <a target="_blank" :href="item.rest">{{ item.rest }}   </a></code>
 							<a class="button" @click="callAction(item)">Execute</a>
 						</div>
 						<div class="response" v-if="item.status">
@@ -284,7 +284,7 @@
 							
 							<td><div class="badge" :class="{ green: node.available, red: !node.available }">{{ node.available ? "Online": "Offline" }}</div></td>
 							<td>
-								<div class="bar" :style="{ width: node.cpu + '%' }"></div>
+								<div class="bar" :style="{ width: node.cpu != null ? node.cpu + '%' : '0' }"></div>
 								{{ node.cpu != null ? Number(node.cpu).toFixed(0) + '%' : '-' }}
 							</td>
 						</tr>
@@ -299,7 +299,7 @@
 						<th>Instances</th>
 					</thead>
 					<tbody>
-						<tr v-for="svc in services">
+						<tr v-for="svc in filteredServices">
 							<td>{{ svc.name }}</td>
 							<td>{{ svc.version ? svc.version : "-" }}</td>
 							<td class="badges">
@@ -320,14 +320,14 @@
 						<th>Status</th>
 					</thead>
 					<tbody>
-						<tr v-for="action in actions" :class="{ offline: !action.available, local: action.hasLocal }">
+						<tr v-for="action in filteredActions" :class="{ offline: !action.available, local: action.hasLocal }">
 							<td>{{ action.name }}</td>
 							<td>
 								<template v-if="action.action">
 									<div class="badge" v-if="action.action.cache">
 										Yes
 									</div>
-									<span v-else>No</span>
+									<span v-else></span>
 								</template>
 							</td>
 							<td>{{ action.count }}</td>
@@ -340,7 +340,7 @@
 
 		<footer>
 			<div class="footer-copyright">
-				Copyright &copy; 2016-2019 - Moleculer
+				Copyright &copy; 2016-2020 - Moleculer
 			</div>
 			<div class="footer-links">
 				<a href="https://github.com/moleculerjs/moleculer" class="footer-link" target="_blank">Github</a>
@@ -377,6 +377,16 @@
 				services: [],
 				actions: [],
 			},
+
+			computed: {
+				filteredActions() {
+					return this.actions.filter(action => !action.name.startsWith("$"));
+				},
+
+				filteredServices() {
+					return this.services.filter(svc => !svc.name.startsWith("$"));
+				}
+			},			
 
 			methods: {
 				changePage(page) {
