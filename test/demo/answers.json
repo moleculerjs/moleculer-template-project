@@ -1,0 +1,9 @@
+{
+	"apiGW": true,
+	"needTransporter": false,
+	"needCacher": false,
+	"metrics": false,
+	"tracing": false,
+	"docker": true,
+	"lint": true
+}

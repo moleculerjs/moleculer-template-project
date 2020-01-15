@@ -4,7 +4,9 @@
   "description": "Project template for Moleculer-based projects",
   "main": "meta.js",
   "scripts": {
-    "dev": "rimraf tmp && moleculer init . tmp"
+    "dev": "rimraf tmp && moleculer init . tmp",
+    "build": "moleculer init --answers test/demo/answers.json --install . tmp",
+    "start": "cd tmp && node node_modules/moleculer/bin/moleculer-runner services"
   },
   "repository": {
     "type": "git",
@@ -18,6 +20,7 @@
   },
   "homepage": "https://github.com/moleculerjs/moleculer-template-project#readme",
   "devDependencies": {
+    "moleculer-cli": "github:moleculerjs/moleculer-cli",
     "rimraf": "^3.0.0"
   }
 }
