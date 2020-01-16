@@ -125,7 +125,7 @@ module.exports = {
 
 				} else {
 					// Invalid token
-					throw new ApiGateway.Errors.UnAuthorizedError(E.ERR_INVALID_TOKEN);
+					throw new ApiGateway.Errors.UnAuthorizedError(ApiGateway.Errors.ERR_INVALID_TOKEN);
 				}
 
 			} else {
