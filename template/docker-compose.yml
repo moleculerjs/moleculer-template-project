@@ -2,6 +2,7 @@ version: "3.2"
 
 services:
 
+{{#apiGW}}
   api:
     build:
       context: .
@@ -40,6 +41,7 @@ services:
       - "traefik.frontend.rule=PathPrefix:/"
     networks:
       - internal
+{{/apiGW}}
 
   greeter:
     build:
@@ -74,6 +76,42 @@ services:
 {{/if_eq}}
     networks:
       - internal
+{{#dbService}}
+
+  products:
+    build:
+      context: .
+    image: {{projectName}}
+    container_name: {{projectName}}-products
+    env_file: docker-compose.env
+    environment:
+      SERVICES: products
+    labels:
+      - "traefik.enable=false"
+{{#hasDepends}}
+    depends_on:
+{{/hasDepends}}
+{{#if_eq transporter "NATS"}}
+      - nats
+{{/if_eq}}
+{{#redis}}
+      - redis
+{{/redis}}
+{{#if_eq transporter "MQTT"}}
+      - mqtt
+{{/if_eq}}
+{{#if_eq transporter "AMQP"}}
+      - amqp
+{{/if_eq}}
+{{#if_eq transporter "STAN"}}
+      - stan
+{{/if_eq}}
+{{#if_eq transporter "Kafka"}}
+      - zookeeper
+{{/if_eq}}
+    networks:
+      - internal
+{{/dbService}}
 {{#if_eq transporter "NATS"}}
 
   nats:
@@ -143,6 +181,7 @@ services:
       - internal
 {{/if_eq}}
 
+{{#apiGW}}
   traefik:
     image: traefik:1.7
     container_name: traefik
@@ -163,6 +202,7 @@ services:
     networks:
       - internal
       - default
+{{/apiGW}}
 
 networks:
   internal:

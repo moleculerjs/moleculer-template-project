@@ -29,6 +29,9 @@
     {{#apiGW}}
     "moleculer-web": "^0.9.0-beta7",
     {{/apiGW}}
+    {{#dbService}}
+    "moleculer-db": "^0.8.4",
+    {{/dbService}}
     {{#if_eq transporter "NATS"}}
     "nats": "^1.3.2",
     {{/if_eq}}

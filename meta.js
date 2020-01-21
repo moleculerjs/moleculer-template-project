@@ -50,6 +50,12 @@ module.exports = function(values) {
 			},
 			{
 				type: "confirm",
+				name: "dbService",
+				message: "Add a DB sample service?",
+				default: true
+			},
+			{
+				type: "confirm",
 				name: "metrics",
 				message: "Would you like to enable metrics?",
 				default: false
@@ -89,12 +95,16 @@ module.exports = function(values) {
 		filters: {
 			"services/api.service.js": "apiGW",
 			"public/**/*": "apiGW",
+			
+			"services/products.service.js": "dbService",
+			"mixins/db.mixin.js": "dbService",
+			
 			".eslintrc.js": "lint",
 
 			".dockerignore": "docker",
 			"docker-compose.*": "docker",
-			"k8s.yaml": "docker",
-			"Dockerfile": "docker"
+			"Dockerfile": "docker",
+			"k8s.yaml": "docker"
 		},
 
 		completeMessage: `
