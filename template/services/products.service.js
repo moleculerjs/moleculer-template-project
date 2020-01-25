@@ -6,8 +6,14 @@ module.exports = {
 	name: "products",
 	// version: 1
 
+	/**
+	 * Mixins
+	 */
 	mixins: [DbMixin("products")],
 
+	/**
+	 * Settings
+	 */
 	settings: {
 		// Available fields in the responses
 		fields: [
@@ -15,9 +21,35 @@ module.exports = {
 			"name",
 			"quantity",
 			"price"
-		]
+		],
+
+		// Validator for the `create` & `insert` actions.
+		entityValidator: {
+			name: "string|min:3",
+			price: "number|positive"
+		}
+	},
+
+	/**
+	 * Action Hooks
+	 */
+	hooks: {
+		before: {
+			/**
+			 * Register a before hook for the `create` action.
+			 * It sets a default value for the quantity field.
+			 * 
+			 * @param {Context} ctx 
+			 */
+			create(ctx) {
+				ctx.params.quantity = 0;
+			}
+		}
 	},
 	
+	/**
+	 * Actions
+	 */
 	actions: {
 		/**
 		 * The "moleculer-db" mixin registers the following actions:
@@ -35,14 +67,14 @@ module.exports = {
 		 * Increase the quantity of the product item.
 		 */
 		increaseQuantity: {
-			rest: "POST /:id/increase-quantity",
+			rest: "PUT /:id/quantity/increase",
 			params: {
 				id: "string",
 				value: "number|integer|positive"
 			},
 			async handler(ctx) {
 				const doc = await this.adapter.updateById(ctx.params.id, { $inc: { quantity: ctx.params.value } });
-				const json = await this.transformDocuments(ctx, params, doc);
+				const json = await this.transformDocuments(ctx, ctx.params, doc);
 				await this.entityChanged("updated", json, ctx);
 
 				return json;
@@ -53,14 +85,14 @@ module.exports = {
 		 * Decrease the quantity of the product item.
 		 */
 		decreaseQuantity: {
-			rest: "POST /:id/decrease-quantity",
+			rest: "PUT /:id/quantity/decrease",
 			params: {
 				id: "string",
 				value: "number|integer|positive"
 			},
 			async handler(ctx) {
-				const doc = await this.adapter.updateById(ctx.params.id, { $dec: { quantity: ctx.params.value } });
-				const json = await this.transformDocuments(ctx, params, doc);
+				const doc = await this.adapter.updateById(ctx.params.id, { $inc: { quantity: -ctx.params.value } });
+				const json = await this.transformDocuments(ctx, ctx.params, doc);
 				await this.entityChanged("updated", json, ctx);
 
 				return json;
@@ -68,9 +100,14 @@ module.exports = {
 		}
 	},
 
+	/**
+	 * Methods
+	 */
 	methods: {
 		/**
 		 * Loading sample data to the collection.
+		 * It is called in the DB.mixin after the database
+		 * connection establishing & the collection is empty.
 		 */
 		async seedDB() {
 			await this.adapter.insertMany([
@@ -81,6 +118,9 @@ module.exports = {
 		}
 	},
 
+	/**
+	 * Fired after database connection establishing.
+	 */
 	async afterConnected() {
 		// await this.adapter.collection.createIndex({ name: 1 });
 	}    

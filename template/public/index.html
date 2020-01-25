@@ -4,8 +4,9 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,minimal-ui">
-	<title>{{projectName}}</title>
+	<title>{{projectName}} - Moleculer Microservices Project</title>
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+	<link href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	<link rel="shortcut icon" type="image/png" href="https://moleculer.services/icon/favicon-16x16.png"/>
 	<script src="https://unpkg.com/vue@2.6.11/dist/vue.js"></script>
 	<style type="text/css">
@@ -20,8 +21,13 @@
 		padding: 0;
 		margin: 0;
 		color: black;
-		text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+		text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
 		padding-bottom: 60px; /* footer */
+	}
+
+	.cursor-pointer {
+		cursor: pointer;
+		user-select: none;
 	}
 
 	header, footer {
@@ -61,11 +67,6 @@
 		margin: 0 0.5em;
 	}
 
-	header h1 {
-		font-weight: 300;
-		color: #63dcfd;
-	}
-
 	a, a.router-link-exact-active {
 		color: #3CAFCE;
 		text-decoration: none;
@@ -74,6 +75,7 @@
 	nav ul {
 		list-style: none;
 		padding: 0;
+		margin: 0;
 	}
 
 	nav ul li {
@@ -105,6 +107,11 @@
 		padding: 0.5em 1em;
 		box-shadow: 0 4px 6px -1px rgba(0,0,0,.2);
 		cursor: pointer;
+		user-select: none;
+	}
+
+	button i, .button i {
+		margin-right: 0.5em;
 	}
 
 	button:hover, .button:hover {
@@ -117,9 +124,64 @@
 	}
 
 	main {
-		max-width: 960px;
+		max-width: 1260px;
 		margin: 0 auto;
 		padding: 1em 1em;
+	}
+
+	main section#home > .content {
+		text-align: center;
+	}
+
+	main section#home h1 {
+		font-size: 2em;
+		font-weight: 400;
+		margin-top: 0;
+	}
+
+	main section#home h3 {
+		font-size: 1.25em;
+		font-weight: 600;
+	}
+
+	pre.broker-options {
+		display: inline-block;
+		text-align: left;
+		font-size: 0.9em;
+	}
+
+	.boxes {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.boxes .box {
+		width: 200px;
+		padding: 0.25em 1em;
+		margin: 0.5em;
+		background: rgba(60, 175, 206, 0.1);
+
+		border: 1px solid grey;
+		border-radius: 0.25em;
+	}
+
+	.boxes .box .caption {
+		font-weight: 300;
+		font-size: 0.9em;
+		margin-bottom: 0.5em;
+	}
+
+	.boxes .box .value {
+		font-weight: 600;
+		font-size: 1.1em;
+	}
+
+	main input {
+		border: 1px solid #3CAFCE;
+		border-radius: 4px;
+		padding: 2px 6px;
+		font-family: "Source Sans Pro";
 	}
 
 	main fieldset {
@@ -145,13 +207,31 @@
 		margin-bottom: 0.5em;
 	}
 
+	main fieldset .parameters .field {
+		margin-bottom: 0.25em;
+	}
+
+	main fieldset .parameters .field label {
+		min-width: 80px;
+		display: inline-block;
+		text-align: right;
+		margin-right: 0.5em;
+	}
+
 	main fieldset .response {
 		margin-top: 1em;
 	}
 
 	main fieldset .response pre {
 		margin: 0.5em 0;
+		font-size: 0.9em;
 	}
+
+	pre.json .string { color: #885800; }
+	pre.json .number { color: blue; }
+	pre.json .boolean { color: magenta; }
+	pre.json .null { color: red; }
+	pre.json .key { color: green; }	
 
 	main h4 {
 		font-weight: 600;
@@ -162,7 +242,7 @@
 		display: inline-block;
 		background-color: dimgray;
 		color: white;
-    	padding: 4px 6px;
+    	padding: 2px 6px;
 	    border-radius: 7px;
 	    font-size: 0.7em;
 		font-weight: 600;
@@ -176,9 +256,14 @@
 		background-color: firebrick;
 	}
 
+	.badge.orange {
+		background-color: #fab000;
+		color: black;
+	}
+
 	table {
 		width: 100%;
-		max-width: 1000px;
+		/*max-width: 1000px;*/
 		border: 1px solid lightgrey;
 		border-radius: 8px;
 		background-color: aliceblue;
@@ -213,6 +298,19 @@
 		text-align: left
     }	
 
+	table tr.service td:nth-child(1) {
+		font-weight: bold;
+	}
+
+	table tr.action td:nth-child(1) {
+		padding-left: 2em;
+	}
+
+	table tr.action td:nth-child(2) {
+		font-family: monospace;
+		font-size: 0.8em;
+	}
+
 	.bar {
 		position: absolute;
 		left: 0; right: 0; top: 0; bottom: 0;
@@ -222,13 +320,11 @@
 	}	
 </style>
 </head>
-{{{{projectName}}}}
 <body>
+	{{{{projectName}}}}
 	<div id="app">
 		<header>
 			<a href="https://moleculer.services/docs/0.14/" target="_blank"><img class="logo" src="https://moleculer.services/images/logo/logo_with_text_horizontal_100h_shadow.png" /></a>
-			<h1>Welcome to your Moleculer microservices project!</h1>
-			<!-- p>For a guide and recipes on how to configure / customize this project,<br/>check out the <a href="https://moleculer.services/docs/0.14/" target="_blank">Moleculer documentation</a>.</p-->
 			<nav>
 				<ul>
 					<li v-for="item in menu" :class="{ active: page == item.id}" @click="changePage(item.id)">{{ item.caption }}</li>
@@ -238,34 +334,102 @@
 
 		<main>
 			<section id="home" v-if="page == 'home'">
-				<fieldset v-for="item in requests">
-					<legend>
-						Action '<code>{{ item.action }}</code>'
-					</legend>
-					<div class="content">
-						<div class="request">
-							<h4>Request:</h4>
-							<code>{{ item.method || 'GET' }} <a target="_blank" :href="item.rest">{{ item.rest }}   </a></code>
-							<a class="button" @click="callAction(item)">Execute</a>
-						</div>
-						<div class="response" v-if="item.status">
-							<h4>Response: 
-								<div class="badge" :class="{ green: item.status < 400, red: item.status >= 400 || item.status == 'ERR' }">{{ item.status }}</div>
-								<div class="badge time">{{ humanize(item.duration) }}</div>
-							</h4>
-							<pre><code>{{ item.response }}</code></pre>
-						</div>
-					</div>
-				</fieldset>
+				<div class="content">
+					<h1>Welcome to your Moleculer microservices project!</h1>
+					<p>For guides and recipes on how to configure / customize this project, check out the <a href="https://moleculer.services/docs/0.14/" target="_blank">Moleculer documentation</a>.</p>
+
+					<template v-if="broker">
+						<h3>Configuration</h3>
+						<div class="boxes">
+							<div class="box">
+								<div class="caption">Namespace</div>
+								<div class="value">{{ broker.namespace || "&lt;not set&gt;" }}</div>
+							</div>
+
+							<div class="box">
+								<div class="caption">Transporter</div>
+								<div class="value">{{ broker.transporter || "&lt;no transporter&gt;" }}</div>
+							</div>
+
+							<div class="box">
+								<div class="caption">Serializer</div>
+								<div class="value">{{ broker.serializer || "JSON" }}</div>
+							</div>
+
+							<div class="box">
+								<div class="caption">Strategy</div>
+								<div class="value">{{ broker.registry.strategy || "Round Robin" }}</div>
+							</div>
+
+							<div class="box">
+								<div class="caption">Logger</div>
+								<div class="value">{{ broker.logger ? "Enabled" : "Disabled" }}</div>
+							</div>
+
+							<div class="box">
+								<div class="caption">Validator</div>
+								<div class="value">{{ broker.validator ? "Enabled" : "Disabled" }}</div>
+							</div>
+
+							<div class="box">
+								<div class="caption">Metrics</div>
+								<div class="value">{{ broker.metrics.enabled ? "Enabled" : "Disabled" }}</div>
+							</div>
+
+							<div class="box">
+								<div class="caption">Tracing</div>
+								<div class="value">{{ broker.tracing.enabled ? "Enabled" : "Disabled" }}</div>
+							</div>
+						</div>						
+
+						<h3 class="cursor-pointer" @click="showBrokerOptions = !showBrokerOptions">Broker options <i :class="'fa fa-angle-' + (showBrokerOptions ? 'up' : 'down')"></i></h3>
+						<pre v-if="showBrokerOptions" class="broker-options"><code>{{ broker }}</code></pre>
+					</template>
+				</div>
 			</section>
 
-			<section id="nodes" v-else-if="page == 'nodes'">
+			<template v-for="(section, name) in requests">
+				<section :id="name" v-if="page == name">
+					<fieldset v-for="item in section">
+						<legend>
+							Action '<code>{{ item.action }}</code>'
+						</legend>
+						<div class="content">
+							<div class="request">
+								<h4>Request:</h4>
+								<code>{{ item.method || 'GET' }} <a target="_blank" :href="item.rest">{{ item.rest }}   </a></code>
+								<a class="button" @click="callAction(item)">
+									<i class="fa fa-rocket"></i>
+									Execute 
+								</a>
+							</div>
+							<div v-if="item.fields" class="parameters">
+								<h4>Parameters:</h4>
+								<div class="field" v-for="field in item.fields">
+									<label for="">{{ field.label }}: </label>
+									<input :type="field.type" :value="getFieldValue(field)" @input="setFieldValue(field, $event.target.value)"></input>
+								</div>
+							</div>
+							<div class="response" v-if="item.status">
+								<h4>Response: 
+									<div class="badge" :class="{ green: item.status < 400, red: item.status >= 400 || item.status == 'ERR' }">{{ item.status }}</div>
+									<div class="badge time">{{ humanize(item.duration) }}</div>
+								</h4>
+								<pre><code>{{ item.response }}</code></pre>
+							</div>
+						</div>
+					</fieldset>
+				</section>
+			</template>
+
+			<section id="nodes" v-if="page == 'nodes'">
 				<table>
 					<thead> 
 						<th>Node ID</th>
 						<th>Type</th>
 						<th>Version</th>
 						<th>IP</th>
+						<th>Hostname</th>
 						<th>Status</th>
 						<th>CPU</th>
 					</thead>
@@ -274,7 +438,8 @@
 							<td>{{ node.id }}</td>
 							<td>{{ node.client.type }}</td>
 							<td>{{ node.client.version }}</td>
-							<td>{{ node.ipList.length > 0 ? node.ipList[0] : node.hostnae }}</td>
+							<td>{{ node.ipList[0] }}</td>
+							<td>{{ node.hostname }}</td>
 							
 							<td><div class="badge" :class="{ green: node.available, red: !node.available }">{{ node.available ? "Online": "Offline" }}</div></td>
 							<td>
@@ -285,50 +450,52 @@
 					</tbody>        
 				</table>
 			</section>
-			<section id="services" v-else-if="page == 'services'">
+			<section id="services" v-if="page == 'services'">
 				<table>
 					<thead>
-						<th>Service name</th>
-						<th>Version</th>
-						<th>Instances</th>
-					</thead>
-					<tbody>
-						<tr v-for="svc in filteredServices">
-							<td>{{ svc.name }}</td>
-							<td>{{ svc.version ? svc.version : "-" }}</td>
-							<td class="badges">
-								<div class="badge" v-for="nodeID in svc.nodes">
-									{{ nodeID }}
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>				
-			</section>
-			<section id="actions" v-else-if="page == 'actions'">
-				<table>
-					<thead>
-						<th>Action name</th>
-						<th>Cached</th>
+						<th>Service/Action name</th>
+						<th>REST</th>
+						<th>Parameters</th>
 						<th>Instances</th>
 						<th>Status</th>
 					</thead>
 					<tbody>
-						<tr v-for="action in filteredActions" :class="{ offline: !action.available, local: action.hasLocal }">
-							<td>{{ action.name }}</td>
-							<td>
-								<template v-if="action.action">
-									<div class="badge" v-if="action.action.cache">
-										Yes
+						<template v-for="svc in filteredServices">
+							<tr class="service">
+								<td>
+									{{ svc.name }} 
+									<div v-if="svc.version" class="badge">{{ svc.version }}</div>
+								</td>
+								<td>{{ svc.settings.rest ? svc.settings.rest : svc.fullName }}</td>
+								<td></td>
+								<td class="badges">
+									<div class="badge" v-for="nodeID in svc.nodes">
+										{{ nodeID }}
 									</div>
-									<span v-else></span>
-								</template>
-							</td>
-							<td>{{ action.count }}</td>
-							<td><div class="badge" :class="{ green: action.available, red: !action.available }">{{ action.available ? "Online": "Offline" }}</div></td>
-						</tr>
+								</td>
+								<td>
+									<div v-if="svc.nodes.length > 0" class="badge green">Online</div>
+									<div v-else class="badge red">Offline</div>
+								</td>
+							</tr>
+							<tr v-for="action in getServiceActions(svc)" :class="{ action: true, offline: !action.available, local: action.hasLocal }">
+								<td>
+									{{ action.name }}
+									<div v-if="action.action.cache" class="badge orange">cached</div>
+								</td>
+								<td v-html="getActionREST(svc, action)"></td>
+								<td :title="getActionParams(action)">
+									{{ getActionParams(action, 40) }}
+								</td>
+								<td></td>
+								<td>
+									<div v-if="action.available" class="badge green">Online</div>
+									<div v-else class="badge red">Offline</div>
+								</td>
+							</tr>
+						</template>
 					</tbody>
-				</table>
+				</table>				
 			</section>
 		</main>
 
@@ -344,39 +511,83 @@
 			</div>
 		</footer>
 	</div>
-
+	{{{{/projectName}}}}
 	<script type="text/javascript">
 		var app = new Vue({
 			el: "#app",
 
-			data: {
-				menu: [
-					{ id: "home", caption: "Home" },
-					{ id: "nodes", caption: "Nodes" },
-					{ id: "services", caption: "Services" },
-					{ id: "actions", caption: "Actions" },
-				],
-				page: "home",
+			data() {
+				return {
+					menu: [
+						{ id: "home", caption: "Home" },
+						{ id: "greeter", caption: "Greeter service" },{{#dbService}}
+						{ id: "products", caption: "Products service" },{{/dbService}}
+						{ id: "nodes", caption: "Nodes" },
+						{ id: "services", caption: "Services" }
+					],
+					page: "home",
 
-				requests: [
-					{ id: "hello", action: "greeter.hello", rest: "/api/greeter/hello", response: null, status: null, duration: null },
-					{ id: "welcome", action: "greeter.welcome", rest: "/api/greeter/welcome?name=John", response: null, status: null, duration: null }
-				],
+					requests: {
+						greeter: [
+							{ id: "hello", action: "greeter.hello", rest: "/api/greeter/hello", response: null, status: null, duration: null },
 
-				responses: {
-					hello: null,
-					welcome: null
-				},
-				nodes: [],
-				services: [],
-				actions: [],
+							{ id: "welcome", action: "greeter.welcome", rest: "/api/greeter/welcome", fields: [
+								{ field: "name", label: "Name", type: "text", paramType: "param", model: "welcomeName" }
+							], response: null, status: null, duration: null }
+						]{{#dbService}},
+						products: [
+							{ id: "list", action: "products.list", rest: "/api/products/", response: null, status: null, duration: null, afterResponse: response => !this.fields.productID && (this.fields.productID = response.rows[0]._id) },
+
+							{ id: "create", action: "products.create", rest: "/api/products/", method: "POST", fields: [
+								{ field: "name", label: "Name", type: "text", paramType: "body", model: "productName" },
+								{ field: "price", label: "Price", type: "number", paramType: "body", model: "productPrice" },
+							], response: null, status: null, duration: null, afterResponse: response => this.fields.productID = response._id  },
+
+							{ id: "get", action: "products.get", rest: "/api/products/:id", method: "GET", fields: [
+								{ field: "id", label: "ID", type: "text", paramType: "url", model: "productID" }
+							], response: null, status: null, duration: null },
+
+							{ id: "update", action: "products.update", rest: "/api/products/:id", method: "PUT", fields: [
+								{ field: "id", label: "ID", type: "text", paramType: "url", model: "productID" },
+								{ field: "name", label: "Name", type: "text", paramType: "body", model: "productName" },
+								{ field: "price", label: "Price", type: "number", paramType: "body", model: "productPrice" },
+							], response: null, status: null, duration: null },
+
+							{ id: "increase", action: "products.increaseQuantity", rest: "/api/products/:id/quantity/increase", method: "PUT", fields: [
+								{ field: "id", label: "ID", type: "text", paramType: "url", model: "productID" },
+								{ field: "value", label: "Value", type: "number", paramType: "body", model: "productValue" },
+							], response: null, status: null, duration: null },
+
+							{ id: "decrease", action: "products.decreaseQuantity", rest: "/api/products/:id/quantity/decrease", method: "PUT", fields: [
+								{ field: "id", label: "ID", type: "text", paramType: "url", model: "productID" },
+								{ field: "value", label: "Value", type: "number", paramType: "body", model: "productValue" },
+							], response: null, status: null, duration: null },
+
+							{ id: "delete", action: "products.delete", rest: "/api/products/:id", method: "DELETE", fields: [
+								{ field: "id", label: "ID", type: "text", paramType: "url", model: "productID" }
+							], response: null, status: null, duration: null },
+
+						]{{/dbService}}
+					},
+
+					fields: {
+						welcomeName: "John"{{#dbService}},
+						productID: null,
+						productName: "Xiamoi Mi 9T",
+						productPrice: 299,
+						productValue: 1{{/dbService}}
+					},
+
+					broker: null,
+					nodes: [],
+					services: [],
+					actions: {},
+
+					showBrokerOptions: false
+				};
 			},
 
 			computed: {
-				filteredActions() {
-					return this.actions.filter(action => !action.name.startsWith("$"));
-				},
-
 				filteredServices() {
 					return this.services.filter(svc => !svc.name.startsWith("$"));
 				}
@@ -389,24 +600,93 @@
 				},
 
 				humanize(ms) {
-					if (ms > 1500) {
-						return (ms / 1500).toFixed(2) + " s";
+					return ms > 1500 ? (ms / 1500).toFixed(2) + " s" : ms + " ms";
+				},
+
+				getFieldValue(field) {
+					return this.fields[field.model];
+				},
+
+				setFieldValue(field, newValue) {
+					if (field.type == "number")
+						this.fields[field.model] = Number(newValue);
+					else
+						this.fields[field.model] = newValue;
+				},
+
+				getServiceActions(svc) {
+					return Object.keys(svc.actions)
+						.map(name => this.actions[name])
+						.filter(action => !!action);
+				},
+
+				getActionParams(action, maxLen) {
+					if (action.action && action.action.params) {
+						const s = Object.keys(action.action.params).join(", ");
+						return s.length > maxLen ? s.substr(0, maxLen) + "…" : s;
 					}
-					return ms + " ms";
+					return "-";
+				},
+
+				getActionREST(svc, action) {
+					if (action.action.rest) {
+						let prefix = svc.fullName || svc.name;
+						if (typeof(svc.settings.rest) == "string")
+							prefix = svc.settings.rest;
+
+						if (action.action.rest.indexOf(" ") !== -1) {
+							const p = action.action.rest.split(" ");
+							return "<span class='badge'>" + p[0] + "</span> " + prefix + p[1];
+						} else {
+							return prefix + action.action.rest;
+						}
+					}
+					return "";
 				},
 
 				callAction: function (item) {
 					var startTime = Date.now();
 
-					return fetch(item.rest, { method: item.method || "GET"/*, body: params ? JSON.stringify(params) : null*/ })
-						.then(function(res) {
+					let url = item.rest;
+					const method = item.method || "GET";
+					let body = null;
+					let params = null;
+					if (item.fields) {
+						body = {};
+						params = {};
+						item.fields.forEach(field => {
+							const value = this.getFieldValue(field);
+							if (field.paramType == "body")
+								body[field.field] = value;
+							else if (field.paramType == "param")
+								params[field.field] = value;
+							else if (field.paramType == "url")
+								url = url.replace(":" + field.field, value);
+						});
+
+						if (body && method == "GET") {
+							body = null;
+						}
+						if (params) {
+							url += "?" + new URLSearchParams(params).toString();
+						}
+					}
+
+					return fetch(url, { 
+						method, 
+						body: body ? JSON.stringify(body) : null,
+					    headers: {
+							'Content-Type': 'application/json'
+						}
+						}).then(function(res) {
 							item.status = res.status;
 							item.duration = Date.now() - startTime;
-							return res.json().then(function(json) {
+							return res.json().then(json => {
 								item.response = json;
+								if (item.afterResponse)
+									return item.afterResponse(json);
 							});
-						})
-						.catch(function (err) {
+						}).catch(function (err) {
 							item.status = "ERR";
 							item.duration = Date.now() - startTime;
 							item.response = err.message;
@@ -415,40 +695,38 @@
 
 				},
 
+				updateBrokerOptions: function (name) {
+					this.req("/api/~node/options", null).then(res => this.broker = res);
+				},
+
 				updateNodeList: function (name) {
-					this.req("/api/~node/list", null, false).then(res => this.nodes = res);
+					this.req("/api/~node/list", null).then(res => this.nodes = res);
 				},
 
 				updateServiceList: function (name) {
-					this.req("/api/~node/services", null, false).then(res => this.services = res);
+					this.req("/api/~node/services?withActions=true", null)
+						.then(res => this.services = res)
+						.then(() => this.req("/api/~node/actions", null))
+						.then(res => {
+							const actions = res.reduce((a,b) => {
+								a[b.name] = b;
+								return a;
+							}, {});
+
+							Vue.set(this, "actions", actions);
+						});
 				},
 
-				updateActionList: function (name) {
-					this.req("/api/~node/actions", null, false).then(res => this.actions = res);
-				},
-
-				req: function (url, params, print = true) {
-					var self = this;
+				req: function (url, params) {
 					return fetch(url, { method: "GET", body: params ? JSON.stringify(params) : null })
 						.then(function(res) {
 							return res.json();
-						})
-						.then(function (res) {
-							if (print)
-								self.response = res;
-							return res;
-						})
-						.catch(function (err) {
-							if (print)
-								self.response = err.message;
-							throw err;
 						});
 				},
 
 				updatePageResources() {
 					if (this.page == 'nodes') return this.updateNodeList();
 					if (this.page == 'services') return this.updateServiceList();
-					if (this.page == 'actions') return this.updateActionList();
 				}
 			},
 
@@ -457,9 +735,10 @@
 				setInterval(function () {
 					self.updatePageResources();
 				}, 2000);
+
+				this.updateBrokerOptions();
 			}
 		});	
 	</script>
 </body>
-{{{{/projectName}}}}
 </html>

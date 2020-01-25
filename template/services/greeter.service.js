@@ -4,14 +4,14 @@ module.exports = {
 	name: "greeter",
 
 	/**
-	 * Service settings
+	 * Settings
 	 */
 	settings: {
 
 	},
 
 	/**
-	 * Service dependencies
+	 * Dependencies
 	 */
 	dependencies: [],	
 
@@ -21,7 +21,7 @@ module.exports = {
 	actions: {
 
 		/**
-		 * Say a 'Hello'
+		 * Say a 'Hello' action.
 		 *
 		 * @returns
 		 */
@@ -33,7 +33,7 @@ module.exports = {
 		},
 
 		/**
-		 * Welcome a username
+		 * Welcome, a username
 		 *
 		 * @param {String} name - User name
 		 */

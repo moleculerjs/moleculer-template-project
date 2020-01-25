@@ -51,7 +51,7 @@ module.exports = function(values) {
 			{
 				type: "confirm",
 				name: "dbService",
-				message: "Add a DB sample service?",
+				message: "Add DB sample service?",
 				default: true
 			},
 			{
