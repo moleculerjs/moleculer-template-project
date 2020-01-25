@@ -21,8 +21,8 @@
     {{#lint}}
     "eslint": "^6.1.0",
     {{/lint}}
-    "jest": "^24.8.0",
-    "jest-cli": "^24.8.0",
+    "jest": "^25.1.0",
+    "jest-cli": "^25.1.0",
     "moleculer-repl": "^0.6.2"
   },
   "dependencies": {

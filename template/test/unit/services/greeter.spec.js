@@ -2,7 +2,7 @@
 
 const { ServiceBroker } = require("moleculer");
 const { ValidationError } = require("moleculer").Errors;
-const TestService = require("../../services/greeter.service");
+const TestService = require("../../../services/greeter.service");
 
 describe("Test 'greeter' service", () => {
 	let broker = new ServiceBroker({ logger: false });

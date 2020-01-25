@@ -41,11 +41,13 @@ module.exports = function(collection) {
 		async started() {
 			// Check the count of items in the DB. If it's empty,
 			// call the `seedDB` method of the service.
-			const count = await this.adapter.count();
-			if (count == 0 && this.seedDB) {
-				this.logger.info(`The '${collection}' collection is empty. Seeding the collection...`);
-				await this.seedDB();
-				this.logger.info(`Seeding is done. Number of records:`, await this.adapter.count());
+			if (this.seedDB) {
+				const count = await this.adapter.count();
+				if (count == 0) {
+					this.logger.info(`The '${collection}' collection is empty. Seeding the collection...`);
+					await this.seedDB();
+					this.logger.info("Seeding is done. Number of records:", await this.adapter.count());
+				}
 			}
 		}
 	};
@@ -56,8 +58,11 @@ module.exports = function(collection) {
 
 		schema.adapter = new MongoAdapter(process.env.MONGO_URI);
 		schema.collection = collection;
+	} else if (process.env.TEST) {
+		// NeDB memory adapter for testing
+		schema.adapter = new DbService.MemoryAdapter();
 	} else {
-		// NeDB fallback DB adapter
+		// NeDB file DB adapter
 	
 		// Create data folder
 		if (!fs.existsSync("./data")) {
@@ -65,8 +70,7 @@ module.exports = function(collection) {
 		}
 
 		schema.adapter = new DbService.MemoryAdapter({ filename: `./data/${collection}.db` });
-	};
-
+	}
    
 	return schema;
 };
