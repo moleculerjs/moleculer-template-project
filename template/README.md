@@ -3,6 +3,12 @@
 # {{projectName}}
 This is a [Moleculer](https://moleculer.services/)-based microservices project. Generated with the [Moleculer CLI](https://moleculer.services/docs/0.14/moleculer-cli.html).
 
+## Services
+- **api**: API Gateway services
+- **greeter**: Sample service with `hello` and `welcome` actions.
+{{#dbService}}- **products**: Sample DB service. To use with MongoDB, set `MONGO_URI` environment varaibles and install MongoDB adapter with `npm i moleculer-db-adapter-mongo`.{{/dbService}}
+
+
 ## Useful links
 
 * Moleculer website: https://moleculer.services/

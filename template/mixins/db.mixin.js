@@ -18,7 +18,7 @@ module.exports = function(collection) {
 			 * 
 			 * @param {Context} ctx 
 			 */
-			async [cacheCleanEventName](ctx) {
+			async [cacheCleanEventName]() {
 				if (this.broker.cacher) {
 					await this.broker.cacher.clean(`${this.fullName}.*`);
 				}

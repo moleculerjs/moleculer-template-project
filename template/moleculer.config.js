@@ -53,17 +53,14 @@ module.exports = {
 	// Default log level for built-in console logger. It can be overwritten in logger options above.
 	// Available values: trace, debug, info, warn, error, fatal
 	logLevel: "info",
-	{{#needTransporter}}
 
 	// Define transporter. 
 	// More info: https://moleculer.services/docs/0.14/networking.html
-	transporter: "{{transporter}}",
-	{{/needTransporter}}
-	{{#needCacher}}
-
-	// Define a cacher. More info: https://moleculer.services/docs/0.14/caching.html
-	cacher: "{{cacher}}",
-	{{/needCacher}}
+	{{#if needTransporter}}transporter: "{{transporter}}"{{/if}}{{#unless needTransporter}}transporter: null{{/unless}},
+	
+	// Define a cacher. 
+	// More info: https://moleculer.services/docs/0.14/caching.html
+	{{#if needCacher}}cacher: "{{cacher}}"{{/if}}{{#unless needCacher}}cacher: null{{/unless}},
 
 	// Define a serializer. 
 	// Available values: "JSON", "Avro", "ProtoBuf", "MsgPack", "Notepack", "Thrift". 

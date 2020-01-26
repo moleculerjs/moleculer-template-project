@@ -92,7 +92,7 @@ module.exports = {
 		assets: {
 			folder: "public",
 
-		   	// Options to `server-static` module
+			// Options to `server-static` module
 			options: {}			
 		}
 	},
