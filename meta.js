@@ -58,13 +58,13 @@ module.exports = function(values) {
 				type: "confirm",
 				name: "metrics",
 				message: "Would you like to enable metrics?",
-				default: false
+				default: true
 			},			
 			{
 				type: "confirm",
 				name: "tracing",
 				message: "Would you like to enable tracing?",
-				default: false
+				default: true
 			},			
 			{
 				type: "confirm",
