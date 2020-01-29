@@ -700,14 +700,22 @@
 				},
 
 				updateNodeList: function (name) {
-					this.req("/api/~node/list", null).then(res => this.nodes = res);
+					this.req("/api/~node/list", null).then(res => {
+						res.sort((a,b) => a.id.localeCompare(b.id));
+						this.nodes = res;
+					});
 				},
 
 				updateServiceList: function (name) {
 					this.req("/api/~node/services?withActions=true", null)
-						.then(res => this.services = res)
+						.then(res => {
+							this.services = res;
+							res.sort((a,b) => a.name.localeCompare(b.name));
+							res.forEach(svc => svc.nodes.sort());				
+						})
 						.then(() => this.req("/api/~node/actions", null))
 						.then(res => {
+							res.sort((a,b) => a.name.localeCompare(b.name));
 							const actions = res.reduce((a,b) => {
 								a[b.name] = b;
 								return a;
