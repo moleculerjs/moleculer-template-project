@@ -27,5 +27,7 @@ jobs:
       working-directory: ./ci-test
     - run: docker-compose logs
       working-directory: ./ci-test
+    - run: curl http://localhost:3000/api/greeter/hello
+    - run: curl http://localhost:3000/api/products
     - run: npm run dc:down
       working-directory: ./ci-test
