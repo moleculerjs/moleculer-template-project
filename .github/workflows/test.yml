@@ -27,7 +27,7 @@ jobs:
         CI: true
     - run: npm run dc:up
       working-directory: ./ci-test
-    - run: sleep 10
+    - run: sleep 30
     - run: docker-compose ps
       working-directory: ./ci-test
     - run: docker-compose logs
