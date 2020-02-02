@@ -1,4 +1,4 @@
-version: "3.2"
+version: "3.3"
 
 services:
 
@@ -7,7 +7,6 @@ services:
     build:
       context: .
     image: {{projectName}}
-    container_name: {{projectName}}-api
     env_file: docker-compose.env
     environment:
       SERVICES: api
@@ -35,10 +34,8 @@ services:
 {{/if_eq}}
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=api"
-      - "traefik.port=3000"
-      - "traefik.frontend.entryPoints=http"
-      - "traefik.frontend.rule=PathPrefix:/"
+      - "traefik.http.routers.api-gw.rule=PathPrefix(`/`)"
+      - "traefik.http.services.api-gw.loadbalancer.server.port=3000"
     networks:
       - internal
 {{/apiGW}}
@@ -47,12 +44,9 @@ services:
     build:
       context: .
     image: {{projectName}}
-    container_name: {{projectName}}-greeter
     env_file: docker-compose.env
     environment:
       SERVICES: greeter
-    labels:
-      - "traefik.enable=false"
 {{#hasDepends}}
     depends_on:
 {{/hasDepends}}
@@ -82,15 +76,11 @@ services:
     build:
       context: .
     image: {{projectName}}
-    container_name: {{projectName}}-products
     env_file: docker-compose.env
     environment:
       SERVICES: products
-    labels:
-      - "traefik.enable=false"
-{{#hasDepends}}
     depends_on:
-{{/hasDepends}}
+      - mongo
 {{#if_eq transporter "NATS"}}
       - nats
 {{/if_eq}}
@@ -111,13 +101,18 @@ services:
 {{/if_eq}}
     networks:
       - internal
+
+  mongo:
+    image: mongo:4
+    volumes:
+      - data:/data/db      
+    networks:
+      - internal
 {{/dbService}}
 {{#if_eq transporter "NATS"}}
 
   nats:
-    image: nats
-    labels:
-      - "traefik.enable=false"
+    image: nats:2
     networks:
       - internal
 {{/if_eq}}
@@ -125,8 +120,6 @@ services:
 
   redis:
     image: redis:alpine
-    labels:
-      - "traefik.enable=false"
     networks:
       - internal
 {{/redis}}
@@ -134,8 +127,6 @@ services:
 
   mqtt:
     image: ncarlier/mqtt
-    labels:
-      - "traefik.enable=false"
     networks:
       - internal
 {{/if_eq}}
@@ -143,8 +134,6 @@ services:
 
   amqp:
     image: rabbitmq:3
-    labels:
-      - "traefik.enable=false"
     networks:
       - internal
 {{/if_eq}}
@@ -152,8 +141,6 @@ services:
 
   stan:
     image: nats-streaming
-    labels:
-      - "traefik.enable=false"
     networks:
       - internal
 {{/if_eq}}
@@ -163,8 +150,6 @@ services:
     image: bitnami/zookeeper
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
-    labels:
-      - "traefik.enable=false"
     networks:
       - internal
 
@@ -173,8 +158,6 @@ services:
     environment:
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
-    labels:
-      - "traefik.enable=false"
     depends_on:
       - zookeeper
     networks:
@@ -183,22 +166,16 @@ services:
 
 {{#apiGW}}
   traefik:
-    image: traefik:1.7
-    container_name: traefik
+    image: traefik:v2.1
     command:
-      - "--api"
-      - "--docker"
-      - "--docker.watch"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.backend=traefik"
-      - "traefik.port=8080"
+      - "--api.insecure=true" # Don't do that in production!
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
     ports:
       - 3000:80
       - 3001:8080
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /dev/null:/traefik.toml
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - internal
       - default
@@ -206,3 +183,6 @@ services:
 
 networks:
   internal:
+
+volumes:
+  data:
