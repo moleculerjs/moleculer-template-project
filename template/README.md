@@ -15,7 +15,7 @@ In the terminal, try the following commands:
 - `actions` - List all registered service actions.
 - `call greeter.hello` - Call the `greeter.hello` action.
 - `call greeter.welcome --name John` - Call the `greeter.welcome` action with the `name` parameter.
-{{#dbService}}- `call products.list` - List the products (call the `products.list` action){{/dbService}}
+{{#dbService}}- `call products.list` - List the products (call the `products.list` action).{{/dbService}}
 
 
 ## Services

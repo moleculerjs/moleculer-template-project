@@ -2,8 +2,8 @@
 :mortar_board: Moleculer-based microservices project template. [Live demo on now.sh](https://moleculer-demo-project.now.sh/)
 
 ## Features
-- Moleculer v0.14.x with full-detailed `moleculer.config.js` file.
-- Common project with a demo `greeter` service.
+- Moleculer v0.14 with full-detailed `moleculer.config.js` file.
+- Common mono-repo project with a demo `greeter` service.
 - Sample database `products` service (with file-based NeDB in development & MongoDB in production).
 - Optional API Gateway service with detailed service settings.
 - Beautiful static welcome page to test generated services & watch nodes and services.
