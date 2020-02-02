@@ -1,6 +1,7 @@
 {
 	"apiGW": true,
-	"needTransporter": false,
+	"needTransporter": true,
+    "transporter": "NATS",
 	"needCacher": false,
 	"dbService": true,
 	"metrics": false,
