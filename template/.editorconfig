@@ -26,5 +26,10 @@ indent_size = 4
 indent_style = space
 indent_size = 2
 
+[*.{yml,yaml}]
+trim_trailing_whitespace = false
+indent_style = space
+indent_size = 2
+
 [*.js]
 quote_type = "double"
