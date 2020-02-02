@@ -10,6 +10,7 @@
     "test": "jest --coverage"{{#lint}},
     "lint": "eslint services"{{/lint}}{{#docker}},
     "dc:up": "docker-compose up --build -d",
+    "dc:logs": "docker-compose logs -f",
     "dc:down": "docker-compose down"{{/docker}}
   },
   "keywords": [
