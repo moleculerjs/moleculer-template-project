@@ -20,7 +20,9 @@ jobs:
     - run: npm test
       env:
         CI: true
-    - run: cd ci-test
     - run: npm run dc:up
+      working-directory: ./ci-test
     - run: docker-compose ps
+      working-directory: ./ci-test
     - run: npm run dc:down
+      working-directory: ./ci-test
