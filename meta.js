@@ -116,7 +116,6 @@ To get started:
 	cd {{projectName}}
 	npm run dev
 
-{{#needTransporter}}{{#unless_eq transporter "TCP"}}Don't forget to start your transporter.{{/unless_eq}}{{/needTransporter}}
 		`
 	};
 };
