@@ -20,4 +20,7 @@ jobs:
     - run: npm test
       env:
         CI: true
-    - run: docker run --rm hello-world
+    - run: cd ci-test
+    - run: npm run dc:up
+    - run: docker-compose ps
+    - run: npm run dc:down
