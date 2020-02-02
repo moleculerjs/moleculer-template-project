@@ -37,7 +37,7 @@ module.exports = {
 				// Enable authorization. Implement the logic into `authorize` method. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Authorization
 				authorization: false,
 
-				// The auto-alias feature allows you to declare your route alias directly in your services. 
+				// The auto-alias feature allows you to declare your route alias directly in your services.
 				// The gateway will dynamically build the full routes from service schema.
 				autoAliases: true,
 
@@ -66,7 +66,7 @@ module.exports = {
 						strict: false,
 						limit: "1MB"
 					},
-					urlencoded: { 
+					urlencoded: {
 						extended: true,
 						limit: "1MB"
 					}
@@ -81,7 +81,7 @@ module.exports = {
 		],
 
 		// Do not log client side errors (does not log an error respons when the error.code is 400<=X<500)
-		log4XXResponses: false,		
+		log4XXResponses: false,
 		// Logging the request parameters. Set to any log level to enable it. E.g. "info"
 		logRequestParams: null,
 		// Logging the response data. Set to any log level to enable it. E.g. "info"
@@ -93,7 +93,7 @@ module.exports = {
 			folder: "public",
 
 			// Options to `server-static` module
-			options: {}			
+			options: {}
 		}
 	},
 
@@ -104,8 +104,8 @@ module.exports = {
 		 * Check the token value & resolve the user by the token.
 		 * The resolved user will be available in `ctx.meta.user`
 		 *
-		 * PLEASE NOTE, IT'S JUST AN EXAMPLE IMPLEMENTATION. DO NOT USE IN PRODUCTION! 
-		 * 
+		 * PLEASE NOTE, IT'S JUST AN EXAMPLE IMPLEMENTATION. DO NOT USE IN PRODUCTION!
+		 *
 		 * @param {Context} ctx
 		 * @param {Object} route
 		 * @param {IncomingRequest} req
@@ -138,8 +138,8 @@ module.exports = {
 		/**
 		 * Authorize the request. Check that the authenticated user has right to access the resource.
 		 *
-		 * PLEASE NOTE, IT'S JUST AN EXAMPLE IMPLEMENTATION. DO NOT USE IN PRODUCTION! 
-		 * 
+		 * PLEASE NOTE, IT'S JUST AN EXAMPLE IMPLEMENTATION. DO NOT USE IN PRODUCTION!
+		 *
 		 * @param {Context} ctx
 		 * @param {Object} route
 		 * @param {IncomingRequest} req
@@ -149,7 +149,7 @@ module.exports = {
 			// Get the authenticated user.
 			const user = ctx.meta.user;
 
-			// It check the `auth` property in action schema. 
+			// It check the `auth` property in action schema.
 			if (req.$action.auth == "required" && !user) {
 				throw new ApiGateway.Errors.UnAuthorizedError("NO_RIGHTS");
 			}

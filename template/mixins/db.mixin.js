@@ -15,29 +15,29 @@ module.exports = function(collection) {
 			/**
 			 * Subscribe to the cache clean event. If it's triggered
 			 * we clean the cache entries for this service.
-			 * 
-			 * @param {Context} ctx 
+			 *
+			 * @param {Context} ctx
 			 */
 			async [cacheCleanEventName]() {
 				if (this.broker.cacher) {
 					await this.broker.cacher.clean(`${this.fullName}.*`);
 				}
-			}        
+			}
 		},
-	
+
 		methods: {
 			/**
 			 * Send a cache clearing event when an entity changed.
-			 * 
-			 * @param {String} type 
-			 * @param {any} json 
-			 * @param {Context} ctx 
+			 *
+			 * @param {String} type
+			 * @param {any} json
+			 * @param {Context} ctx
 			 */
 			async entityChanged(type, json, ctx) {
 				ctx.broadcast(cacheCleanEventName);
 			}
 		},
-		
+
 		async started() {
 			// Check the count of items in the DB. If it's empty,
 			// call the `seedDB` method of the service.
@@ -63,7 +63,7 @@ module.exports = function(collection) {
 		schema.adapter = new DbService.MemoryAdapter();
 	} else {
 		// NeDB file DB adapter
-	
+
 		// Create data folder
 		if (!fs.existsSync("./data")) {
 			mkdir("./data");
@@ -71,6 +71,6 @@ module.exports = function(collection) {
 
 		schema.adapter = new DbService.MemoryAdapter({ filename: `./data/${collection}.db` });
 	}
-   
+
 	return schema;
 };

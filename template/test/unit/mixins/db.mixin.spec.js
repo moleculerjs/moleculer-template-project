@@ -16,7 +16,7 @@ describe("Test DB mixin", () => {
 
 		it("check schema properties", async () => {
 			const schema = DbMixin("my-collection");
-			
+
 			expect(schema.mixins).toEqual([DbService]);
 			expect(schema.adapter).toBeInstanceOf(DbService.MemoryAdapter);
 			expect(schema.started).toBeDefined();
@@ -27,9 +27,9 @@ describe("Test DB mixin", () => {
 			jest.spyOn(broker.cacher, "clean");
 
 			const schema = DbMixin("my-collection");
-			
+
 			await schema.events["cache.clean.my-collection"].call({ broker, fullName: "my-service" });
-			
+
 			expect(broker.cacher.clean).toBeCalledTimes(1);
 			expect(broker.cacher.clean).toBeCalledWith("my-service.*");
 		});
@@ -43,7 +43,7 @@ describe("Test DB mixin", () => {
 				const seedDBFn = jest.fn();
 
 				await schema.started.call({ broker, logger: broker.logger, adapter: schema.adapter, seedDB: seedDBFn });
-			
+
 				expect(schema.adapter.count).toBeCalledTimes(1);
 				expect(schema.adapter.count).toBeCalledWith();
 
@@ -57,7 +57,7 @@ describe("Test DB mixin", () => {
 				const seedDBFn = jest.fn();
 
 				await schema.started.call({ broker, logger: broker.logger, adapter: schema.adapter, seedDB: seedDBFn });
-			
+
 				expect(schema.adapter.count).toBeCalledTimes(2);
 				expect(schema.adapter.count).toBeCalledWith();
 
@@ -74,7 +74,7 @@ describe("Test DB mixin", () => {
 			};
 
 			await schema.methods.entityChanged(null, null, ctx);
-		
+
 			expect(ctx.broadcast).toBeCalledTimes(1);
 			expect(ctx.broadcast).toBeCalledWith("cache.clean.my-collection");
 		});

@@ -2,19 +2,19 @@
 
 /**
  * Moleculer ServiceBroker configuration file
- * 
- * More info about options: 
+ *
+ * More info about options:
  *     https://moleculer.services/docs/0.14/configuration.html
- * 
- * 
+ *
+ *
  * Overwriting options in production:
- * ================================ 
- * 	You can overwrite any option with environment variables. 
+ * ================================
+ * 	You can overwrite any option with environment variables.
  * 	For example to overwrite the "logLevel" value, use `LOGLEVEL=warn` env var.
  * 	To overwrite a nested parameter, e.g. retryPolicy.retries, use `RETRYPOLICY_RETRIES=10` env var.
- *  
- * 	To overwrite broker’s deeply nested default options, which are not presented in "moleculer.config.js", 
- * 	use the `MOL_` prefix and double underscore `__` for nested properties in .env file. 
+ *
+ * 	To overwrite broker’s deeply nested default options, which are not presented in "moleculer.config.js",
+ * 	use the `MOL_` prefix and double underscore `__` for nested properties in .env file.
  * 	For example, to set the cacher prefix to `MYCACHE`, you should declare an env var as `MOL_CACHER__OPTIONS__PREFIX=mycache`.
  *  It will set this:
  *  {
@@ -47,25 +47,25 @@ module.exports = {
 			// Custom object printer. If not defined, it uses the `util.inspect` method.
 			objectPrinter: null,
 			// Auto-padding the module name in order to messages begin at the same column.
-			autoPadding: false			
+			autoPadding: false
 		}
 	},
 	// Default log level for built-in console logger. It can be overwritten in logger options above.
 	// Available values: trace, debug, info, warn, error, fatal
 	logLevel: "info",
 
-	// Define transporter. 
+	// Define transporter.
 	// More info: https://moleculer.services/docs/0.14/networking.html
 	// Note: During the development, you don't need to define it because all services will be loaded locally.
 	// In production you can set it via `TRANSPORTER=nats://localhost:4222` environment variable.
 	transporter: null,{{#if needTransporter}} //"{{transporter}}"{{/if}}
-	
-	// Define a cacher. 
+
+	// Define a cacher.
 	// More info: https://moleculer.services/docs/0.14/caching.html
 	{{#if needCacher}}cacher: "{{cacher}}"{{/if}}{{#unless needCacher}}cacher: null{{/unless}},
 
-	// Define a serializer. 
-	// Available values: "JSON", "Avro", "ProtoBuf", "MsgPack", "Notepack", "Thrift". 
+	// Define a serializer.
+	// Available values: "JSON", "Avro", "ProtoBuf", "MsgPack", "Notepack", "Thrift".
 	// More info: https://moleculer.services/docs/0.14/networking.html#Serialization
 	serializer: "JSON",
 
@@ -197,7 +197,7 @@ module.exports = {
 
 	// Called after broker created.
 	created(broker) {
-		
+
 	},
 
 	// Called after broker starte.

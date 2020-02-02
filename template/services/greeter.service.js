@@ -13,7 +13,7 @@ module.exports = {
 	/**
 	 * Dependencies
 	 */
-	dependencies: [],	
+	dependencies: [],
 
 	/**
 	 * Actions

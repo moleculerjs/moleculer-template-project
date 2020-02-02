@@ -135,7 +135,7 @@ describe("Test 'products' service", () => {
 				expect(service.adapter.insertMany).toBeCalledWith([
 					{ name: "Samsung Galaxy S10 Plus", quantity: 10, price: 704 },
 					{ name: "iPhone 11 Pro", quantity: 25, price: 999 },
-					{ name: "Huawei P30 Pro", quantity: 15, price: 679 },	
+					{ name: "Huawei P30 Pro", quantity: 15, price: 679 },
 				]);
 			});
 

@@ -130,7 +130,7 @@ spec:
       app: nats
   replicas: 1
   strategy:
-    type: Recreate  
+    type: Recreate
   template:
     metadata:
       labels:

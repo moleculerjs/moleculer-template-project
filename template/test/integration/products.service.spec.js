@@ -52,10 +52,10 @@ describe("Test 'products' service", () => {
 
 			const res2 = await broker.call("products.list");
 			expect(res2).toEqual({
-				page: 1, 
-				pageSize: 10, 
-				rows: [{ _id: newID, name: "Awesome item", price: 999, quantity: 0 }], 
-				total: 1, 
+				page: 1,
+				pageSize: 10,
+				rows: [{ _id: newID, name: "Awesome item", price: 999, quantity: 0 }],
+				total: 1,
 				totalPages: 1
 			});
 		});
@@ -77,7 +77,7 @@ describe("Test 'products' service", () => {
 				name: "Awesome item",
 				price: 499,
 				quantity: 0
-			});		
+			});
 		});
 
 		it("should increase the quantity", async () => {
@@ -88,7 +88,7 @@ describe("Test 'products' service", () => {
 				price: 499,
 				quantity: 5
 			});
-		});		
+		});
 
 		it("should decrease the quantity", async () => {
 			const res = await broker.call("products.decreaseQuantity", { id: newID, value: 2 });
@@ -98,14 +98,14 @@ describe("Test 'products' service", () => {
 				price: 499,
 				quantity: 3
 			});
-		});		
+		});
 
 		it("should remove the updated item", async () => {
 			const res = await broker.call("products.remove", { id: newID });
-			expect(res).toBe(1);		
+			expect(res).toBe(1);
 
 			const res2 = await broker.call("products.count");
-			expect(res2).toBe(0);		
+			expect(res2).toBe(0);
 
 			const res3 = await broker.call("products.list");
 			expect(res3).toEqual({ page: 1, pageSize: 10, rows: [], total: 0, totalPages: 0 });

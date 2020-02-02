@@ -38,15 +38,15 @@ module.exports = {
 			/**
 			 * Register a before hook for the `create` action.
 			 * It sets a default value for the quantity field.
-			 * 
-			 * @param {Context} ctx 
+			 *
+			 * @param {Context} ctx
 			 */
 			create(ctx) {
 				ctx.params.quantity = 0;
 			}
 		}
 	},
-	
+
 	/**
 	 * Actions
 	 */
@@ -124,5 +124,5 @@ module.exports = {
 	 */
 	async afterConnected() {
 		// await this.adapter.collection.createIndex({ name: 1 });
-	}    
+	}
 };
