@@ -5,6 +5,10 @@ const mkdir = require("mkdirp").sync;
 
 const DbService	= require("moleculer-db");
 
+/**
+ * @typedef {import('moleculer').Context} Context Moleculer's Context
+ */
+
 module.exports = function(collection) {
 	const cacheCleanEventName = `cache.clean.${collection}`;
 
@@ -14,7 +18,7 @@ module.exports = function(collection) {
 		events: {
 			/**
 			 * Subscribe to the cache clean event. If it's triggered
-			 * we clean the cache entries for this service.
+			 * clean the cache entries for this service.
 			 *
 			 * @param {Context} ctx
 			 */

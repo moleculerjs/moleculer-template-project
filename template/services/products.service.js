@@ -2,6 +2,10 @@
 
 const DbMixin = require("../mixins/db.mixin");
 
+/**
+ * @typedef {import('moleculer').Context} Context Moleculer's Context
+ */
+
 module.exports = {
 	name: "products",
 	// version: 1
@@ -91,6 +95,7 @@ module.exports = {
 				id: "string",
 				value: "number|integer|positive"
 			},
+			/** @param {Context} ctx  */
 			async handler(ctx) {
 				const doc = await this.adapter.updateById(ctx.params.id, { $inc: { quantity: -ctx.params.value } });
 				const json = await this.transformDocuments(ctx, ctx.params, doc);

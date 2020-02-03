@@ -99,11 +99,11 @@ module.exports = {
 	// Cloning the params of context if enabled. High performance impact, use it with caution!
 	contextParamsCloning: false,
 
-	// Tracking requests and waiting for running requests before shutdowning. More info: https://moleculer.services/docs/0.14/context.html#Context-tracking
+	// Tracking requests and waiting for running requests before shuting down. More info: https://moleculer.services/docs/0.14/context.html#Context-tracking
 	tracking: {
 		// Enable feature
 		enabled: false,
-		// Number of milliseconds to wait before shutdowning the process.
+		// Number of milliseconds to wait before shuting down the process.
 		shutdownTimeout: 5000,
 	},
 
@@ -152,7 +152,7 @@ module.exports = {
 
 	// Enable/disable built-in metrics function. More info: https://moleculer.services/docs/0.14/metrics.html
 	metrics: {
-		enabled: {{#if tracing}}true{{/if}}{{#unless tracing}}false{{/unless}},
+		enabled: {{#if metrics}}true{{/if}}{{#unless metrics}}false{{/unless}},
 		reporter: {
 			// Available built-in reporters: "Console", "CSV", "Event", "Prometheus", "Datadog", "StatsD"
 			type: "Prometheus",
@@ -172,7 +172,7 @@ module.exports = {
 
 	// Enable built-in tracing function. More info: https://moleculer.services/docs/0.14/tracing.html
 	tracing: {
-		enabled: {{#if metrics}}true{{/if}}{{#unless metrics}}false{{/unless}},
+		enabled: {{#if tracing}}true{{/if}}{{#unless tracing}}false{{/unless}},
 		exporter: {
 			// Available built-in exporters: "Console", "Datadog", "Event", "EventLegacy", "Jaeger", "Zipkin"
 			type: "Console", // Console exporter is only for development!
@@ -200,7 +200,7 @@ module.exports = {
 
 	},
 
-	// Called after broker starte.
+	// Called after broker started.
 	async started(broker) {
 
 	},

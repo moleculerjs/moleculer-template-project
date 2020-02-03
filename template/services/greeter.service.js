@@ -1,5 +1,9 @@
 "use strict";
 
+/**
+ * @typedef {import('moleculer').Context} Context Moleculer's Context
+ */
+
 module.exports = {
 	name: "greeter",
 
@@ -42,6 +46,7 @@ module.exports = {
 			params: {
 				name: "string"
 			},
+			/** @param {Context} ctx  */
 			async handler(ctx) {
 				return `Welcome, ${ctx.params.name}`;
 			}

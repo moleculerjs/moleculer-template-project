@@ -21,7 +21,7 @@ In the terminal, try the following commands:
 ## Services
 - **api**: API Gateway services
 - **greeter**: Sample service with `hello` and `welcome` actions.
-{{#dbService}}- **products**: Sample DB service. To use with MongoDB, set `MONGO_URI` environment varaibles and install MongoDB adapter with `npm i moleculer-db-adapter-mongo`.
+{{#dbService}}- **products**: Sample DB service. To use with MongoDB, set `MONGO_URI` environment variables and install MongoDB adapter with `npm i moleculer-db-adapter-mongo`.
 
 ## Mixins
 - **db.mixin**: Database access mixin for services. Based on [moleculer-db](https://github.com/moleculerjs/moleculer-db#readme)

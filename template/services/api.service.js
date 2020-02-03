@@ -2,6 +2,12 @@
 
 const ApiGateway = require("moleculer-web");
 
+/**
+ * @typedef {import('moleculer').Context} Context Moleculer's Context
+ * @typedef {import('http').IncomingMessage} IncomingRequest Incoming HTTP Request
+ * @typedef {import('http').ServerResponse} ServerResponse HTTP Server Response
+ */
+
 module.exports = {
 	name: "api",
 	mixins: [ApiGateway],
@@ -45,14 +51,26 @@ module.exports = {
 
 				},
 
-				/* // Before call hook.
-				// You can check the request.
+				/** 
+				 * Before call hook. You can check the request.
+				 * @param {Context} ctx 
+				 * @param {Object} route 
+				 * @param {IncomingRequest} req 
+				 * @param {ServerResponse} res 
+				 * @param {Object} data
+				 * 
 				onBeforeCall(ctx, route, req, res) {
 					// Set request headers to context meta
 					ctx.meta.userAgent = req.headers["user-agent"];
 				}, */
 
-				/* After call hook. You can modify the data.
+				/**
+				 * After call hook. You can modify the data.
+				 * @param {Context} ctx 
+				 * @param {Object} route 
+				 * @param {IncomingRequest} req 
+				 * @param {ServerResponse} res 
+				 * @param {Object} data
 				onAfterCall(ctx, route, req, res, data) {
 					// Async function which return with Promise
 					return doSomething(ctx, res, data);
@@ -80,7 +98,7 @@ module.exports = {
 			}
 		],
 
-		// Do not log client side errors (does not log an error respons when the error.code is 400<=X<500)
+		// Do not log client side errors (does not log an error response when the error.code is 400<=X<500)
 		log4XXResponses: false,
 		// Logging the request parameters. Set to any log level to enable it. E.g. "info"
 		logRequestParams: null,
