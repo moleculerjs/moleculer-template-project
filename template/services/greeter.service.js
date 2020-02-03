@@ -30,7 +30,10 @@ module.exports = {
 		 * @returns
 		 */
 		hello: {
-			rest: "/hello",
+			rest: {
+				method: "GET",
+				path: "/hello"
+			},
 			async handler() {
 				return "Hello Moleculer";
 			}
