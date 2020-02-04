@@ -51,7 +51,7 @@
 
 	footer {
 		background-image: linear-gradient(135deg, #e37682 0%, #5f4d93 100%);
-		padding: 0.75em;		
+		padding: 0.75em;
 		font-size: 0.8em;
 		box-shadow: 0 -3px 10px rgba(0,0,0,0.6);
 		position: fixed;
@@ -196,7 +196,7 @@
 		background-color: #cce7ff;
 		border: 1px solid lightgrey;
 		padding: 4px 10px;
-		border-radius: 8px;		
+		border-radius: 8px;
 	}
 
 	main fieldset .content {
@@ -231,7 +231,7 @@
 	pre.json .number { color: blue; }
 	pre.json .boolean { color: magenta; }
 	pre.json .null { color: red; }
-	pre.json .key { color: green; }	
+	pre.json .key { color: green; }
 
 	main h4 {
 		font-weight: 600;
@@ -268,13 +268,13 @@
 		border-radius: 8px;
 		background-color: aliceblue;
     }
-    
+
     table th {
 		padding: 2px 4px;
 		background-color: #cce7ff;
 		border-radius: 4px;
     }
-    
+
     table tr.offline td {
 		font-style: italic;
 		color: #777;
@@ -283,7 +283,7 @@
     table tr.local td {
     	/*color: blue;*/
     }
-    
+
     table tr:not(:last-child) td {
 		border-bottom: 1px solid #ddd;
     }
@@ -293,10 +293,10 @@
 		position: relative;
 		padding: 2px 4px;
     }
-      
+
     table th:nth-child(1), table td:nth-child(1) {
 		text-align: left
-    }	
+    }
 
 	table tr.service td:nth-child(1) {
 		font-weight: bold;
@@ -317,7 +317,7 @@
 		width: 0;
 		height: 100%;
 		background-color: rgba(0,0,0,0.3);
-	}	
+	}
 </style>
 </head>
 <body>
@@ -336,7 +336,7 @@
 			<section id="home" v-if="page == 'home'">
 				<div class="content">
 					<h1>Welcome to your Moleculer microservices project!</h1>
-					<p>For guides and recipes on how to configure / customize this project, check out the <a href="https://moleculer.services/docs/0.14/" target="_blank">Moleculer documentation</a>.</p>
+					<p>Check out the <a href="https://moleculer.services/docs/0.14/" target="_blank">Moleculer documentation</a> to learn how to customize this project.</p>
 
 					<template v-if="broker">
 						<h3>Configuration</h3>
@@ -380,7 +380,7 @@
 								<div class="caption">Tracing</div>
 								<div class="value">{{ broker.tracing.enabled ? "Enabled" : "Disabled" }}</div>
 							</div>
-						</div>						
+						</div>
 
 						<h3 class="cursor-pointer" @click="showBrokerOptions = !showBrokerOptions">Broker options <i :class="'fa fa-angle-' + (showBrokerOptions ? 'up' : 'down')"></i></h3>
 						<pre v-if="showBrokerOptions" class="broker-options"><code>{{ broker }}</code></pre>
@@ -400,7 +400,7 @@
 								<code>{{ item.method || 'GET' }} <a target="_blank" :href="item.rest">{{ item.rest }}   </a></code>
 								<a class="button" @click="callAction(item)">
 									<i class="fa fa-rocket"></i>
-									Execute 
+									Execute
 								</a>
 							</div>
 							<div v-if="item.fields" class="parameters">
@@ -411,7 +411,7 @@
 								</div>
 							</div>
 							<div class="response" v-if="item.status">
-								<h4>Response: 
+								<h4>Response:
 									<div class="badge" :class="{ green: item.status < 400, red: item.status >= 400 || item.status == 'ERR' }">{{ item.status }}</div>
 									<div class="badge time">{{ humanize(item.duration) }}</div>
 								</h4>
@@ -424,7 +424,7 @@
 
 			<section id="nodes" v-if="page == 'nodes'">
 				<table>
-					<thead> 
+					<thead>
 						<th>Node ID</th>
 						<th>Type</th>
 						<th>Version</th>
@@ -440,14 +440,14 @@
 							<td>{{ node.client.version }}</td>
 							<td>{{ node.ipList[0] }}</td>
 							<td>{{ node.hostname }}</td>
-							
+
 							<td><div class="badge" :class="{ green: node.available, red: !node.available }">{{ node.available ? "Online": "Offline" }}</div></td>
 							<td>
 								<div class="bar" :style="{ width: node.cpu != null ? node.cpu + '%' : '0' }"></div>
 								{{ node.cpu != null ? Number(node.cpu).toFixed(0) + '%' : '-' }}
 							</td>
 						</tr>
-					</tbody>        
+					</tbody>
 				</table>
 			</section>
 			<section id="services" v-if="page == 'services'">
@@ -463,7 +463,7 @@
 						<template v-for="svc in filteredServices">
 							<tr class="service">
 								<td>
-									{{ svc.name }} 
+									{{ svc.name }}
 									<div v-if="svc.version" class="badge">{{ svc.version }}</div>
 								</td>
 								<td>{{ svc.settings.rest ? svc.settings.rest : svc.fullName }}</td>
@@ -495,7 +495,7 @@
 							</tr>
 						</template>
 					</tbody>
-				</table>				
+				</table>
 			</section>
 		</main>
 
@@ -591,7 +591,7 @@
 				filteredServices() {
 					return this.services.filter(svc => !svc.name.startsWith("$"));
 				}
-			},			
+			},
 
 			methods: {
 				changePage(page) {
@@ -634,11 +634,15 @@
 						if (typeof(svc.settings.rest) == "string")
 							prefix = svc.settings.rest;
 
-						if (action.action.rest.indexOf(" ") !== -1) {
-							const p = action.action.rest.split(" ");
-							return "<span class='badge'>" + p[0] + "</span> " + prefix + p[1];
+						if (typeof action.action.rest == "string") {
+							if (action.action.rest.indexOf(" ") !== -1) {
+								const p = action.action.rest.split(" ");
+								return "<span class='badge'>" + p[0] + "</span> " + prefix + p[1];
+							} else {
+								return "<span class='badge'>*</span> " + prefix + action.action.rest;
+							}
 						} else {
-							return prefix + action.action.rest;
+							return "<span class='badge'>" + (action.action.rest.method || "*") + "</span> " + prefix + action.action.rest.path;
 						}
 					}
 					return "";
@@ -672,8 +676,8 @@
 						}
 					}
 
-					return fetch(url, { 
-						method, 
+					return fetch(url, {
+						method,
 						body: body ? JSON.stringify(body) : null,
 					    headers: {
 							'Content-Type': 'application/json'
@@ -711,7 +715,7 @@
 						.then(res => {
 							this.services = res;
 							res.sort((a,b) => a.name.localeCompare(b.name));
-							res.forEach(svc => svc.nodes.sort());				
+							res.forEach(svc => svc.nodes.sort());
 						})
 						.then(() => this.req("/api/~node/actions", null))
 						.then(res => {
@@ -746,7 +750,7 @@
 
 				this.updateBrokerOptions();
 			}
-		});	
+		});
 	</script>
 </body>
 </html>
