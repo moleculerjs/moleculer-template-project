@@ -34,8 +34,8 @@ module.exports = {
 	metadata: {},
 
 	// Enable/disable logging or use custom logger. More info: https://moleculer.services/docs/0.14/logging.html
+	// Available logger types: "Console", "File", "Pino", "Winston", "Bunyan", "debug", "Log4js", "Datadog"
 	logger: {
-		// Availabel logger types: "Console", "File", "Pino", "Winston", "Bunyan", "debug", "Log4js", "Datadog"
 		type: "Console",
 		options: {
 			// Using colors on the output
@@ -153,8 +153,8 @@ module.exports = {
 	// Enable/disable built-in metrics function. More info: https://moleculer.services/docs/0.14/metrics.html
 	metrics: {
 		enabled: {{#if metrics}}true{{/if}}{{#unless metrics}}false{{/unless}},
+		// Available built-in reporters: "Console", "CSV", "Event", "Prometheus", "Datadog", "StatsD"
 		reporter: {
-			// Available built-in reporters: "Console", "CSV", "Event", "Prometheus", "Datadog", "StatsD"
 			type: "Prometheus",
 			options: {
 				// HTTP port
@@ -173,8 +173,8 @@ module.exports = {
 	// Enable built-in tracing function. More info: https://moleculer.services/docs/0.14/tracing.html
 	tracing: {
 		enabled: {{#if tracing}}true{{/if}}{{#unless tracing}}false{{/unless}},
+		// Available built-in exporters: "Console", "Datadog", "Event", "EventLegacy", "Jaeger", "Zipkin"
 		exporter: {
-			// Available built-in exporters: "Console", "Datadog", "Event", "EventLegacy", "Jaeger", "Zipkin"
 			type: "Console", // Console exporter is only for development!
 			options: {
 				// Custom logger
