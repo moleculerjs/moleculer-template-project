@@ -1,15 +1,16 @@
 {
   "name": "{{projectName}}",
   "version": "1.0.0",
-  "description": "My Moleculer microservices project",
+  "description": "My Moleculer-based microservices project",
   "scripts": {
-    "dev": "moleculer-runner --repl --hot services",
+    "dev": "moleculer-runner --repl --hot services/**/*.service.js",
     "start": "moleculer-runner",
-    "cli": "moleculer connect {{transporter}}"{{#jest}},
+    "cli": "moleculer connect {{transporter}}",
     "ci": "jest --watch",
-    "test": "jest --coverage"{{/jest}}{{#lint}},
+    "test": "jest --coverage"{{#lint}},
     "lint": "eslint services"{{/lint}}{{#docker}},
     "dc:up": "docker-compose up --build -d",
+    "dc:logs": "docker-compose logs -f",
     "dc:down": "docker-compose down"{{/docker}}
   },
   "keywords": [
@@ -19,41 +20,43 @@
   "author": "",
   "devDependencies": {
     {{#lint}}
-    "eslint": "^6.1.0",
+    "eslint": "^6.8.0",
     {{/lint}}
-    {{#jest}}
-    "jest": "^24.8.0",
-    "jest-cli": "^24.8.0",
-    {{/jest}}
-    "moleculer-repl": "^0.5.7"
+    "jest": "^25.1.0",
+    "jest-cli": "^25.1.0",
+    "moleculer-repl": "^0.6.2"
   },
   "dependencies": {
     {{#apiGW}}
-    "moleculer-web": "^0.8.5",
+    "moleculer-web": "^0.9.0",
     {{/apiGW}}
+    {{#dbService}}
+    "moleculer-db": "^0.8.4",
+    "moleculer-db-adapter-mongo": "^0.4.7",
+    {{/dbService}}
     {{#if_eq transporter "NATS"}}
-    "nats": "^1.3.0",
+    "nats": "^1.3.2",
     {{/if_eq}}
     {{#if_eq transporter "MQTT"}}
     "mqtt": "^3.0.0",
     {{/if_eq}}
     {{#if_eq transporter "AMQP"}}
     "amqplib": "^0.5.5",
-    {{/if_eq}}    
+    {{/if_eq}}
     {{#if_eq transporter "STAN"}}
     "node-nats-streaming": "^0.2.6",
-    {{/if_eq}}    
+    {{/if_eq}}
     {{#if_eq transporter "Kafka"}}
-    "kafka-node": "^4.1.3",
-    {{/if_eq}}    
+    "kafka-node": "^5.0.0",
+    {{/if_eq}}
     {{#redis}}
-    "ioredis": "^4.14.0",
+    "ioredis": "^4.14.1",
     {{/redis}}
-    "moleculer": "^0.13.9"
+    "moleculer": "^0.14.0"
   },
   "engines": {
-    "node": ">= 8.x.x"
-  }{{#jest}},
+    "node": ">= 10.x.x"
+  },
   "jest": {
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
@@ -61,5 +64,5 @@
     "roots": [
       "../test"
     ]
-  }{{/jest}}
+  }
 }

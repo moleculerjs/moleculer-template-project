@@ -1,19 +1,23 @@
 "use strict";
 
+/**
+ * @typedef {import('moleculer').Context} Context Moleculer's Context
+ */
+
 module.exports = {
 	name: "greeter",
 
 	/**
-	 * Service settings
+	 * Settings
 	 */
 	settings: {
 
 	},
 
 	/**
-	 * Service dependencies
+	 * Dependencies
 	 */
-	dependencies: [],	
+	dependencies: [],
 
 	/**
 	 * Actions
@@ -21,24 +25,32 @@ module.exports = {
 	actions: {
 
 		/**
-		 * Say a 'Hello'
+		 * Say a 'Hello' action.
 		 *
 		 * @returns
 		 */
-		hello() {
-			return "Hello Moleculer";
+		hello: {
+			rest: {
+				method: "GET",
+				path: "/hello"
+			},
+			async handler() {
+				return "Hello Moleculer";
+			}
 		},
 
 		/**
-		 * Welcome a username
+		 * Welcome, a username
 		 *
 		 * @param {String} name - User name
 		 */
 		welcome: {
+			rest: "/welcome",
 			params: {
 				name: "string"
 			},
-			handler(ctx) {
+			/** @param {Context} ctx  */
+			async handler(ctx) {
 				return `Welcome, ${ctx.params.name}`;
 			}
 		}
@@ -68,14 +80,14 @@ module.exports = {
 	/**
 	 * Service started lifecycle event handler
 	 */
-	started() {
+	async started() {
 
 	},
 
 	/**
 	 * Service stopped lifecycle event handler
 	 */
-	stopped() {
+	async stopped() {
 
 	}
 };

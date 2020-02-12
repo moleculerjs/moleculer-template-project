@@ -1,10 +1,13 @@
 {
   "name": "moleculer-template-project",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Project template for Moleculer-based projects",
   "main": "meta.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "rimraf tmp && moleculer init . tmp",
+    "build": "moleculer init --answers test/demo/answers.json --install . tmp",
+    "test": "moleculer init --answers test/ci/answers.json --install . ci-test",
+    "start": "cd tmp && node node_modules/moleculer/bin/moleculer-runner services"
   },
   "repository": {
     "type": "git",
@@ -16,5 +19,9 @@
   "bugs": {
     "url": "https://github.com/moleculerjs/moleculer-template-project/issues"
   },
-  "homepage": "https://github.com/moleculerjs/moleculer-template-project#readme"
+  "homepage": "https://github.com/moleculerjs/moleculer-template-project#readme",
+  "devDependencies": {
+    "moleculer-cli": "^0.7.0",
+    "rimraf": "^3.0.2"
+  }
 }
