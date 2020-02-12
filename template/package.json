@@ -28,7 +28,7 @@
   },
   "dependencies": {
     {{#apiGW}}
-    "moleculer-web": "^0.9.0-rc1",
+    "moleculer-web": "^0.9.0",
     {{/apiGW}}
     {{#dbService}}
     "moleculer-db": "^0.8.4",
@@ -42,17 +42,17 @@
     {{/if_eq}}
     {{#if_eq transporter "AMQP"}}
     "amqplib": "^0.5.5",
-    {{/if_eq}}    
+    {{/if_eq}}
     {{#if_eq transporter "STAN"}}
     "node-nats-streaming": "^0.2.6",
-    {{/if_eq}}    
+    {{/if_eq}}
     {{#if_eq transporter "Kafka"}}
     "kafka-node": "^5.0.0",
-    {{/if_eq}}    
+    {{/if_eq}}
     {{#redis}}
     "ioredis": "^4.14.1",
     {{/redis}}
-    "moleculer": "^0.14.0-rc2"
+    "moleculer": "^0.14.0"
   },
   "engines": {
     "node": ">= 10.x.x"

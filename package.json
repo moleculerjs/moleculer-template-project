@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/moleculerjs/moleculer-template-project#readme",
   "devDependencies": {
-    "moleculer-cli": "github:moleculerjs/moleculer-cli",
-    "rimraf": "^3.0.0"
+    "moleculer-cli": "^0.7.0",
+    "rimraf": "^3.0.2"
   }
 }
