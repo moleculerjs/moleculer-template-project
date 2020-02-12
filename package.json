@@ -1,6 +1,6 @@
 {
   "name": "moleculer-template-project",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Project template for Moleculer-based projects",
   "main": "meta.js",
   "scripts": {
