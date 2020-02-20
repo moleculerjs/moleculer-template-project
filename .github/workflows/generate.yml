@@ -3,7 +3,7 @@ name: Generate a demo project
 on: [push]
 
 jobs:
-  build:
+  generate:
 
     runs-on: ubuntu-latest
 
@@ -13,23 +13,31 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - run: npm i
-    - run: node_modules/.bin/moleculer init --answers test/demo/answers.json --no-install . project-demo
+    - name: Install dependencies
+      run: npm i
+    - name: Generate project
+      run: node_modules/.bin/moleculer init --answers test/demo/answers.json --no-install . project-demo
 
-    - run: git init
+    - name: Initialize Git repo
+      run: git init
       working-directory: ./project-demo
 
-    - run: git remote add origin https://${{ secrets.GH_TOKEN }}@github.com/moleculerjs/project-demo.git
+    - name: Set remote
+      run: git remote add origin https://${{ secrets.GH_TOKEN }}@github.com/moleculerjs/project-demo.git
       working-directory: ./project-demo
 
-    - run: git add --all
+    - name: Add files
+      run: git add --all
       working-directory: ./project-demo
 
-    - run: git config --global user.email "hello@moleculer.services" && git config --global user.name "Moleculer"
+    - name: Configure Git user
+      run: git config --global user.email "hello@moleculer.services" && git config --global user.name "Moleculer"
       working-directory: ./project-demo
 
-    - run: git commit -m "Generated files"
+    - name: Commit
+      run: git commit -m "Generated files"
       working-directory: ./project-demo
     
-    - run: git push --force origin master
+    - name: Git push
+      run: git push --force origin master
       working-directory: ./project-demo
