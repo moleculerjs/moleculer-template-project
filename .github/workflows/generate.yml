@@ -14,7 +14,7 @@ jobs:
       with:
         node-version: 12.x
     - run: npm i
-    - run: moleculer init --answers test/demo/answers.json --no-install . project-demo
+    - run: node_modules/.bin/moleculer init --answers test/demo/answers.json --no-install . project-demo
     - run: git init
       working-directory: ./project-demo
     - run: git remote add origin git@github.com:moleculerjs/project-demo.git
