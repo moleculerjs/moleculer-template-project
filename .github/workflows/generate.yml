@@ -19,7 +19,7 @@ jobs:
     - run: git init
       working-directory: ./project-demo
 
-    - run: git remote add origin git@github.com:moleculerjs/project-demo.git
+    - run: git remote add origin https://${{ secrets.GH_TOKEN }}@github.com/moleculerjs/project-demo.git
       working-directory: ./project-demo
 
     - run: git add --all
