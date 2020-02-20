@@ -1,0 +1,27 @@
+name: Generate a demo project
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - run: npm i
+    - run: moleculer init --answers test/demo/answers.json --no-install . project-demo
+    - run: git init
+      working-directory: ./project-demo
+    - run: git remote add origin git@github.com:moleculerjs/project-demo.git
+      working-directory: ./project-demo
+    - run: git add --all
+      working-directory: ./project-demo
+    - run: git commit -m "Generated files"
+      working-directory: ./project-demo
+    - run: git push --force origin master
+      working-directory: ./project-demo
