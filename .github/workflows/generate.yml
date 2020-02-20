@@ -15,13 +15,21 @@ jobs:
         node-version: 12.x
     - run: npm i
     - run: node_modules/.bin/moleculer init --answers test/demo/answers.json --no-install . project-demo
+
     - run: git init
       working-directory: ./project-demo
+
     - run: git remote add origin git@github.com:moleculerjs/project-demo.git
       working-directory: ./project-demo
+
     - run: git add --all
       working-directory: ./project-demo
+
+    - run: git config --global user.email "hello@moleculer.services" && git config --global user.name "Moleculer"
+      working-directory: ./project-demo
+
     - run: git commit -m "Generated files"
       working-directory: ./project-demo
+    
     - run: git push --force origin master
       working-directory: ./project-demo
