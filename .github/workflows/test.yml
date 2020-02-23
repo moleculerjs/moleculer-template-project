@@ -22,14 +22,14 @@ jobs:
     - name: Install dependencies
       run: npm i
 
-    - name: Generate project with '${{ matrix.transporter }}' transporter
+    - name: Create answers file
       run: node update-answers.js
       working-directory: ./test/ci
       env:
         TRANSPORTER: ${{ matrix.transporter }}
-    - name: Test generated project
+
+    - name: Generate project with '${{ matrix.transporter }}' transporter
       run: npm test
-      working-directory: ./ci-test
       
     - name: Start containers
       run: npm run dc:up
