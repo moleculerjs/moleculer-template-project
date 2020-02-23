@@ -30,7 +30,11 @@ jobs:
 
     - name: Generate project with '${{ matrix.transporter }}' transporter
       run: npm test
-      
+
+    - name: Run tests in the generated project
+      run: npm test
+      working-directory: ./ci-test
+
     - name: Start containers
       run: npm run dc:up
       working-directory: ./ci-test
