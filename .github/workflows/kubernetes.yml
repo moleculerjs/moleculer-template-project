@@ -68,7 +68,7 @@ jobs:
     - run: kubectl get ingress
 
     - name: Check pods
-      run: kubectl get all
+      run: kubectl get all --all-namespaces
       working-directory: ./ci-test
 
     - run: curl --silent --show-error --fail http://ci-test.127.0.0.1.nip.io/api/greeter/hello
