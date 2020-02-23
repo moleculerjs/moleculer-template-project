@@ -10,7 +10,7 @@ jobs:
       matrix:
         # node-version: [10.x, 12.x]
         # transporter: [NATS, Redis, MQTT, AMQP, STAN, Kafka]
-        transporter: [NATS]
+        transporter: [NATS, Redis]
 
     steps:
     - uses: actions/checkout@v2
@@ -61,7 +61,7 @@ jobs:
         config: ./test/ci/kind-config.yaml
 
     - run: kubectl cluster-info
-    - run: kubectl get node
+    - run: kubectl get nodes
     - run: kubectl get pods -n kube-system
 
     - name: Install NGINX Ingress
@@ -73,16 +73,17 @@ jobs:
     - name: Kubectl apply
       working-directory: ./ci-test
       run: |
+        sed 's/image: ci-test/image: localhost:5000\/ci-test/g' k8s.yaml
         sed 's/image: ci-test/image: localhost:5000\/ci-test/g' k8s.yaml | kubectl apply -f -
 
     - name: Sleeping 60 secs
       run: sleep 60
 
-    - run: kubectl get ingress
-
     - name: Check pods
-      run: kubectl get all --all-namespaces
-      working-directory: ./ci-test
+      run: kubectl get all
 
     - run: curl --silent --show-error --fail http://ci-test.127.0.0.1.nip.io/api/greeter/hello
     - run: curl --silent --show-error --fail http://ci-test.127.0.0.1.nip.io/api/products
+
+    - name: Check logs
+      run: kubectl logs deployment/products
