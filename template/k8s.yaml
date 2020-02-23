@@ -1,4 +1,3 @@
----
 #########################################################
 # Common Environment variables ConfigMap
 #########################################################
@@ -10,8 +9,17 @@ data:
   NAMESPACE: ""
   LOGLEVEL: info
   SERVICEDIR: services
-  TRANSPORTER: nats://nats:4222
+  {{#if_eq transporter "NATS"}}TRANSPORTER: nats://nats:4222{{/if_eq}}
+  {{#if_eq transporter "Redis"}}TRANSPORTER: redis://redis:6379{{/if_eq}}
+  {{#if_eq transporter "MQTT"}}TRANSPORTER: mqtt://mqtt:1883{{/if_eq}}
+  {{#if_eq transporter "AMQP"}}TRANSPORTER: amqp://amqp:5672{{/if_eq}}
+  {{#if_eq transporter "STAN"}}TRANSPORTER: stan://stan:4222{{/if_eq}}
+  {{#if_eq transporter "Kafka"}}TRANSPORTER: kafka://kafka:9092{{/if_eq}}
+  {{#if_eq cacher "Memory"}}CACHER: Memory{{/if_eq}}
+  {{#if_eq cacher "Redis"}}CACHER: redis://redis:6379{{/if_eq}}
+  {{#dbService}}MONGO_URI: mongodb://mongo/{{projectName}}{{/dbService}}
 
+{{#apiGW}}
 ---
 #########################################################
 # Service for Moleculer API Gateway service
@@ -37,7 +45,7 @@ metadata:
   name: ingress
 spec:
   rules:
-  - host: moleculer.127.0.0.1.nip.io
+  - host: {{projectName}}.127.0.0.1.nip.io
     http:
       paths:
       - path: /
@@ -65,13 +73,15 @@ spec:
     spec:
       containers:
       - name: api
-        image: <your-docker-image>
+        image: {{projectName}}
         envFrom:
         - configMapRef:
             name: common-env
         env:
           - name: SERVICES
             value: api
+{{/apiGW}}
+
 ---
 #########################################################
 # Greeter service
@@ -92,7 +102,7 @@ spec:
     spec:
       containers:
       - name: greeter
-        image: <your-docker-image>
+        image: {{projectName}}
         envFrom:
         - configMapRef:
             name: common-env
@@ -100,6 +110,107 @@ spec:
           - name: SERVICES
             value: greeter
 
+{{#dbService}}
+---
+#########################################################
+# Products service
+#########################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: products
+spec:
+  selector:
+    matchLabels:
+      app: products
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: products
+    spec:
+      containers:
+      - name: products
+        image: {{projectName}}
+        envFrom:
+        - configMapRef:
+            name: common-env
+        env:
+          - name: SERVICES
+            value: products
+
+---
+#########################################################
+# MongoDB server
+#########################################################
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo
+  labels:
+    app: mongo
+spec:
+  selector:
+    matchLabels:
+      app: mongo
+  replicas: 1
+  serviceName: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+        - image: mongo
+          name: mongo
+          ports:
+            - containerPort: 27017
+          resources: {}
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongo-data
+      volumes:
+        - name: mongo-data
+          persistentVolumeClaim:
+            claimName: mongo-data
+
+---
+#########################################################
+# Persistent volume for MongoDB
+#########################################################
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-data
+  labels:
+    name: mongo-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+
+---
+#########################################################
+# MongoDB service
+#########################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo
+  labels:
+    app: mongo
+spec:
+  ports:
+    - port: 27017
+      targetPort: 27017
+  selector:
+    app: mongo          
+
+{{/dbService}}
+
+{{#if_eq transporter "NATS"}}
 ---
 #########################################################
 # NATS transporter service
@@ -142,3 +253,12 @@ spec:
         ports:
         - containerPort: 4222
           name: nats
+{{/if_eq}}
+
+# TODO:
+#   - [ ] Redis Cacher
+#   - [ ] Redis transporter
+#   - [ ] MQTT transporter
+#   - [ ] AMQP transporter
+#   - [ ] Stan transporter
+#   - [ ] Kafka transporter
