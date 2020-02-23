@@ -36,6 +36,12 @@ jobs:
       run: npm test
       working-directory: ./ci-test
 
+    - uses: engineerd/setup-kind@v0.3.0
+    - name: Testing
+      run: |
+        kubectl cluster-info
+        kubectl get pods -n kube-system
+
     - name: Kubectl apply
       run: kubectl apply -f k8s.yaml
       working-directory: ./ci-test
