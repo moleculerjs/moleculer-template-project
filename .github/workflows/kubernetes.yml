@@ -43,8 +43,6 @@ jobs:
       run: |
         REGISTRY_IP=$(docker inspect -f '{{.NetworkSettings.IPAddress}}' registry)
         echo $REGISTRY_IP
-        DOCKER_GATEWAY=$(docker network inspect bridge --format '{{(index .IPAM.Config 0).Gateway}}')
-        echo $DOCKER_GATEWAY
         sed -i "s/registry:5000/$REGISTRY_IP:5000/g" test/ci/kind-config.yaml
         cat test/ci/kind-config.yaml
 
@@ -73,11 +71,8 @@ jobs:
         kubectl patch deployments -n ingress-nginx nginx-ingress-controller -p '{"spec":{"template":{"spec":{"containers":[{"name":"nginx-ingress-controller","ports":[{"containerPort":80,"hostPort":80},{"containerPort":443,"hostPort":443}]}],"nodeSelector":{"ingress-ready":"true"},"tolerations":[{"key":"node-role.kubernetes.io/master","operator":"Equal","effect":"NoSchedule"}]}}}}' 
 
     - name: Kubectl apply
+      run: "sed 's/image: ci-test/image: localhost:5000\/ci-test/g' k8s.yaml | kubectl apply -f -"
       working-directory: ./ci-test
-      run: |
-        #sed 's/image: ci-test/image: moleculer\/project-template-ci:${{ github.sha }}/g' k8s.yaml
-        #sed 's/image: ci-test/image: moleculer\/project-template-ci:${{ github.sha }}/g' k8s.yaml | kubectl apply -f -
-        sed 's/image: ci-test/image: localhost:5000\/ci-test/g' k8s.yaml | kubectl apply -f -
 
     - name: Sleeping 60 secs
       run: sleep 60
