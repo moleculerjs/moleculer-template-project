@@ -79,8 +79,8 @@ jobs:
         #sed 's/image: ci-test/image: moleculer\/project-template-ci:${{ github.sha }}/g' k8s.yaml | kubectl apply -f -
         sed 's/image: ci-test/image: localhost:5000\/ci-test/g' k8s.yaml | kubectl apply -f -
 
-    - name: Sleeping 30 secs
-      run: sleep 30
+    - name: Sleeping 60 secs
+      run: sleep 60
 
     - run: kubectl get ingress
 
