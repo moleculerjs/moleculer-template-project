@@ -43,6 +43,7 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
         workdir: ./ci-test
+        tags: "${{ github.sha }}"
 
     - uses: engineerd/setup-kind@v0.3.0
     - name: Check K8s cluster
@@ -52,7 +53,7 @@ jobs:
         kubectl get pods -n kube-system
 
     - name: Kubectl apply
-      run: kubectl apply -f k8s.yaml
+      run: sed 's/image: ci-test/image: project-template-ci:${{ github.sha }}/g' k8s.yaml | kubectl apply -f -
       working-directory: ./ci-test
 
     - name: Sleeping 30 secs
@@ -64,7 +65,3 @@ jobs:
 
     - run: curl --silent --show-error --fail http://localhost:3000/api/greeter/hello
     - run: curl --silent --show-error --fail http://localhost:3000/api/products
-
-    - name: Stop containers
-      run: kubectl delete -f k8s.yaml
-      working-directory: ./ci-test
