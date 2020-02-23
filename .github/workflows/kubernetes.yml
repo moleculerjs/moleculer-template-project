@@ -55,8 +55,8 @@ jobs:
     - name: Kubectl apply
       working-directory: ./ci-test
       run: |
-        sed 's/image: ci-test/image: project-template-ci:${{ github.sha }}/g' k8s.yaml
-        sed 's/image: ci-test/image: project-template-ci:${{ github.sha }}/g' k8s.yaml | kubectl apply -f -
+        sed 's/image: ci-test/image: moleculer/project-template-ci:${{ github.sha }}/g' k8s.yaml
+        sed 's/image: ci-test/image: moleculer/project-template-ci:${{ github.sha }}/g' k8s.yaml | kubectl apply -f -
 
     - name: Sleeping 30 secs
       run: sleep 30
