@@ -43,7 +43,10 @@ jobs:
       run: |
         REGISTRY_IP=$(docker inspect -f '{{.NetworkSettings.IPAddress}}' registry)
         echo $REGISTRY_IP
-        sed -i 's/registry:5000/$REGISTRY_IP:5000/g' test/ci/kind-config.yaml
+        DOCKER_GATEWAY=$(docker network inspect bridge --format '{{(index .IPAM.Config 0).Gateway}}')
+        echo $DOCKER_GATEWAY
+        sed -i 's/registry:5000/$DOCKER_GATEWAY:5000/g' test/ci/kind-config.yaml
+        cat test/ci/kind-config.yaml
 
     - name: Build Docker image
       run: docker build -t ci-test .
