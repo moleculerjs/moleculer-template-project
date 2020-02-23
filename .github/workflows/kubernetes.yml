@@ -65,9 +65,11 @@ jobs:
     - name: Sleeping 30 secs
       run: sleep 30
 
+    - run: kubectl get ingress
+
     - name: Check pods
       run: kubectl get all
       working-directory: ./ci-test
 
-    - run: curl --silent --show-error --fail http://ci-test.127.0.0.1.nip.io/api/greeter/hello
+    - run: curl --silent --show-error --fail http://localhost/api/greeter/hello
     - run: curl --silent --show-error --fail http://ci-test.127.0.0.1.nip.io/api/products
