@@ -43,8 +43,6 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: ingress
-  annotations:
-    ingress.kubernetes.io/rewrite-target: /  
 spec:
   rules:
   - host: {{projectName}}.127.0.0.1.nip.io
