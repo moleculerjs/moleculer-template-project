@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         node-version: [10.x, 12.x]
-        transporter: [NATS, Redis, MQTT, AMQP, STAN, Kafka]
+        transporter: [NATS, Redis, MQTT, AMQP, STAN, Kafka, TCP]
 
     steps:
     - uses: actions/checkout@v2
