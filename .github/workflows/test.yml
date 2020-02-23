@@ -1,4 +1,4 @@
-name: Test
+name: Test with Docker
 
 on: [push]
 
@@ -13,26 +13,42 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Use Node.js ${{ matrix.node-version }} with ${{ matrix.transporter }} transporter
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm i
-    - run: node update-answers.js
+
+    - name: Install dependencies
+      run: npm i
+
+    - name: Generate project with '${{ matrix.transporter }}' transporter
+      run: node update-answers.js
       working-directory: ./test/ci
       env:
         TRANSPORTER: ${{ matrix.transporter }}
-    - run: npm test
-      env:
-        CI: true
-    - run: npm run dc:up
+    - name: Test generated project
+      run: npm test
       working-directory: ./ci-test
-    - run: sleep 30
-    - run: docker-compose ps
+      
+    - name: Start containers
+      run: npm run dc:up
       working-directory: ./ci-test
-    - run: docker-compose logs
+
+    - name: Sleeping 30 secs
+      run: sleep 30
+
+    - name: Check containers
+      run: docker-compose ps
       working-directory: ./ci-test
+
+    - name: Check logs
+      run: docker-compose logs
+      working-directory: ./ci-test
+
     - run: curl --silent --show-error --fail http://localhost:3000/api/greeter/hello
     - run: curl --silent --show-error --fail http://localhost:3000/api/products
-    - run: npm run dc:down
+
+    - name: Stop containers
+      run: npm run dc:down
       working-directory: ./ci-test
