@@ -41,6 +41,7 @@ jobs:
 
     - name: Build Docker image
       run: docker build -t ci-test .
+      working-directory: ./ci-test
 
     - name: Tagging
       run: docker tag ci-test localhost:5000/ci-test
