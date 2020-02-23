@@ -45,7 +45,7 @@ jobs:
         echo $REGISTRY_IP
         DOCKER_GATEWAY=$(docker network inspect bridge --format '{{(index .IPAM.Config 0).Gateway}}')
         echo $DOCKER_GATEWAY
-        sed -i 's/registry:5000/$DOCKER_GATEWAY:5000/g' test/ci/kind-config.yaml
+        sed -i 's/registry:5000/${REGISTRY_IP}:5000/g' test/ci/kind-config.yaml
         cat test/ci/kind-config.yaml
 
     - name: Build Docker image
