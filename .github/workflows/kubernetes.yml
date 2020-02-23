@@ -39,6 +39,12 @@ jobs:
     - name: Start a local Docker Registry
       run: docker run -d --restart=always -p 5000:5000 --name registry registry:2
 
+    - name: Set Registry IP for KinD
+      run: |
+        REGISTRY_IP=$(docker inspect -f '{{.NetworkSettings.IPAddress}}' registry)
+        echo $REGISTRY_IP
+        sed -i 's/registry:5000/$REGISTRY_IP:5000/g' test/ci/kind-config.yaml
+
     - name: Build Docker image
       run: docker build -t ci-test .
       working-directory: ./ci-test
