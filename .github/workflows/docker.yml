@@ -35,8 +35,8 @@ jobs:
       run: npm test
       working-directory: ./ci-test
 
-    - run: echo ./ci-test/docker-compose.env
-    - run: echo ./ci-test/docker-compose.yml
+    - run: cat ./ci-test/docker-compose.env
+    - run: cat ./ci-test/docker-compose.yml
 
     - name: Start containers
       run: npm run dc:up
