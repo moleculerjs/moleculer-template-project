@@ -24,7 +24,10 @@ services:
       - mqtt
 {{/if_eq}}
 {{#if_eq transporter "AMQP"}}
-      - amqp
+      - rabbitmq
+{{/if_eq}}
+{{#if_eq transporter "AMQP10"}}
+      - activemq
 {{/if_eq}}
 {{#if_eq transporter "STAN"}}
       - stan
@@ -60,7 +63,10 @@ services:
       - mqtt
 {{/if_eq}}
 {{#if_eq transporter "AMQP"}}
-      - amqp
+      - rabbitmq
+{{/if_eq}}
+{{#if_eq transporter "AMQP10"}}
+      - activemq
 {{/if_eq}}
 {{#if_eq transporter "STAN"}}
       - stan
@@ -91,7 +97,10 @@ services:
       - mqtt
 {{/if_eq}}
 {{#if_eq transporter "AMQP"}}
-      - amqp
+      - rabbitmq
+{{/if_eq}}
+{{#if_eq transporter "AMQP10"}}
+      - activemq
 {{/if_eq}}
 {{#if_eq transporter "STAN"}}
       - stan
@@ -132,8 +141,15 @@ services:
 {{/if_eq}}
 {{#if_eq transporter "AMQP"}}
 
-  amqp:
+  rabbitmq:
     image: rabbitmq:3
+    networks:
+      - internal
+{{/if_eq}}
+{{#if_eq transporter "AMQP10"}}
+
+  activemq:
+    image: rmohr/activemq
     networks:
       - internal
 {{/if_eq}}

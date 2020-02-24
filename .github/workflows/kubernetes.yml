@@ -8,9 +8,7 @@ jobs:
 
     strategy:
       matrix:
-        # node-version: [10.x, 12.x]
-        # transporter: [NATS, Redis, MQTT, AMQP, STAN, Kafka]
-        transporter: [NATS, Redis]
+        transporter: [NATS, Redis, MQTT, AMQP, STAN, Kafka]
 
     steps:
     - uses: actions/checkout@v2
@@ -76,8 +74,8 @@ jobs:
         sed 's/image: ci-test/image: localhost:5000\/ci-test/g' k8s.yaml
         sed 's/image: ci-test/image: localhost:5000\/ci-test/g' k8s.yaml | kubectl apply -f -
 
-    - name: Sleeping 60 secs
-      run: sleep 60
+    - name: Sleeping 90 secs
+      run: sleep 90
 
     - name: Check pods
       run: kubectl get all

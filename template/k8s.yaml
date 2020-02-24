@@ -12,9 +12,10 @@ data:
   {{#if_eq transporter "NATS"}}TRANSPORTER: nats://nats:4222{{/if_eq}}
   {{#if_eq transporter "Redis"}}TRANSPORTER: redis://redis:6379{{/if_eq}}
   {{#if_eq transporter "MQTT"}}TRANSPORTER: mqtt://mqtt:1883{{/if_eq}}
-  {{#if_eq transporter "AMQP"}}TRANSPORTER: amqp://amqp:5672{{/if_eq}}
+  {{#if_eq transporter "AMQP"}}TRANSPORTER: amqp://rabbitmq:5672{{/if_eq}}
   {{#if_eq transporter "STAN"}}TRANSPORTER: stan://stan:4222{{/if_eq}}
   {{#if_eq transporter "Kafka"}}TRANSPORTER: kafka://kafka:9092{{/if_eq}}
+  {{#if_eq transporter "AMQP10"}}TRANSPORTER: amqp10://guest:guest@activemq:5672{{/if_eq}}
   {{#if_eq cacher "Memory"}}CACHER: Memory{{/if_eq}}
   {{#if_eq cacher "Redis"}}CACHER: redis://redis:6379{{/if_eq}}
   {{#dbService}}MONGO_URI: mongodb://mongo/{{projectName}}{{/dbService}}
@@ -300,10 +301,282 @@ spec:
           name: redis
 {{/redis}}
 
-# TODO:
-#   - [x] Redis Cacher
-#   - [x] Redis transporter
-#   - [ ] MQTT transporter
-#   - [ ] AMQP transporter
-#   - [ ] Stan transporter
-#   - [ ] Kafka transporter
+{{#if_eq transporter "MQTT"}}
+---
+#########################################################
+# MQTT transporter service
+#########################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: mqtt
+spec:
+  selector:
+    app: mqtt
+  ports:
+  - port: 1883
+    name: mqtt
+    targetPort: 1883
+
+---
+#########################################################
+# MQTT transporter
+#########################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mqtt
+spec:
+  selector:
+    matchLabels:
+      app: mqtt
+  replicas: 1
+  strategy:
+    type: Recreate  
+  template:
+    metadata:
+      labels:
+        app: mqtt
+    spec:
+      containers:
+      - name: mqtt
+        image: ncarlier/mqtt
+        ports:
+        - containerPort: 1883
+          name: mqtt
+{{/if_eq}}
+
+{{#if_eq transporter "AMQP"}}
+---
+#########################################################
+# AMQP (RabbitMQ) transporter service
+#########################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+spec:
+  selector:
+    app: rabbitmq
+  ports:
+  - port: 5672
+    name: rabbitmq
+    targetPort: 5672
+
+---
+#########################################################
+# AMQP (RabbitMQ) transporter
+#########################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq
+spec:
+  selector:
+    matchLabels:
+      app: rabbitmq
+  replicas: 1
+  strategy:
+    type: Recreate  
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+      - name: rabbitmq
+        image: rabbitmq:3
+        ports:
+        - containerPort: 5672
+          name: rabbitmq
+{{/if_eq}}
+
+{{#if_eq transporter "STAN"}}
+---
+#########################################################
+# NATS Streaming transporter service
+#########################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: stan
+spec:
+  selector:
+    app: stan
+  ports:
+  - port: 4222
+    name: stan
+    targetPort: 4222
+
+---
+#########################################################
+# NATS Streaming transporter
+#########################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stan
+spec:
+  selector:
+    matchLabels:
+      app: stan
+  replicas: 1
+  strategy:
+    type: Recreate  
+  template:
+    metadata:
+      labels:
+        app: stan
+    spec:
+      containers:
+      - name: stan
+        image: nats-streaming
+        ports:
+        - containerPort: 4222
+          name: stan
+{{/if_eq}}
+
+{{#if_eq transporter "Kafka"}}
+---
+#########################################################
+# Zookeeper service
+#########################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper
+spec:
+  selector:
+    app: zookeeper
+  ports:
+  - port: 2181
+    name: zookeeper
+    targetPort: 2181
+
+---
+#########################################################
+# Zookeeper deployment
+#########################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper
+spec:
+  selector:
+    matchLabels:
+      app: zookeeper
+  replicas: 1
+  strategy:
+    type: Recreate  
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      containers:
+      - name: zookeeper
+        image: bitnami/zookeeper
+        ports:
+        - containerPort: 2181
+          name: zookeeper
+        env:
+        - name: ALLOW_ANONYMOUS_LOGIN
+          value: "yes"
+
+---
+#########################################################
+# Kafka transporter service
+#########################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka
+spec:
+  selector:
+    app: kafka
+  ports:
+  - port: 9092
+    name: kafka
+    targetPort: 9092
+
+---
+#########################################################
+# Kafka transporter
+#########################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka
+spec:
+  selector:
+    matchLabels:
+      app: kafka
+  replicas: 1
+  strategy:
+    type: Recreate  
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      containers:
+      - name: kafka
+        image: bitnami/kafka
+        ports:
+        - containerPort: 9092
+          name: kafka
+        env:
+        - name: KAFKA_CFG_ZOOKEEPER_CONNECT
+          value: zookeeper:2181
+        - name: KAFKA_CFG_ADVERTISED_LISTENERS
+          value: PLAINTEXT://kafka:9092
+        - name: ALLOW_PLAINTEXT_LISTENER
+          value: "yes"
+{{/if_eq}}
+
+{{#if_eq transporter "AMQP10"}}
+---
+#########################################################
+# AMQP 1.0 (ActiveMQ) transporter service
+#########################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: activemq
+spec:
+  selector:
+    app: activemq
+  ports:
+  - port: 5672
+    name: activemq
+    targetPort: 5672
+
+---
+#########################################################
+# AMQP 1.0 (ActiveMQ) transporter
+#########################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: activemq
+spec:
+  selector:
+    matchLabels:
+      app: activemq
+  replicas: 1
+  strategy:
+    type: Recreate  
+  revisionHistoryLimit: 0
+  template:
+    metadata:
+      labels:
+        app: activemq
+    spec:
+      containers:
+      - name: activemq
+        image: rmohr/activemq
+        ports:
+        - containerPort: 5672
+          name: activemq
+
+{{/if_eq}}
