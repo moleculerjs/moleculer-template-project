@@ -39,8 +39,8 @@ jobs:
       run: npm run dc:up
       working-directory: ./ci-test
 
-    - name: Sleeping 30 secs
-      run: sleep 30
+    - name: Sleeping 60 secs
+      run: sleep 60
 
     - name: Check containers
       run: docker-compose ps

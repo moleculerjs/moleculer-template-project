@@ -26,7 +26,8 @@ module.exports = function(values) {
 					{ name: "AMQP", value: "AMQP" },
 					{ name: "TCP", value: "TCP" },
 					{ name: "NATS Streaming", value: "STAN" },
-					{ name: "Kafka", value: "Kafka" }
+					{ name: "Kafka", value: "Kafka" },
+					{ name: "AMQP 1.0 (experimental)", value: "AMQP10" }
 				],
 				when(answers) { return answers.needTransporter; },
 				default: "NATS"
