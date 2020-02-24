@@ -43,6 +43,9 @@
     {{#if_eq transporter "AMQP"}}
     "amqplib": "^0.5.5",
     {{/if_eq}}
+    {{#if_eq transporter "AMQP10"}}
+    "rhea-promise": "^1.0.0",
+    {{/if_eq}}
     {{#if_eq transporter "STAN"}}
     "node-nats-streaming": "^0.2.6",
     {{/if_eq}}
