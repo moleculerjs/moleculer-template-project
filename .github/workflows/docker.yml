@@ -10,7 +10,7 @@ jobs:
       matrix:
         node-version: [10.x, 12.x]
         transporter: [NATS, Redis, MQTT, AMQP, AMQP10, STAN, Kafka, TCP]
-
+      fail-fast: false
     steps:
     - uses: actions/checkout@v2
 
