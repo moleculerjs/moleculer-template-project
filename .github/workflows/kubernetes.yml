@@ -9,6 +9,7 @@ jobs:
     strategy:
       matrix:
         transporter: [NATS, Redis, MQTT, AMQP, AMQP10, STAN, Kafka]
+      fail-fast: false
 
     steps:
     - uses: actions/checkout@v2
