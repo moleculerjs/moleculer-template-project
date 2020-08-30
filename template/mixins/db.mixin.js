@@ -1,8 +1,6 @@
 "use strict";
 
 const fs = require("fs");
-const mkdir = require("mkdirp").sync;
-
 const DbService	= require("moleculer-db");
 
 /**
@@ -70,7 +68,7 @@ module.exports = function(collection) {
 
 		// Create data folder
 		if (!fs.existsSync("./data")) {
-			mkdir("./data");
+			fs.mkdirSync("./data");
 		}
 
 		schema.adapter = new DbService.MemoryAdapter({ filename: `./data/${collection}.db` });
