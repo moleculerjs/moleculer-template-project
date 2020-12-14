@@ -55,7 +55,7 @@ jobs:
     - name: Push Docker image
       run: docker push localhost:5000/ci-test
 
-    - uses: engineerd/setup-kind@v0.3.0
+    - uses: engineerd/setup-kind@v0.5.0
       with:
         config: ./test/ci/kind-config.yaml
 
@@ -75,12 +75,15 @@ jobs:
         sed 's/image: ci-test/image: localhost:5000\/ci-test/g' k8s.yaml
         sed 's/image: ci-test/image: localhost:5000\/ci-test/g' k8s.yaml | kubectl apply -f -
 
-    - name: Sleeping 90 secs
-      run: sleep 90
+    #- name: Sleeping 90 secs
+    #  run: sleep 90
 
-    - name: Sleeping more in case of AMQP transporter
-      run: sleep 180
-      if: contains(matrix.transporter, 'AMQP')
+    - name: Wait for available statuses
+      run: kubectl wait --for=condition=available --timeout=60s --all deployments
+
+    #- name: Sleeping more in case of AMQP transporter
+    #  run: sleep 180
+    #  if: contains(matrix.transporter, 'AMQP')
 
     - name: Check pods
       run: kubectl get all
