@@ -1,6 +1,6 @@
 name: Generate a demo project
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   generate:
