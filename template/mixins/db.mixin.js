@@ -60,7 +60,7 @@ module.exports = function(collection) {
 
 		schema.adapter = new MongoAdapter(process.env.MONGO_URI);
 		schema.collection = collection;
-	} else if (process.env.TEST) {
+	} else if (process.env.NODE_ENV === 'test') {
 		// NeDB memory adapter for testing
 		schema.adapter = new DbService.MemoryAdapter();
 	} else {
