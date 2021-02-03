@@ -99,7 +99,7 @@ module.exports = function(values) {
 			
 			"services/products.service.js": "dbService",
 			"mixins/db.mixin.js": "dbService",
-			"test/mixins/db.mixin.spec.js": "dbService",
+			"test/unit/mixins/db.mixin.spec.js": "dbService",
 			"test/integration/products.service.spec.js": "dbService",
 			"test/unit/services/products.spec.js": "dbService",
 			
