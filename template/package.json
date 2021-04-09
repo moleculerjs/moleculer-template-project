@@ -55,7 +55,7 @@
     {{#redis}}
     "ioredis": "^4.17.3",
     {{/redis}}
-    "moleculer": "^0.14.12"
+    "moleculer": "^0.14.13"
   },
   "engines": {
     "node": ">= 10.x.x"
