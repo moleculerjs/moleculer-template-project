@@ -9,8 +9,8 @@ jobs:
     strategy:
       matrix:
         node-version: [10.x, 12.x, 14.x]
-        # transporter: [NATS, Redis, MQTT, AMQP, AMQP10, STAN, Kafka, TCP]
-        transporter: [NATS, Redis, MQTT, AMQP, STAN, Kafka, TCP]
+        transporter: [NATS, Redis, MQTT, AMQP, AMQP10, STAN, Kafka, TCP]
+        # transporter: [NATS, Redis, MQTT, AMQP, STAN, Kafka, TCP]
       fail-fast: false
     steps:
     - uses: actions/checkout@v2
@@ -46,20 +46,17 @@ jobs:
     - name: Sleeping 60 secs
       run: sleep 60
 
-    # - name: Sleeping more in case of AMQP transporter
-    #   run: sleep 240
-    #   if: contains(matrix.transporter, 'AMQP')
-      
     - name: Check containers
       run: docker-compose ps
       working-directory: ./ci-test
 
+    - run: curl --silent --show-error --fail http://localhost:3000/api/greeter/hello
+    - run: curl --silent --show-error --fail http://localhost:3000/api/products
+
     - name: Check logs
       run: docker-compose logs
       working-directory: ./ci-test
-
-    - run: curl --silent --show-error --fail http://localhost:3000/api/greeter/hello
-    - run: curl --silent --show-error --fail http://localhost:3000/api/products
+      if: failure()
 
     - name: Stop containers
       run: npm run dc:down

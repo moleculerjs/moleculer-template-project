@@ -20,15 +20,15 @@
   "author": "",
   "devDependencies": {
     {{#lint}}
-    "eslint": "^7.7.0",
+    "eslint": "^7.23.0",
     {{/lint}}
-    "jest": "^26.4.2",
-    "jest-cli": "^26.4.2",
+    "jest": "^26.6.3",
+    "jest-cli": "^26.6.3",
     "moleculer-repl": "^0.6.4"
   },
   "dependencies": {
     {{#apiGW}}
-    "moleculer-web": "^0.9.0",
+    "moleculer-web": "^0.9.1",
     {{/apiGW}}
     {{#dbService}}
     "moleculer-db": "^0.8.4",
@@ -55,7 +55,7 @@
     {{#redis}}
     "ioredis": "^4.17.3",
     {{/redis}}
-    "moleculer": "^0.14.10"
+    "moleculer": "^0.14.12"
   },
   "engines": {
     "node": ">= 10.x.x"
