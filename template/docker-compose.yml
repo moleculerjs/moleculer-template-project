@@ -1,4 +1,8 @@
+{{#if_eq transporter "AMQP10"}}
+version: "2.1"
+{{else}}
 version: "3.3"
+{{/if_eq}}
 
 services:
 
@@ -18,7 +22,12 @@ services:
       - nats
 {{/if_eq}}
 {{#redis}}
+{{#if_eq transporter "AMQP10"}}
+      redis:
+        condition: service_started
+{{else}}
       - redis
+{{/if_eq}}
 {{/redis}}
 {{#if_eq transporter "MQTT"}}
       - mqtt
@@ -27,7 +36,8 @@ services:
       - rabbitmq
 {{/if_eq}}
 {{#if_eq transporter "AMQP10"}}
-      - activemq
+      activemq:
+        condition: service_healthy
 {{/if_eq}}
 {{#if_eq transporter "STAN"}}
       - stan
@@ -57,7 +67,12 @@ services:
       - nats
 {{/if_eq}}
 {{#redis}}
+{{#if_eq transporter "AMQP10"}}
+      redis:
+        condition: service_started
+{{else}}
       - redis
+{{/if_eq}}
 {{/redis}}
 {{#if_eq transporter "MQTT"}}
       - mqtt
@@ -66,7 +81,8 @@ services:
       - rabbitmq
 {{/if_eq}}
 {{#if_eq transporter "AMQP10"}}
-      - activemq
+      activemq:
+        condition: service_healthy
 {{/if_eq}}
 {{#if_eq transporter "STAN"}}
       - stan
@@ -86,12 +102,22 @@ services:
     environment:
       SERVICES: products
     depends_on:
+{{#if_eq transporter "AMQP10"}}
+      mongo:
+        condition: service_started
+{{else}}
       - mongo
+{{/if_eq}}
 {{#if_eq transporter "NATS"}}
       - nats
 {{/if_eq}}
 {{#redis}}
+{{#if_eq transporter "AMQP10"}}
+      redis:
+        condition: service_started
+{{else}}
       - redis
+{{/if_eq}}
 {{/redis}}
 {{#if_eq transporter "MQTT"}}
       - mqtt
@@ -100,7 +126,8 @@ services:
       - rabbitmq
 {{/if_eq}}
 {{#if_eq transporter "AMQP10"}}
-      - activemq
+      activemq:
+        condition: service_healthy
 {{/if_eq}}
 {{#if_eq transporter "STAN"}}
       - stan
@@ -152,6 +179,11 @@ services:
     image: rmohr/activemq
     networks:
       - internal
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8161"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 {{/if_eq}}
 {{#if_eq transporter "STAN"}}
 
