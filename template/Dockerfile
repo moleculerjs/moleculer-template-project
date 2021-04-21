@@ -9,7 +9,7 @@ COPY package.json package-lock.json ./
 RUN apk add --no-cache git
 
 COPY . /home/node/app/
-ENV NODE_ENV ='production'
+ENV NODE_ENV=production
 RUN chown -R node:node /home/node
 
 RUN npm ci --silent
