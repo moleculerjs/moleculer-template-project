@@ -60,7 +60,6 @@ jobs:
       with:
         version: "v0.11.1"
         config: ./test/ci/kind-config.yaml
-        wait: 600s
 
     - run: kubectl cluster-info
     - run: kubectl get nodes
@@ -78,8 +77,8 @@ jobs:
         sed 's/image: ci-test/image: localhost:5000\/ci-test/g' k8s.yaml
         sed 's/image: ci-test/image: localhost:5000\/ci-test/g' k8s.yaml | kubectl apply -f -
 
-    - name: Sleeping 90 secs
-      run: sleep 90
+    - name: Sleeping 120 secs
+      run: sleep 120
 
     # - name: Sleeping more in case of AMQP transporter
     #   run: sleep 240
