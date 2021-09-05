@@ -18,7 +18,7 @@ jobs:
     - name: Use Node.js with ${{ matrix.transporter }} transporter
       uses: actions/setup-node@v1
       with:
-        node-version: 12.x
+        node-version: 14.x
 
     - name: Install dependencies
       run: npm i
@@ -59,6 +59,7 @@ jobs:
     - uses: engineerd/setup-kind@v0.5.0
       with:
         config: ./test/ci/kind-config.yaml
+        wait: 600s
 
     - run: kubectl cluster-info
     - run: kubectl get nodes
