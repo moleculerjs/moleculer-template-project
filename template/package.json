@@ -47,7 +47,7 @@
     "rhea-promise": "^1.0.0",
     {{/if_eq}}
     {{#if_eq transporter "STAN"}}
-    "node-nats-streaming": "^0.2.6",
+    "node-nats-streaming": "^0.3.2",
     {{/if_eq}}
     {{#if_eq transporter "Kafka"}}
     "kafka-node": "^5.0.0",
