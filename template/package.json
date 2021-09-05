@@ -41,7 +41,7 @@
     "mqtt": "^4.2.8",
     {{/if_eq}}
     {{#if_eq transporter "AMQP"}}
-    "amqplib": "^0.8.0",
+    "amqplib": "^0.7.0",
     {{/if_eq}}
     {{#if_eq transporter "AMQP10"}}
     "rhea-promise": "^2.1.0",
