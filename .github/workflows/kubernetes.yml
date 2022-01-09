@@ -77,8 +77,8 @@ jobs:
         sed 's/image: ci-test/image: localhost:5000\/ci-test/g' k8s.yaml
         sed 's/image: ci-test/image: localhost:5000\/ci-test/g' k8s.yaml | kubectl apply -f -
 
-    - name: Sleeping 120 secs
-      run: sleep 120
+    - name: Sleeping 180 secs
+      run: sleep 180
 
     # - name: Sleeping more in case of AMQP transporter
     #   run: sleep 240
@@ -92,3 +92,4 @@ jobs:
 
     - name: Check logs
       run: kubectl logs deployment/products
+      if: failure()
