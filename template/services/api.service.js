@@ -3,16 +3,19 @@
 const ApiGateway = require("moleculer-web");
 
 /**
+ * @typedef {import('moleculer').ServiceSchema} ServiceSchema Moleculer's Service Schema
  * @typedef {import('moleculer').Context} Context Moleculer's Context
  * @typedef {import('http').IncomingMessage} IncomingRequest Incoming HTTP Request
  * @typedef {import('http').ServerResponse} ServerResponse HTTP Server Response
+ * @typedef {import('moleculer-web').ApiSettingsSchema} ApiSettingsSchema API Setting Schema
  */
 
+/** @type {ServiceSchema} */
 module.exports = {
 	name: "api",
 	mixins: [ApiGateway],
 
-	// More info about settings: https://moleculer.services/docs/0.14/moleculer-web.html
+	/** @type {ApiSettingsSchema} More info about settings: https://moleculer.services/docs/0.14/moleculer-web.html */
 	settings: {
 		// Exposed port
 		port: process.env.PORT || 3000,

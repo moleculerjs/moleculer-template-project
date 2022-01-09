@@ -24,6 +24,8 @@
  *      }
  *    }
  *  }
+ * 
+ * @type {import('moleculer').BrokerOptions}
  */
 module.exports = {
 	// Namespace of nodes to segment your nodes on the same network.

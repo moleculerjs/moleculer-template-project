@@ -20,22 +20,22 @@
   "author": "",
   "devDependencies": {
     {{#lint}}
-    "eslint": "^7.32.0",
+    "eslint": "^8.6.0",
     {{/lint}}
-    "jest": "^27.1.0",
-    "jest-cli": "^27.1.0",
-    "moleculer-repl": "^0.6.6"
+    "jest": "^27.4.7",
+    "jest-cli": "^27.4.7",
+    "moleculer-repl": "^0.7.0"
   },
   "dependencies": {
     {{#apiGW}}
-    "moleculer-web": "^0.10.2",
+    "moleculer-web": "^0.10.4",
     {{/apiGW}}
     {{#dbService}}
-    "moleculer-db": "^0.8.15",
-    "moleculer-db-adapter-mongo": "^0.4.13",
+    "moleculer-db": "^0.8.17",
+    "moleculer-db-adapter-mongo": "^0.4.14",
     {{/dbService}}
     {{#if_eq transporter "NATS"}}
-    "nats": "^2.2.0",
+    "nats": "^2.4.0",
     {{/if_eq}}
     {{#if_eq transporter "MQTT"}}
     "mqtt": "^4.2.8",
@@ -53,9 +53,9 @@
     "kafka-node": "^5.0.0",
     {{/if_eq}}
     {{#redis}}
-    "ioredis": "^4.27.9",
+    "ioredis": "^4.28.2",
     {{/redis}}
-    "moleculer": "^0.14.16"
+    "moleculer": "^0.14.19"
   },
   "engines": {
     "node": ">= 12.x.x"
