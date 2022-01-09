@@ -6,12 +6,13 @@ const DbService	= require("moleculer-db");
 /**
  * @typedef {import('moleculer').ServiceSchema} ServiceSchema Moleculer's Service Schema
  * @typedef {import('moleculer').Context} Context Moleculer's Context
+ * @typedef {import('moleculer-db').MoleculerDB} MoleculerDB  Moleculer's DB Service Schema
  */
 
 module.exports = function(collection) {
 	const cacheCleanEventName = `cache.clean.${collection}`;
 
-	/** @type {ServiceSchema} */
+	/** @type {MoleculerDB & ServiceSchema} */
 	const schema = {
 		mixins: [DbService],
 
