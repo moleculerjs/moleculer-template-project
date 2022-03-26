@@ -2,12 +2,7 @@
 
 const DbMixin = require("../mixins/db.mixin");
 
-/**
- * @typedef {import('moleculer').ServiceSchema} ServiceSchema Moleculer's Service Schema
- * @typedef {import('moleculer').Context} Context Moleculer's Context
- */
-
-/** @type {ServiceSchema} */
+/** @type {import('moleculer').ServiceSchema} ServiceSchema Moleculer's Service Schema */
 module.exports = {
 	name: "products",
 	// version: 1
@@ -19,21 +14,52 @@ module.exports = {
 
 	/**
 	 * Settings
+	 * @type {import('moleculer-db').DbServiceSettings}
 	 */
 	settings: {
 		// Available fields in the responses
-		fields: [
-			"_id",
-			"name",
-			"quantity",
-			"price"
-		],
+		fields: ["_id", "name", "quantity", "price"],
 
 		// Validator for the `create` & `insert` actions.
 		entityValidator: {
 			name: "string|min:3",
-			price: "number|positive"
-		}
+			price: "number|positive",
+		},
+
+		// GraphQL Schema definition
+		graphql: {
+			type: `
+                """
+                This type describes a Product entity.
+                """			
+                type Product {
+                    _id: String!
+                    name: String!
+                    quantity: Int!
+                    price: Int!
+                }
+
+				"""
+				This type describes Produce service Response
+				"""
+				type Response {
+                    rows: [Product]!
+                    total: Int!
+                    page: Int!
+                    pageSize: Int!
+					totalPages: Int!
+                }
+
+				"""
+                This type describes input for insert action.
+                """	
+				input ProductInput {
+                    name: String!
+                    quantity: Int
+                    price: Int!
+				}
+            `,
+		},
 	},
 
 	/**
@@ -45,12 +71,12 @@ module.exports = {
 			 * Register a before hook for the `create` action.
 			 * It sets a default value for the quantity field.
 			 *
-			 * @param {Context} ctx
+			 * @param {import('moleculer').Context<{quantity: Number}>} ctx
 			 */
 			create(ctx) {
 				ctx.params.quantity = 0;
-			}
-		}
+			},
+		},
 	},
 
 	/**
@@ -68,6 +94,44 @@ module.exports = {
 		 *  - remove
 		 */
 
+		list: {
+			graphql: {
+				query: "list: Response",
+			},
+		},
+		find: {
+			graphql: {
+				query: "find: [Product]!",
+			},
+		},
+		count: {
+			graphql: {
+				query: "count: Int!",
+			},
+		},
+		create: {
+			graphql: {
+				mutation:
+					"create(name: String!, quantity: Int, price: Int): Product!",
+			},
+		},
+		insert: {
+			graphql: {
+				mutation: "insert(entity: ProductInput!): Product!",
+			},
+		},
+		update: {
+			graphql: {
+				mutation:
+					"update(id: String!, name: String!, quantity: Int, price: Int): Product!",
+			},
+		},
+		remove: {
+			graphql: {
+				mutation: "remove(id: String!): Int!",
+			},
+		},
+
 		// --- ADDITIONAL ACTIONS ---
 
 		/**
@@ -77,16 +141,25 @@ module.exports = {
 			rest: "PUT /:id/quantity/increase",
 			params: {
 				id: "string",
-				value: "number|integer|positive"
+				value: "number|integer|positive",
 			},
-			/** @param {Context} ctx  */
+			graphql: {
+				mutation: "increaseQuantity(id: String!, value: Int!): Product",
+			},
+			/** @param {import('moleculer').Context<{id: String, value: Number}>} ctx */
 			async handler(ctx) {
-				const doc = await this.adapter.updateById(ctx.params.id, { $inc: { quantity: ctx.params.value } });
-				const json = await this.transformDocuments(ctx, ctx.params, doc);
+				const doc = await this.adapter.updateById(ctx.params.id, {
+					$inc: { quantity: ctx.params.value },
+				});
+				const json = await this.transformDocuments(
+					ctx,
+					ctx.params,
+					doc
+				);
 				await this.entityChanged("updated", json, ctx);
 
 				return json;
-			}
+			},
 		},
 
 		/**
@@ -96,17 +169,26 @@ module.exports = {
 			rest: "PUT /:id/quantity/decrease",
 			params: {
 				id: "string",
-				value: "number|integer|positive"
+				value: "number|integer|positive",
 			},
-			/** @param {Context} ctx  */
+			graphql: {
+				mutation: "decreaseQuantity(id: String!, value: Int!): Product",
+			},
+			/** @param {import('moleculer').Context<{id: String, value: Number}>} ctx */
 			async handler(ctx) {
-				const doc = await this.adapter.updateById(ctx.params.id, { $inc: { quantity: -ctx.params.value } });
-				const json = await this.transformDocuments(ctx, ctx.params, doc);
+				const doc = await this.adapter.updateById(ctx.params.id, {
+					$inc: { quantity: -ctx.params.value },
+				});
+				const json = await this.transformDocuments(
+					ctx,
+					ctx.params,
+					doc
+				);
 				await this.entityChanged("updated", json, ctx);
 
 				return json;
-			}
-		}
+			},
+		},
 	},
 
 	/**
@@ -124,7 +206,7 @@ module.exports = {
 				{ name: "iPhone 11 Pro", quantity: 25, price: 999 },
 				{ name: "Huawei P30 Pro", quantity: 15, price: 679 },
 			]);
-		}
+		},
 	},
 
 	/**
@@ -132,5 +214,5 @@ module.exports = {
 	 */
 	async afterConnected() {
 		// await this.adapter.collection.createIndex({ name: 1 });
-	}
+	},
 };

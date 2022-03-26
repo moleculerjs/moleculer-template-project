@@ -55,6 +55,10 @@
     {{#redis}}
     "ioredis": "^4.28.2",
     {{/redis}}
+    {{#apiGQL}}
+    "graphql": "^15.8.0",
+    "moleculer-apollo-server": "^0.3.6",
+    {{#apiGQL}}
     "moleculer": "^0.14.19"
   },
   "engines": {

@@ -1,20 +1,13 @@
 "use strict";
 
-/**
- * @typedef {import('moleculer').ServiceSchema} ServiceSchema Moleculer's Service Schema
- * @typedef {import('moleculer').Context} Context Moleculer's Context
- */
-
-/** @type {ServiceSchema} */
+/** @type {import('moleculer').ServiceSchema} ServiceSchema Moleculer's Service Schema */
 module.exports = {
 	name: "greeter",
 
 	/**
 	 * Settings
 	 */
-	settings: {
-
-	},
+	settings: {},
 
 	/**
 	 * Dependencies
@@ -25,7 +18,6 @@ module.exports = {
 	 * Actions
 	 */
 	actions: {
-
 		/**
 		 * Say a 'Hello' action.
 		 *
@@ -34,11 +26,14 @@ module.exports = {
 		hello: {
 			rest: {
 				method: "GET",
-				path: "/hello"
+				path: "/hello",
+			},
+			graphql: {
+				query: "hello: String",
 			},
 			async handler() {
 				return "Hello Moleculer";
-			}
+			},
 		},
 
 		/**
@@ -49,47 +44,43 @@ module.exports = {
 		welcome: {
 			rest: "/welcome",
 			params: {
-				name: "string"
+				name: "string",
 			},
-			/** @param {Context} ctx  */
+			graphql: {
+				mutation: "welcome(name: String!): String",
+			},
+			/** @param {import('moleculer').Context<{name: String}>} ctx */
 			async handler(ctx) {
 				return `Welcome, ${ctx.params.name}`;
-			}
-		}
+			},
+		},
 	},
 
 	/**
 	 * Events
 	 */
-	events: {
-
-	},
+	events: {},
 
 	/**
 	 * Methods
 	 */
-	methods: {
-
-	},
+	methods: {},
 
 	/**
 	 * Service created lifecycle event handler
+	 * @this {import('moleculer').Service}
 	 */
-	created() {
-
-	},
+	created() {},
 
 	/**
 	 * Service started lifecycle event handler
+	 * @this {import('moleculer').Service}
 	 */
-	async started() {
-
-	},
+	async started() {},
 
 	/**
 	 * Service stopped lifecycle event handler
+	 * @this {import('moleculer').Service}
 	 */
-	async stopped() {
-
-	}
+	async stopped() {},
 };
