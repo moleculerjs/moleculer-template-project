@@ -58,7 +58,7 @@
     {{#apiGQL}}
     "graphql": "^15.8.0",
     "moleculer-apollo-server": "^0.3.6",
-    {{#apiGQL}}
+    {{/apiGQL}}
     "moleculer": "^0.14.19"
   },
   "engines": {
