@@ -186,6 +186,13 @@ module.exports = {
 				);
 				await this.entityChanged("updated", json, ctx);
 
+				if (json.quantity === 0) {
+                    this.logger.info(`Stock of ${json.name} depleted... Ordering more`);
+                    // Emit a persistent event to order more products
+                    // inventory.service will handle this event
+                    this.broker.emit("order.more", json);
+                }
+
 				return json;
 			},
 		},
