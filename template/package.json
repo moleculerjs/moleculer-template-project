@@ -62,6 +62,9 @@
     {{#needChannels}}
     "@moleculer/channels": "^0.1.2",
     {{/needChannels}}
+    {{/apiIO}}
+    "moleculer-io": "^2.0.0",
+    {{/apiIO}}
     "moleculer": "^0.14.19"
   },
   "engines": {

@@ -1,6 +1,7 @@
 "use strict";
 
 const ApiGateway = require("moleculer-web");
+const SocketIOService = require("moleculer-io");
 const { ApolloService } = require("moleculer-apollo-server");
 
 /**
@@ -16,6 +17,7 @@ module.exports = {
 	name: "api",
 	mixins: [
 		ApiGateway,
+		SocketIOService,
         ApolloService({
             // API Gateway route options
             routeOptions: {
@@ -126,7 +128,10 @@ module.exports = {
 
 			// Options to `server-static` module
 			options: {}
-		}
+		},
+
+		/** @type {import('moleculer-io').IOSetting} */
+        io: {},
 	},
 
 	methods: {
