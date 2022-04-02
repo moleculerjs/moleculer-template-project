@@ -1,6 +1,7 @@
 "use strict";
 
 const ApiGateway = require("moleculer-web");
+const { ApolloService } = require("moleculer-apollo-server");
 
 /**
  * @typedef {import('moleculer').ServiceSchema} ServiceSchema Moleculer's Service Schema
@@ -13,7 +14,17 @@ const ApiGateway = require("moleculer-web");
 /** @type {ServiceSchema} */
 module.exports = {
 	name: "api",
-	mixins: [ApiGateway],
+	mixins: [
+		ApiGateway,
+        ApolloService({
+            // API Gateway route options
+            routeOptions: {
+                path: "/graphql",
+                cors: true,
+                mappingPolicy: "restrict",
+            },
+        }),
+	],
 
 	/** @type {ApiSettingsSchema} More info about settings: https://moleculer.services/docs/0.14/moleculer-web.html */
 	settings: {
