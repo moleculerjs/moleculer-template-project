@@ -74,11 +74,12 @@ module.exports = {
 	created() {},
 
 	/**
-	 * Service merged lifecycle event handler
-	 * More info: https://moleculer.services/docs/0.14/lifecycle.html#merged-event-handler
-	 * @this {import('moleculer').Service}
-	 */
-	merged() {},
+     * Service merged lifecycle event handler
+     * More info: https://moleculer.services/docs/0.14/lifecycle.html#merged-event-handler
+     * @param {import('moleculer').ServiceSchema} schema Service schema after all mixins has been merged
+     * @this {Partial<import('moleculer').Service>}
+     */
+	merged(schema) {},
 
 	/**
 	 * Service started lifecycle event handler
