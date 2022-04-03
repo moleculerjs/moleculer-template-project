@@ -383,7 +383,6 @@ describe("Test GraphQL API gateway", () => {
                 }
             `;
             const res = await request(`http://localhost:${port}/graphql`, query);
-            console.log(res);
             expect(res).toEqual({
                 list: {
                     page: 1,
@@ -407,7 +406,6 @@ describe("Test GraphQL API gateway", () => {
                 }
             `;
             const res = await request(`http://localhost:${port}/graphql`, query);
-            console.log(res);
             expect(res).toEqual({
                 find: [],
             });
@@ -420,7 +418,6 @@ describe("Test GraphQL API gateway", () => {
                 }
             `;
             const res = await request(`http://localhost:${port}/graphql`, query);
-            console.log(res);
             expect(res).toEqual({
                 count: 0,
             });

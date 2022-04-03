@@ -8,12 +8,12 @@ module.exports = {
     // version: 1
 
     /**
-     * Mixins
+     * Mixins. More info: https://moleculer.services/docs/0.14/services.html#Mixins
      */
     mixins: [DbMixin("products")],
 
     /**
-     * Settings
+     * Settings. More info: https://moleculer.services/docs/0.14/services.html#Settings
      * @type {import('moleculer-db').DbServiceSettings}
      */
     settings: {
@@ -63,7 +63,7 @@ module.exports = {
     },
 
     /**
-     * Action Hooks
+     * Action Hooks. More info: https://moleculer.services/docs/0.14/actions.html#Action-hooks
      */
     hooks: {
         before: {
@@ -80,8 +80,8 @@ module.exports = {
     },
 
     /**
-     * Actions
-     */
+	 * Actions. More info: https://moleculer.services/docs/0.14/actions.html
+	 */
     actions: {
         /**
          * The "moleculer-db" mixin registers the following actions:
@@ -189,7 +189,7 @@ module.exports = {
     },
 
     /**
-     * Methods
+     * Methods. More info: https://moleculer.services/docs/0.14/services.html#Methods
      */
     methods: {
         /**

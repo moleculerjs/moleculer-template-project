@@ -15,6 +15,10 @@ const { ApolloService } = require("moleculer-apollo-server");
 /** @type {ServiceSchema} */
 module.exports = {
     name: "api",
+
+    /**
+     * Mixins. More info: https://moleculer.services/docs/0.14/services.html#Mixins
+     */
     mixins: [
         ApiGateway,
         SocketIOService,
@@ -28,7 +32,7 @@ module.exports = {
         }),
     ],
 
-    /** @type {ApiSettingsSchema} More info about settings: https://moleculer.services/docs/0.14/moleculer-web.html */
+    /** @type {ApiSettingsSchema} More info: https://moleculer.services/docs/0.14/moleculer-web.html */
     settings: {
         // Exposed port
         port: process.env.PORT || 3000,
@@ -129,6 +133,9 @@ module.exports = {
         // io: {},
     },
 
+    /**
+     * Methods. More info: https://moleculer.services/docs/0.14/services.html#Methods
+     */
     methods: {
         /**
          * Authenticate the request. It check the `Authorization` token value in the request header.

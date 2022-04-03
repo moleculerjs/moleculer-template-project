@@ -24,6 +24,15 @@
     {{/lint}}
     "jest": "^27.4.7",
     "jest-cli": "^27.4.7",
+    {{#apiGW}}
+    "supertest": "^6.2.2",
+    {{/apiGW}}
+    {{#apiIO}}
+    "socket.io-client": "^4.4.1",
+    {{/apiIO}}
+    {{#apiGQL}}
+    "graphql-request": "^4.2.0",
+    {{/apiGQL}}
     "moleculer-repl": "^0.7.0"
   },
   "dependencies": {

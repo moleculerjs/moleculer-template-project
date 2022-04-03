@@ -5,17 +5,17 @@ module.exports = {
 	name: "greeter",
 
 	/**
-	 * Settings
+	 * Settings. More info: https://moleculer.services/docs/0.14/services.html#Settings
 	 */
 	settings: {},
 
 	/**
-	 * Dependencies
+	 * Dependencies. More info: https://moleculer.services/docs/0.14/services.html#Dependencies
 	 */
 	dependencies: [],
 
 	/**
-	 * Actions
+	 * Actions. More info: https://moleculer.services/docs/0.14/actions.html
 	 */
 	actions: {
 		/**
@@ -57,29 +57,39 @@ module.exports = {
 	},
 
 	/**
-	 * Events
+	 * Events. More info: https://moleculer.services/docs/0.14/events.html
 	 */
 	events: {},
 
 	/**
-	 * Methods
-	 */
+     * Methods. More info: https://moleculer.services/docs/0.14/services.html#Methods
+     */
 	methods: {},
 
 	/**
 	 * Service created lifecycle event handler
+	 * More info: https://moleculer.services/docs/0.14/lifecycle.html#created-event-handler
 	 * @this {import('moleculer').Service}
 	 */
 	created() {},
 
 	/**
+	 * Service merged lifecycle event handler
+	 * More info: https://moleculer.services/docs/0.14/lifecycle.html#merged-event-handler
+	 * @this {import('moleculer').Service}
+	 */
+	merged() {},
+
+	/**
 	 * Service started lifecycle event handler
+	 * More info: https://moleculer.services/docs/0.14/lifecycle.html#started-event-handler
 	 * @this {import('moleculer').Service}
 	 */
 	async started() {},
 
 	/**
 	 * Service stopped lifecycle event handler
+	 * More info: https://moleculer.services/docs/0.14/lifecycle.html#stopped-event-handler
 	 * @this {import('moleculer').Service}
 	 */
 	async stopped() {},

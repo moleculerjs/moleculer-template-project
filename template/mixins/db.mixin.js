@@ -14,8 +14,14 @@ module.exports = function(collection) {
 
 	/** @type {MoleculerDB & ServiceSchema} */
 	const schema = {
+		/**
+     	* Mixins. More info: https://moleculer.services/docs/0.14/services.html#Mixins
+     	*/
 		mixins: [DbService],
 
+		/**
+	 	* Events. More info: https://moleculer.services/docs/0.14/events.html
+	 	*/
 		events: {
 			/**
 			 * Subscribe to the cache clean event. If it's triggered
@@ -30,6 +36,9 @@ module.exports = function(collection) {
 			}
 		},
 
+		/**
+     	* Methods. More info: https://moleculer.services/docs/0.14/services.html#Methods
+     	*/
 		methods: {
 			/**
 			 * Send a cache clearing event when an entity changed.
@@ -43,6 +52,11 @@ module.exports = function(collection) {
 			}
 		},
 
+		/**
+	 	* Service started lifecycle event handler
+	 	* More info: https://moleculer.services/docs/0.14/lifecycle.html#started-event-handler
+	 	* @this {import('moleculer').Service}
+	 	*/
 		async started() {
 			// Check the count of items in the DB. If it's empty,
 			// call the `seedDB` method of the service.
