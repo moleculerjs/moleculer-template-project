@@ -83,7 +83,7 @@ module.exports = function (values) {
             },
             {
                 type: "list",
-                name: "channel",
+                name: "channels",
                 message: "Select a Channels",
                 choices: [
                     { name: "NATS", value: "NATS" },

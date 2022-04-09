@@ -3,6 +3,13 @@
 # {{projectName}}
 This is a [Moleculer](https://moleculer.services/)-based microservices project. Generated with the [Moleculer CLI](https://moleculer.services/docs/0.14/moleculer-cli.html).
 
+## Template architecture
+Moleculer supports different [deployment modes](https://moleculer.services/docs/0.14/clustering.html). 
+
+### Development architecture view
+
+### Production architecture view
+
 ## Usage
 Start the project with `npm run dev` command. 
 {{#apiGW}}

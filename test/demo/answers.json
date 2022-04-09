@@ -1,9 +1,13 @@
 {
     "apiGW": true,
+    "apiGQL": true,
+    "apiIO": true,
     "needTransporter": true,
     "transporter": "NATS",
     "needCacher": false,
     "dbService": true,
+    "needChannels": true,
+    "channels": "NATS",
     "metrics": true,
     "tracing": true,
     "docker": true,
