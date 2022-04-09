@@ -124,7 +124,73 @@ module.exports = function (values) {
 
         metalsmith: {
             before(metalsmith) {
+                /**
+                 * @typedef Metadata
+                 * @property {Boolean} apiGW
+                 * @property {Boolean} apiGQL
+                 * @property {Boolean} apiIO
+                 * @property {Boolean} needTransporter
+                 * @property {String} transporter
+                 * @property {Boolean} needCacher
+                 * @property {Boolean} dbService
+                 * @property {Boolean} needChannels
+                 * @property {String} channels
+                 * @property {Boolean} metrics
+                 * @property {Boolean} tracing
+                 * @property {Boolean} docker
+                 * @property {Boolean} lint
+                 */
+
+                /** @type {Metadata} */
                 const data = metalsmith.metadata();
+
+                //// Flags for distributed mode ////
+                // File: channels-db
+                data.distChannelsDbGreeter =
+                    data.channels && data.dbService && !data.apiGW && !data.apiIO && !data.apiGQL;
+                // File: channels-gql-http
+                data.distChannelsGqlHttpDbGreeter =
+                    data.channels && data.dbService && data.apiGW && !data.apiIO && data.apiGQL;
+                // File: channels-http
+                data.distChannelsHttpDBGreeter =
+                    data.channels && data.dbService && data.apiGW && !data.apiIO && !data.apiGQL;
+                // File: channels-io-gql-http
+                data.distChannelsIoGqlHttpDBGreeter =
+                    data.channels && data.dbService && data.apiGW && data.apiIO && data.apiGQL;
+                // File: channels-io-http
+                data.distChannelsIoHttpDBGreeter =
+                    data.channels && data.dbService && data.apiGW && data.apiIO && !data.apiGQL;
+                // File: db
+                data.distDbGreeter =
+                    !data.channels && data.dbService && !data.apiGW && !data.apiIO && !data.apiGQL;
+                // File: gql-http-db
+                data.distGqlHttpDbGreeter =
+                    !data.channels && data.dbService && data.apiGW && !data.apiIO && data.apiGQL;
+                // File: gql-http
+                data.distGqlHttpGreeter =
+                    !data.channels && !data.dbService && data.apiGW && !data.apiIO && data.apiGQL;
+                // File: greeter
+                data.distGreeter =
+                    !data.channels && !data.dbService && !data.apiGW && !data.apiIO && !data.apiGQL;
+                // File: http-db
+                data.distHttpDbGreeter =
+                    !data.channels && data.dbService && data.apiGW && !data.apiIO && !data.apiGQL;
+                // File: http
+                data.distHttpGreeter =
+                    !data.channels && !data.dbService && data.apiGW && !data.apiIO && !data.apiGQL;
+                // File: io-gql-http-db
+                data.distIoGqlHttpDbGreeter =
+                    !data.channels && data.dbService && data.apiGW && data.apiIO && data.apiGQL;
+                // File: io-gql-http
+                data.distIoGqlHttpGreeter =
+                    !data.channels && !data.dbService && data.apiGW && data.apiIO && data.apiGQL;
+                // File: io-http-db
+                data.distIoHttpDbGreeter =
+                    !data.channels && data.dbService && data.apiGW && data.apiIO && !data.apiGQL;
+                // File: io-http
+                data.distIoHttpGreeter =
+                    !data.channels && !data.dbService && data.apiGW && data.apiIO && !data.apiGQL;
+
                 data.redis = data.cacher == "Redis" || data.transporter == "Redis";
                 data.hasDepends =
                     (data.needCacher && data.cacher !== "Memory") ||

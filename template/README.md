@@ -9,6 +9,65 @@ Moleculer supports different [deployment modes](https://moleculer.services/docs/
 ### Development architecture view
 
 ### Production architecture view
+{{#distChannelsDbGreeter}}
+![distChannelsDbGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/channels-db.svg)
+{{/distChannelsDbGreeter}}
+
+{{#distChannelsGqlHttpDbGreeter}}
+![distChannelsGqlHttpDbGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/channels-gql-http.svg)
+{{/distChannelsGqlHttpDbGreeter}}
+
+{{#distChannelsHttpDBGreeter}}
+![distChannelsHttpDBGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/channels-http.svg)
+{{/distChannelsHttpDBGreeter}}
+
+{{#distChannelsIoGqlHttpDBGreeter}}
+![distChannelsIoGqlHttpDBGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/channels-io-gql-http.svg)
+{{/distChannelsIoGqlHttpDBGreeter}}
+
+{{#distChannelsIoHttpDBGreeter}}
+![distChannelsIoHttpDBGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/channels-io-http.svg)
+{{/distChannelsIoHttpDBGreeter}}
+
+{{#distDbGreeter}}
+![distDbGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/db.svg)
+{{/distDbGreeter}}
+
+{{#distGqlHttpDbGreeter}}
+![distGqlHttpDbGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/gql-http-db.svg)
+{{/distGqlHttpDbGreeter}}
+
+{{#distGqlHttpGreeter}}
+![distGqlHttpGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/gql-http.svg)
+{{/distGqlHttpGreeter}}
+
+{{#distGreeter}}
+![distGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/greeter.svg)
+{{/distGreeter}}
+
+{{#distHttpDbGreeter}}
+![distHttpDbGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/http-db.svg)
+{{/distHttpDbGreeter}}
+
+{{#distHttpGreeter}}
+![distHttpGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/http.svg)
+{{/distHttpGreeter}}
+
+{{#distIoGqlHttpDbGreeter}}
+![distIoGqlHttpDbGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/io-gql-http-db.svg)
+{{/distIoGqlHttpDbGreeter}}
+
+{{#distIoGqlHttpGreeter}}
+![distIoGqlHttpGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/io-gql-http.svg)
+{{/distIoGqlHttpGreeter}}
+
+{{#distIoHttpDbGreeter}}
+![distIoHttpDbGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/io-http-db.svg)
+{{/distIoHttpDbGreeter}}
+
+{{#distIoHttpGreeter}}
+![distIoHttpGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/io-http.svg)
+{{/distIoHttpGreeter}}
 
 ## Usage
 Start the project with `npm run dev` command. 
