@@ -148,57 +148,26 @@ module.exports = function (values) {
                 // File: channels-db
                 data.distChannelsDbGreeter =
                     data.channels && data.dbService && !data.apiGW && !data.apiIO && !data.apiGQL;
-                // File: channels-gql-http
-                data.distChannelsGqlHttpDbGreeter =
-                    data.channels && data.dbService && data.apiGW && !data.apiIO && data.apiGQL;
-                // File: channels-http
-                data.distChannelsHttpDBGreeter =
-                    data.channels && data.dbService && data.apiGW && !data.apiIO && !data.apiGQL;
-                // File: channels-io-gql-http
-                data.distChannelsIoGqlHttpDBGreeter =
-                    data.channels && data.dbService && data.apiGW && data.apiIO && data.apiGQL;
-                // File: channels-io-gql
-                data.distChannelsIoGqlDBGreeter =
-                    data.channels && data.dbService && !data.apiGW && data.apiIO && data.apiGQL;
-                // File: channels-io-http
-                data.distChannelsIoHttpDBGreeter =
-                    data.channels && data.dbService && data.apiGW && data.apiIO && !data.apiGQL;
-                // File: db
-                data.distDbGreeter =
-                    !data.channels && data.dbService && !data.apiGW && !data.apiIO && !data.apiGQL;
-                // File: gql-http-db
-                data.distGqlHttpDbGreeter =
-                    !data.channels && data.dbService && data.apiGW && !data.apiIO && data.apiGQL;
-                // File: gql-http
-                data.distGqlHttpGreeter =
-                    !data.channels && !data.dbService && data.apiGW && !data.apiIO && data.apiGQL;
-                // File: greeter
-                data.distGreeter =
-                    !data.channels && !data.dbService && !data.apiGW && !data.apiIO && !data.apiGQL;
-                // File: http-db
-                data.distHttpDbGreeter =
-                    !data.channels && data.dbService && data.apiGW && !data.apiIO && !data.apiGQL;
-                // File: http
-                data.distHttpGreeter =
-                    !data.channels && !data.dbService && data.apiGW && !data.apiIO && !data.apiGQL;
-                // File: io-gql-db
-                data.distIoGqlDB =
-                    !data.channels && data.dbService && !data.apiGW && data.apiIO && data.apiGQL;
-                // File: io-gql-http-db
-                data.distIoGqlHttpDbGreeter =
-                    !data.channels && data.dbService && data.apiGW && data.apiIO && data.apiGQL;
-                // File: io-gql-http
-                data.distIoGqlHttpGreeter =
-                    !data.channels && !data.dbService && data.apiGW && data.apiIO && data.apiGQL;
-                // File: io-gql
-                data.distIoGqlGreeter =
-                    !data.channels && !data.dbService && !data.apiGW && data.apiIO && data.apiGQL;
-                // File: io-http-db
-                data.distIoHttpDbGreeter =
-                    !data.channels && data.dbService && data.apiGW && data.apiIO && !data.apiGQL;
-                // File: io-http
-                data.distIoHttpGreeter =
-                    !data.channels && !data.dbService && data.apiGW && data.apiIO && !data.apiGQL;
+
+                let selectedOpts = [];
+
+                if (data.channels) selectedOpts.push("channels");
+                if (data.apiIO) selectedOpts.push("io");
+                if (data.apiGQL) selectedOpts.push("gql");
+                if (data.apiGW) selectedOpts.push("http");
+                if (data.dbService) selectedOpts.push("db");
+
+                // If channels=true then the DB is already enabled
+                if (selectedOpts.includes("channels")) {
+                    selectedOpts.splice(selectedOpts.indexOf("db"), 1);
+                }
+
+                // Basic option. Only greeter is enabled
+                if (selectedOpts.length === 0) selectedOpts.push("greeter");
+                data.imageName = selectedOpts.join("-");
+
+                // Folder name for local development
+                data.dirName = data.transporter ? "base_trans" : "base";
 
                 data.redis = data.cacher == "Redis" || data.transporter == "Redis";
                 data.hasDepends =
