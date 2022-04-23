@@ -157,6 +157,9 @@ module.exports = function (values) {
                 // File: channels-io-gql-http
                 data.distChannelsIoGqlHttpDBGreeter =
                     data.channels && data.dbService && data.apiGW && data.apiIO && data.apiGQL;
+                // File: channels-io-gql
+                data.distChannelsIoGqlDBGreeter =
+                    data.channels && data.dbService && !data.apiGW && data.apiIO && data.apiGQL;
                 // File: channels-io-http
                 data.distChannelsIoHttpDBGreeter =
                     data.channels && data.dbService && data.apiGW && data.apiIO && !data.apiGQL;
@@ -178,12 +181,18 @@ module.exports = function (values) {
                 // File: http
                 data.distHttpGreeter =
                     !data.channels && !data.dbService && data.apiGW && !data.apiIO && !data.apiGQL;
+                // File: io-gql-db
+                data.distIoGqlDB =
+                    !data.channels && data.dbService && !data.apiGW && data.apiIO && data.apiGQL;
                 // File: io-gql-http-db
                 data.distIoGqlHttpDbGreeter =
                     !data.channels && data.dbService && data.apiGW && data.apiIO && data.apiGQL;
                 // File: io-gql-http
                 data.distIoGqlHttpGreeter =
                     !data.channels && !data.dbService && data.apiGW && data.apiIO && data.apiGQL;
+                // File: io-gql
+                data.distIoGqlGreeter =
+                    !data.channels && !data.dbService && !data.apiGW && data.apiIO && data.apiGQL;
                 // File: io-http-db
                 data.distIoHttpDbGreeter =
                     !data.channels && data.dbService && data.apiGW && data.apiIO && !data.apiGQL;

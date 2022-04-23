@@ -25,6 +25,10 @@ Moleculer supports different [deployment modes](https://moleculer.services/docs/
 ![distChannelsIoGqlHttpDBGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/channels-io-gql-http.svg)
 {{/distChannelsIoGqlHttpDBGreeter}}
 
+{{#distChannelsIoGqlDBGreeter}}
+![distChannelsIoGqlDBGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/channels-io-gql.svg)
+{{/distChannelsIoGqlDBGreeter}}
+
 {{#distChannelsIoHttpDBGreeter}}
 ![distChannelsIoHttpDBGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/channels-io-http.svg)
 {{/distChannelsIoHttpDBGreeter}}
@@ -53,6 +57,10 @@ Moleculer supports different [deployment modes](https://moleculer.services/docs/
 ![distHttpGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/http.svg)
 {{/distHttpGreeter}}
 
+{{#distIoGqlDB}}
+![distIoGqlDB](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/io-gql-db.svg)
+{{/distIoGqlDB}}
+
 {{#distIoGqlHttpDbGreeter}}
 ![distIoGqlHttpDbGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/io-gql-http-db.svg)
 {{/distIoGqlHttpDbGreeter}}
@@ -60,6 +68,10 @@ Moleculer supports different [deployment modes](https://moleculer.services/docs/
 {{#distIoGqlHttpGreeter}}
 ![distIoGqlHttpGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/io-gql-http.svg)
 {{/distIoGqlHttpGreeter}}
+
+{{#distIoGqlGreeter}}
+![distIoGqlGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/io-gql.svg)
+{{/distIoGqlGreeter}}
 
 {{#distIoHttpDbGreeter}}
 ![distIoHttpDbGreeter](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/io-http-db.svg)
