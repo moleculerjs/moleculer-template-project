@@ -2,7 +2,7 @@
 
 const DbMixin = require("../mixins/db.mixin");
 
-/** @type {import('moleculer').ServiceSchema} ServiceSchema Moleculer's Service Schema */
+/** @type {import('moleculer').ServiceSchema} Moleculer's Service Schema */
 module.exports = {
     name: "products",
     // version: 1
