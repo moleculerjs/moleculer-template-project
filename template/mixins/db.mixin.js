@@ -1,7 +1,8 @@
 "use strict";
 
 const fs = require("fs");
-const DbService	= require("moleculer-db");
+// const DbService	= require("moleculer-db");
+const { Service: DbService, Adapters } = require("@moleculer/database");
 
 /**
  * @typedef {import('moleculer').ServiceSchema} ServiceSchema Moleculer's Service Schema
@@ -9,87 +10,103 @@ const DbService	= require("moleculer-db");
  * @typedef {import('moleculer-db').MoleculerDB} MoleculerDB  Moleculer's DB Service Schema
  */
 
-module.exports = function(collection) {
-	const cacheCleanEventName = `cache.clean.${collection}`;
+module.exports = function (collection) {
+    const cacheCleanEventName = `cache.clean.${collection}`;
 
-	/** @type {MoleculerDB & ServiceSchema} */
-	const schema = {
-		/**
-     	* Mixins. More info: https://moleculer.services/docs/0.14/services.html#Mixins
-     	*/
-		mixins: [DbService],
+    /** @type {MoleculerDB & ServiceSchema} */
+    const schema = {
+        /**
+         * Mixins. More info: https://moleculer.services/docs/0.14/services.html#Mixins
+         */
+        mixins: [
+            DbService({
+                adapter: {
+                    type: "NeDB",
+                    // options: `./data/${collection}.db`,
+                    options: {
+                        neDB: {
+                            inMemoryOnly: true,
+                        },
+                    },
+                },
+                strict: false,
+            }),
+        ],
 
-		/**
-	 	* Events. More info: https://moleculer.services/docs/0.14/events.html
-	 	*/
-		events: {
-			/**
-			 * Subscribe to the cache clean event. If it's triggered
-			 * clean the cache entries for this service.
-			 *
-			 * @param {Context} ctx
-			 */
-			async [cacheCleanEventName]() {
-				if (this.broker.cacher) {
-					await this.broker.cacher.clean(`${this.fullName}.*`);
-				}
-			}
-		},
+        /**
+         * Events. More info: https://moleculer.services/docs/0.14/events.html
+         */
+        events: {
+            /**
+             * Subscribe to the cache clean event. If it's triggered
+             * clean the cache entries for this service.
+             *
+             * @param {Context} ctx
+             */
+            async [cacheCleanEventName]() {
+                if (this.broker.cacher) {
+                    await this.broker.cacher.clean(`${this.fullName}.*`);
+                }
+            },
+        },
 
-		/**
-     	* Methods. More info: https://moleculer.services/docs/0.14/services.html#Methods
-     	*/
-		methods: {
-			/**
-			 * Send a cache clearing event when an entity changed.
-			 *
-			 * @param {String} type
-			 * @param {any} json
-			 * @param {Context} ctx
-			 */
-			async entityChanged(type, json, ctx) {
-				ctx.broadcast(cacheCleanEventName);
-			}
-		},
+        /**
+         * Methods. More info: https://moleculer.services/docs/0.14/services.html#Methods
+         */
+        methods: {
+            /**
+             * Send a cache clearing event when an entity changed.
+             *
+             * @param {String} type
+             * @param {any} json
+             * @param {Context} ctx
+             */
+            async entityChanged(type, json, ctx) {
+                ctx.broadcast(cacheCleanEventName);
+            },
+        },
 
-		/**
-	 	* Service started lifecycle event handler
-	 	* More info: https://moleculer.services/docs/0.14/lifecycle.html#started-event-handler
-	 	* @this {import('moleculer').Service}
-	 	*/
-		async started() {
-			// Check the count of items in the DB. If it's empty,
-			// call the `seedDB` method of the service.
-			if (this.seedDB) {
-				const count = await this.adapter.count();
-				if (count == 0) {
-					this.logger.info(`The '${collection}' collection is empty. Seeding the collection...`);
-					await this.seedDB();
-					this.logger.info("Seeding is done. Number of records:", await this.adapter.count());
-				}
-			}
-		}
-	};
+        /**
+         * Service started lifecycle event handler
+         * More info: https://moleculer.services/docs/0.14/lifecycle.html#started-event-handler
+         * @this {import('moleculer').Service}
+         */
+        async started() {
+            // Check the count of items in the DB. If it's empty,
+            // call the `seedDB` method of the service.
+            if (this.seedDB) {
+                const adapter = await this.getAdapter();
+                const count = await adapter.count();
+                if (count == 0) {
+                    this.logger.info(
+                        `The '${collection}' collection is empty. Seeding the collection...`
+                    );
+                    await this.seedDB();
+                    this.logger.info("Seeding is done. Number of records:", await adapter.count());
+                }
+            }
+        },
+    };
 
-	if (process.env.MONGO_URI) {
-		// Mongo adapter
-		const MongoAdapter = require("moleculer-db-adapter-mongo");
+    /*if (process.env.MONGO_URI) {
+        // Mongo adapter
+        const MongoAdapter = require("moleculer-db-adapter-mongo");
 
-		schema.adapter = new MongoAdapter(process.env.MONGO_URI);
-		schema.collection = collection;
-	} else if (process.env.NODE_ENV === 'test') {
-		// NeDB memory adapter for testing
-		schema.adapter = new DbService.MemoryAdapter();
-	} else {
-		// NeDB file DB adapter
+        schema.adapter = new MongoAdapter(process.env.MONGO_URI);
+        schema.collection = collection;
+    } else if (process.env.NODE_ENV === "test") {
+        // NeDB memory adapter for testing
+        schema.adapter = new DbService.MemoryAdapter();
+    } else {
+        // NeDB file DB adapter
 
-		// Create data folder
-		if (!fs.existsSync("./data")) {
-			fs.mkdirSync("./data");
-		}
+        // Create data folder
+        if (!fs.existsSync("./data")) {
+            fs.mkdirSync("./data");
+        }
 
-		schema.adapter = new DbService.MemoryAdapter({ filename: `./data/${collection}.db` });
-	}
+        schema.adapter = new DbService.MemoryAdapter({ filename: `./data/${collection}.db` });
+    }*/
 
-	return schema;
+    return schema;
 };

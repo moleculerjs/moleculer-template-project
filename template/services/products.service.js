@@ -18,12 +18,11 @@ module.exports = {
      */
     settings: {
         // Available fields in the responses
-        fields: ["_id", "name", "quantity", "price"],
-
-        // Validator for the `create` & `insert` actions.
-        entityValidator: {
-            name: "string|min:3",
-            price: "number|positive",
+        fields: {
+            _id: { type: "string", primaryKey: true, columnName: "_id" },
+            name: { type: "string", required: true, min: 5 },
+            quantity: { type: "number", required: false },
+            price: { type: "number", required: false },
         },
 
         // GraphQL Schema definition
@@ -74,14 +73,14 @@ module.exports = {
              * @param {import('moleculer').Context<{quantity: Number}>} ctx
              */
             create(ctx) {
-                ctx.params.quantity = 0;
+                if (!ctx.params.quantity) ctx.params.quantity = 0;
             },
         },
     },
 
     /**
-	 * Actions. More info: https://moleculer.services/docs/0.14/actions.html
-	 */
+     * Actions. More info: https://moleculer.services/docs/0.14/actions.html
+     */
     actions: {
         /**
          * The "moleculer-db" mixin registers the following actions:
@@ -104,21 +103,21 @@ module.exports = {
                 query: "find: [Product]!",
             },
         },
-        count: {
+        /*count: {
             graphql: {
                 query: "count: Int!",
             },
-        },
+        },*/
         create: {
             graphql: {
                 mutation: "create(name: String!, quantity: Int, price: Int): Product!",
             },
         },
-        insert: {
+        /*insert: {
             graphql: {
                 mutation: "insert(entity: ProductInput!): Product!",
             },
-        },
+        },*/
         update: {
             graphql: {
                 mutation: "update(id: String!, name: String, quantity: Int, price: Int): Product!",
@@ -146,13 +145,12 @@ module.exports = {
             },
             /** @param {import('moleculer').Context<{id: String, value: Number}>} ctx */
             async handler(ctx) {
-                const doc = await this.adapter.updateById(ctx.params.id, {
-                    $inc: { quantity: ctx.params.value },
+                const doc = await this.updateEntity(ctx, {
+                    _id: ctx.params.id,
+                    quantity: ctx.params.value,
                 });
-                const json = await this.transformDocuments(ctx, ctx.params, doc);
-                await this.entityChanged("updated", json, ctx);
 
-                return json;
+                return doc;
             },
         },
 
@@ -170,20 +168,19 @@ module.exports = {
             },
             /** @param {import('moleculer').Context<{id: String, value: Number}>} ctx */
             async handler(ctx) {
-                const doc = await this.adapter.updateById(ctx.params.id, {
-                    $inc: { quantity: -ctx.params.value },
+                const doc = await this.updateEntity(ctx, {
+                    _id: ctx.params.id,
+                    quantity: ctx.params.value,
                 });
-                const json = await this.transformDocuments(ctx, ctx.params, doc);
-                await this.entityChanged("updated", json, ctx);
 
-                if (json.quantity === 0) {
-                    this.logger.info(`Stock of ${json.name} depleted... Ordering more`);
+                if (doc.quantity === 0) {
+                    this.logger.info(`Stock of ${doc.name} depleted... Ordering more`);
                     // Emit a persistent event to order more products
                     // inventory.service will handle this event
-                    this.broker.sendToChannel("order.more", json);
+                    this.broker.sendToChannel("order.more", doc);
                 }
 
-                return json;
+                return doc;
             },
         },
     },
@@ -198,7 +195,8 @@ module.exports = {
          * connection establishing & the collection is empty.
          */
         async seedDB() {
-            await this.adapter.insertMany([
+            const adapter = await this.getAdapter();
+            await adapter.insertMany([
                 { name: "Samsung Galaxy S10 Plus", quantity: 10, price: 704 },
                 { name: "iPhone 11 Pro", quantity: 25, price: 999 },
                 { name: "Huawei P30 Pro", quantity: 15, price: 679 },
