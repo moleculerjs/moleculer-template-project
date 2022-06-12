@@ -40,8 +40,8 @@
     "moleculer-web": "^0.10.4",
     {{/apiGW}}
     {{#dbService}}
-    "moleculer-db": "^0.8.17",
-    "moleculer-db-adapter-mongo": "^0.4.14",
+    "@moleculer/database": "git+https://github.com/moleculerjs/database.git",
+    "nedb": "^1.8.0",
     {{/dbService}}
     {{#if_eq transporter "NATS"}}
     "nats": "^2.4.0",

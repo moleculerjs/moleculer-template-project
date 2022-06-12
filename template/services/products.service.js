@@ -19,7 +19,7 @@ module.exports = {
     settings: {
         // Available fields in the responses
         fields: {
-            _id: { type: "string", primaryKey: true, columnName: "_id" },
+            id: { type: "string", primaryKey: true, columnName: "_id" },
             name: { type: "string", required: true, min: 5 },
             quantity: { type: "number", required: false },
             price: { type: "number", required: false },
@@ -32,7 +32,7 @@ module.exports = {
                 This type describes a Product entity.
                 """			
                 type Product {
-                    _id: String!
+                    id: String!
                     name: String!
                     quantity: Int!
                     price: Int!
@@ -125,7 +125,7 @@ module.exports = {
         },
         remove: {
             graphql: {
-                mutation: "remove(id: String!): Int!",
+                mutation: "remove(id: String!): String!",
             },
         },
 
@@ -145,9 +145,17 @@ module.exports = {
             },
             /** @param {import('moleculer').Context<{id: String, value: Number}>} ctx */
             async handler(ctx) {
+                // Get current quantity
+                const adapter = await this.getAdapter(ctx);
+                const dbEntry = await adapter.findById(ctx.params.id);
+
+                // Compute new quantity
+                const newQuantity = dbEntry.quantity + ctx.params.value;
+
+                // Update DB entry
                 const doc = await this.updateEntity(ctx, {
-                    _id: ctx.params.id,
-                    quantity: ctx.params.value,
+                    id: ctx.params.id,
+                    quantity: newQuantity,
                 });
 
                 return doc;
@@ -168,9 +176,19 @@ module.exports = {
             },
             /** @param {import('moleculer').Context<{id: String, value: Number}>} ctx */
             async handler(ctx) {
+                // Get current quantity
+                const adapter = await this.getAdapter(ctx);
+                const dbEntry = await adapter.findById(ctx.params.id);
+
+                // Compute new quantity
+                const newQuantity = dbEntry.quantity - ctx.params.value;
+
+                if (newQuantity < 0) throw new Error("Quantity cannot be negative");
+
+                // Update DB entry
                 const doc = await this.updateEntity(ctx, {
-                    _id: ctx.params.id,
-                    quantity: ctx.params.value,
+                    id: ctx.params.id,
+                    quantity: newQuantity,
                 });
 
                 if (doc.quantity === 0) {
