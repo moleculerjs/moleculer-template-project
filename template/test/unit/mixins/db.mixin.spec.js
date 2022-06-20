@@ -5,18 +5,17 @@ const { ServiceBroker } = require("moleculer");
 const { Service: DbService, Adapters } = require("@moleculer/database");
 const DbMixin = require("../../../mixins/db.mixin");
 
-describe.skip("Test DB mixin", () => {
+describe("Test DB mixin", () => {
     describe("Test schema generator", () => {
         const broker = new ServiceBroker({ logger: false, cacher: "Memory" });
 
         beforeAll(() => broker.start());
         afterAll(() => broker.stop());
 
-        it.only("check schema properties", async () => {
+        it.skip("check schema properties", async () => {
             const schema = DbMixin("my-collection");
 
-            expect(schema.mixins).toEqual(DbService);
-            // expect(schema.adapter).toBeInstanceOf(Adapters.NeDB);
+            expect(schema.mixins).toEqual([DbService("my-collection")]);
             expect(schema.started).toBeDefined();
             expect(schema.events["cache.clean.my-collection"]).toBeInstanceOf(Function);
         });
@@ -39,18 +38,23 @@ describe.skip("Test DB mixin", () => {
             it("should not call seedDB method", async () => {
                 const schema = DbMixin("my-collection");
 
-                schema.adapter.count = jest.fn(async () => 10);
+                const adapterMock = {
+                    count: jest.fn(async () => 10),
+                };
+                let getAdapterMock = jest.fn(() => {
+                    return Promise.resolve(adapterMock);
+                });
                 const seedDBFn = jest.fn();
 
                 await schema.started.call({
                     broker,
                     logger: broker.logger,
-                    adapter: schema.adapter,
+                    getAdapter: getAdapterMock,
                     seedDB: seedDBFn,
                 });
 
-                expect(schema.adapter.count).toBeCalledTimes(1);
-                expect(schema.adapter.count).toBeCalledWith();
+                expect(adapterMock.count).toBeCalledTimes(1);
+                expect(adapterMock.count).toBeCalledWith();
 
                 expect(seedDBFn).toBeCalledTimes(0);
             });
@@ -58,18 +62,23 @@ describe.skip("Test DB mixin", () => {
             it("should call seedDB method", async () => {
                 const schema = DbMixin("my-collection");
 
-                schema.adapter.count = jest.fn(async () => 0);
+                const adapterMock = {
+                    count: jest.fn(async () => 0),
+                };
+                let getAdapterMock = jest.fn(() => {
+                    return Promise.resolve(adapterMock);
+                });
                 const seedDBFn = jest.fn();
 
                 await schema.started.call({
                     broker,
                     logger: broker.logger,
-                    adapter: schema.adapter,
+                    getAdapter: getAdapterMock,
                     seedDB: seedDBFn,
                 });
 
-                expect(schema.adapter.count).toBeCalledTimes(2);
-                expect(schema.adapter.count).toBeCalledWith();
+                expect(adapterMock.count).toBeCalledTimes(2);
+                expect(adapterMock.count).toBeCalledWith();
 
                 expect(seedDBFn).toBeCalledTimes(1);
                 expect(seedDBFn).toBeCalledWith();

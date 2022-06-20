@@ -4,23 +4,14 @@ const { ServiceBroker, Context } = require("moleculer");
 const { ValidationError } = require("moleculer").Errors;
 const TestService = require("../../../services/products.service");
 
-describe.skip("Test 'products' service", () => {
+describe("Test 'products' service", () => {
     describe("Test actions", () => {
         const broker = new ServiceBroker({ logger: false });
         const service = broker.createService(TestService);
 
-        const findByIdMock = jest.fn();
-        service.getAdapter = jest.fn(
-            Promise.resolve({
-                findById: findByIdMock,
-            })
-        );
-        // jest.spyOn(service.adapter, "updateById");
+        service.seedDB = jest.fn();
         jest.spyOn(service, "updateEntity");
         jest.spyOn(service, "entityChanged");
-
-        beforeAll(() => broker.start());
-        afterAll(() => broker.stop());
 
         const record = {
             _id: "123",
@@ -30,48 +21,48 @@ describe.skip("Test 'products' service", () => {
             createdAt: Date.now(),
         };
 
+        let adapter;
+        beforeAll(async () => {
+            await broker.start();
+
+            adapter = await service.getAdapter();
+
+            await adapter.insert(record);
+        });
+        afterAll(() => broker.stop());
+
         describe("Test 'products.increaseQuantity'", () => {
             it("should call the adapter updateById method & transform result", async () => {
-                findByIdMock.mockImplementation(async () => record);
-                // service.transformDocuments.mockClear();
-                service.entityChanged.mockClear();
-
                 const res = await broker.call("products.increaseQuantity", {
                     id: "123",
                     value: 10,
                 });
                 expect(res).toEqual({
-                    _id: "123",
+                    id: "123",
                     name: "Awesome thing",
                     price: 999,
-                    quantity: 25,
+                    quantity: 35,
                 });
 
-                expect(service.adapter.updateById).toBeCalledTimes(1);
-                expect(service.adapter.updateById).toBeCalledWith("123", {
-                    $inc: { quantity: 10 },
+                expect(service.updateEntity).toBeCalledTimes(1);
+                expect(service.updateEntity).toBeCalledWith(expect.any(Context), {
+                    id: "123",
+                    quantity: 35,
                 });
-
-                expect(service.transformDocuments).toBeCalledTimes(1);
-                expect(service.transformDocuments).toBeCalledWith(
-                    expect.any(Context),
-                    { id: "123", value: 10 },
-                    record
-                );
 
                 expect(service.entityChanged).toBeCalledTimes(1);
                 expect(service.entityChanged).toBeCalledWith(
-                    "updated",
-                    { _id: "123", name: "Awesome thing", price: 999, quantity: 25 },
-                    expect.any(Context)
+                    "update",
+                    { id: "123", name: "Awesome thing", price: 999, quantity: 35 },
+                    expect.any(Context),
+                    {}
                 );
             });
         });
 
         describe("Test 'products.decreaseQuantity'", () => {
             it("should call the adapter updateById method & transform result", async () => {
-                service.adapter.updateById.mockClear();
-                service.transformDocuments.mockClear();
+                service.updateEntity.mockClear();
                 service.entityChanged.mockClear();
 
                 const res = await broker.call("products.decreaseQuantity", {
@@ -79,35 +70,29 @@ describe.skip("Test 'products' service", () => {
                     value: 10,
                 });
                 expect(res).toEqual({
-                    _id: "123",
+                    id: "123",
                     name: "Awesome thing",
                     price: 999,
                     quantity: 25,
                 });
 
-                expect(service.adapter.updateById).toBeCalledTimes(1);
-                expect(service.adapter.updateById).toBeCalledWith("123", {
-                    $inc: { quantity: -10 },
+                expect(service.updateEntity).toBeCalledTimes(1);
+                expect(service.updateEntity).toBeCalledWith(expect.any(Context), {
+                    id: "123",
+                    quantity: 25,
                 });
-
-                expect(service.transformDocuments).toBeCalledTimes(1);
-                expect(service.transformDocuments).toBeCalledWith(
-                    expect.any(Context),
-                    { id: "123", value: 10 },
-                    record
-                );
 
                 expect(service.entityChanged).toBeCalledTimes(1);
                 expect(service.entityChanged).toBeCalledWith(
-                    "updated",
-                    { _id: "123", name: "Awesome thing", price: 999, quantity: 25 },
-                    expect.any(Context)
+                    "update",
+                    { id: "123", name: "Awesome thing", price: 999, quantity: 25 },
+                    expect.any(Context),
+                    {}
                 );
             });
 
             it("should throw error if params is not valid", async () => {
-                service.adapter.updateById.mockClear();
-                service.transformDocuments.mockClear();
+                service.updateEntity.mockClear();
                 service.entityChanged.mockClear();
 
                 expect.assertions(2);
@@ -137,8 +122,14 @@ describe.skip("Test 'products' service", () => {
         const broker = new ServiceBroker({ logger: false });
         const service = broker.createService(TestService);
 
-        // jest.spyOn(service.adapter, "insertMany");
         jest.spyOn(service, "seedDB");
+
+        // Mock the adapter
+        let adapter = {
+            count: jest.fn(async () => 0),
+            insertMany: jest.fn(),
+        };
+        service.getAdapter = async () => adapter;
 
         beforeAll(() => broker.start());
         afterAll(() => broker.stop());
@@ -150,8 +141,8 @@ describe.skip("Test 'products' service", () => {
             });
 
             it("should insert 3 documents", async () => {
-                expect(service.adapter.insertMany).toBeCalledTimes(1);
-                expect(service.adapter.insertMany).toBeCalledWith([
+                expect(adapter.insertMany).toBeCalledTimes(1);
+                expect(adapter.insertMany).toBeCalledWith([
                     { name: "Samsung Galaxy S10 Plus", quantity: 10, price: 704 },
                     { name: "iPhone 11 Pro", quantity: 25, price: 999 },
                     { name: "Huawei P30 Pro", quantity: 15, price: 679 },
