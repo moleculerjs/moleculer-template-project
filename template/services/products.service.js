@@ -25,7 +25,7 @@ module.exports = {
             price: { type: "number", required: false },
         },
 
-        // GraphQL Schema definition
+        // GraphQL Schema definition of a Product
         graphql: {
             type: `
                 """
@@ -83,16 +83,17 @@ module.exports = {
      */
     actions: {
         /**
-         * The "moleculer-db" mixin registers the following actions:
+         * The "@moleculer/database" mixin registers the following actions:
          *  - list
          *  - find
          *  - count
          *  - create
-         *  - insert
          *  - update
          *  - remove
+         *
          */
 
+        //  Add GraphQL schema to default actions
         list: {
             graphql: {
                 query: "list: Response",
@@ -103,21 +104,16 @@ module.exports = {
                 query: "find: [Product]!",
             },
         },
-        /*count: {
+        count: {
             graphql: {
                 query: "count: Int!",
             },
-        },*/
+        },
         create: {
             graphql: {
                 mutation: "create(name: String!, quantity: Int, price: Int): Product!",
             },
         },
-        /*insert: {
-            graphql: {
-                mutation: "insert(entity: ProductInput!): Product!",
-            },
-        },*/
         update: {
             graphql: {
                 mutation: "update(id: String!, name: String, quantity: Int, price: Int): Product!",
@@ -157,6 +153,9 @@ module.exports = {
                     id: ctx.params.id,
                     quantity: newQuantity,
                 });
+
+                // Clear cache
+                // await this.entityChanged("updated", doc, ctx);
 
                 return doc;
             },
@@ -198,6 +197,9 @@ module.exports = {
                     this.broker.sendToChannel("order.more", doc);
                 }
 
+                // Clear cache
+                // await this.entityChanged("updated", doc, ctx);
+
                 return doc;
             },
         },
@@ -211,6 +213,7 @@ module.exports = {
          * Loading sample data to the collection.
          * It is called in the DB.mixin after the database
          * connection establishing & the collection is empty.
+         * @this {import('moleculer').Service}
          */
         async seedDB() {
             const adapter = await this.getAdapter();

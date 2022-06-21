@@ -12,12 +12,12 @@ describe("Test DB mixin", () => {
         beforeAll(() => broker.start());
         afterAll(() => broker.stop());
 
-        it.skip("check schema properties", async () => {
+        it("check schema properties", async () => {
             const schema = DbMixin("my-collection");
 
-            expect(schema.mixins).toEqual([DbService("my-collection")]);
             expect(schema.started).toBeDefined();
             expect(schema.events["cache.clean.my-collection"]).toBeInstanceOf(Function);
+            expect(schema.methods.entityChanged).toBeInstanceOf(Function);
         });
 
         it("check cache event handler", async () => {
