@@ -338,7 +338,7 @@ describe("Test GraphQL API gateway", () => {
         it("test 'product.list'", async () => {
             const query = gql`
                 query {
-                    list {
+                    listProducts {
                         total
                         page
                         pageSize
@@ -354,7 +354,7 @@ describe("Test GraphQL API gateway", () => {
             `;
             const res = await request(`http://localhost:${port}/graphql`, query);
             expect(res).toEqual({
-                list: {
+                listProducts: {
                     page: 1,
                     pageSize: 10,
                     rows: [],
@@ -367,7 +367,7 @@ describe("Test GraphQL API gateway", () => {
         it("test 'product.find'", async () => {
             const query = gql`
                 query {
-                    find {
+                    findProducts {
                         id
                         name
                         quantity
@@ -377,26 +377,26 @@ describe("Test GraphQL API gateway", () => {
             `;
             const res = await request(`http://localhost:${port}/graphql`, query);
             expect(res).toEqual({
-                find: [],
+                findProducts: [],
             });
         });
 
-        /*it("test 'product.count'", async () => {
+        it("test 'product.count'", async () => {
             const query = gql`
                 query {
-                    count
+                    countProducts
                 }
             `;
             const res = await request(`http://localhost:${port}/graphql`, query);
             expect(res).toEqual({
-                count: 0,
+                countProducts: 0,
             });
-        });*/
+        });
 
         it("test 'product.create'", async () => {
             const query = gql`
                 mutation {
-                    create(name: "Super Phone", price: 123) {
+                    createProduct(name: "Super Phone", price: 123) {
                         id
                         name
                         quantity
@@ -406,10 +406,10 @@ describe("Test GraphQL API gateway", () => {
             `;
             const res = await request(`http://localhost:${port}/graphql`, query);
 
-            SUPER_PHONE_ID = res.create.id;
+            SUPER_PHONE_ID = res.createProduct.id;
 
             expect(res).toEqual({
-                create: {
+                createProduct: {
                     id: expect.any(String),
                     name: "Super Phone",
                     quantity: 0,
@@ -421,7 +421,7 @@ describe("Test GraphQL API gateway", () => {
         it("test 'product.update'", async () => {
             const query = gql`
                 mutation {
-                    update(id: "${SUPER_PHONE_ID}", price: 999) {
+                    updateProduct(id: "${SUPER_PHONE_ID}", price: 999) {
                         id
                         name
                         quantity
@@ -432,7 +432,7 @@ describe("Test GraphQL API gateway", () => {
             const res = await request(`http://localhost:${port}/graphql`, query);
 
             expect(res).toEqual({
-                update: {
+                updateProduct: {
                     id: expect.any(String),
                     name: "Super Phone",
                     price: 999,
@@ -490,13 +490,13 @@ describe("Test GraphQL API gateway", () => {
         it("test 'product.remove'", async () => {
             const query = gql`
                 mutation {
-                    remove(id: "${SUPER_PHONE_ID}")
+                    removeProduct(id: "${SUPER_PHONE_ID}")
                 }
             `;
             const res = await request(`http://localhost:${port}/graphql`, query);
 
             expect(res).toEqual({
-                remove: SUPER_PHONE_ID,
+                removeProduct: SUPER_PHONE_ID,
             });
         });
     });

@@ -3,6 +3,7 @@
 const ApiGateway = require("moleculer-web");
 const SocketIOService = require("moleculer-io");
 const { ApolloService } = require("moleculer-apollo-server");
+const { GraphQLJSONObject } = require("graphql-type-json");
 
 /**
  * @typedef {import('moleculer').ServiceSchema} ServiceSchema Moleculer's Service Schema
@@ -28,6 +29,14 @@ module.exports = {
                 path: "/graphql",
                 cors: true,
                 mappingPolicy: "restrict",
+            },
+
+            typeDefs: `
+				scalar JSON
+			`,
+
+            resolvers: {
+                JSON: GraphQLJSONObject,
             },
         }),
     ],

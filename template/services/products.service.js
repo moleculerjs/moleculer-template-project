@@ -14,10 +14,10 @@ module.exports = {
 
     /**
      * Settings. More info: https://moleculer.services/docs/0.14/services.html#Settings
-     * @type {import('moleculer-db').DbServiceSettings}
      */
     settings: {
         // Available fields in the responses
+        // More info: https://github.com/moleculerjs/database/tree/master/docs#fields
         fields: {
             id: { type: "string", primaryKey: true, columnName: "_id" },
             name: { type: "string", required: true, min: 5 },
@@ -39,24 +39,15 @@ module.exports = {
                 }
 
 				"""
-				This type describes Produce service Response
+				This type describes response to list action
 				"""
-				type Response {
+				type ProductListResponse {
                     rows: [Product]!
                     total: Int!
                     page: Int!
                     pageSize: Int!
 					totalPages: Int!
                 }
-
-				"""
-                This type describes input for insert action.
-                """	
-				input ProductInput {
-                    name: String!
-                    quantity: Int
-                    price: Int!
-				}
             `,
         },
     },
@@ -70,7 +61,7 @@ module.exports = {
              * Register a before hook for the `create` action.
              * It sets a default value for the quantity field.
              *
-             * @param {import('moleculer').Context<{quantity: Number}>} ctx
+             * @param {import('moleculer').Context<{name: String, value: Number, quantity?: Number}>} ctx
              */
             create(ctx) {
                 if (!ctx.params.quantity) ctx.params.quantity = 0;
@@ -83,45 +74,53 @@ module.exports = {
      */
     actions: {
         /**
-         * The "@moleculer/database" mixin registers the following actions:
-         *  - list
-         *  - find
-         *  - count
-         *  - create
-         *  - update
-         *  - remove
+         * @moleculer/database mixin registers the following actions:
+         * - count
+         * - create
+         * - find
+         * - get
+         * - list
+         * - remove
+         * - update
          *
+         * More info: https://github.com/moleculerjs/database
          */
 
         //  Add GraphQL schema to default actions
-        list: {
-            graphql: {
-                query: "list: Response",
-            },
-        },
-        find: {
-            graphql: {
-                query: "find: [Product]!",
-            },
-        },
         count: {
             graphql: {
-                query: "count: Int!",
+                query: "countProducts(search: String, searchFields: [String], scope: [String], query: JSON): Int!",
             },
         },
         create: {
             graphql: {
-                mutation: "create(name: String!, quantity: Int, price: Int): Product!",
+                mutation: "createProduct(name: String!, quantity: Int, price: Int): Product!",
             },
         },
-        update: {
+        find: {
             graphql: {
-                mutation: "update(id: String!, name: String, quantity: Int, price: Int): Product!",
+                query: "findProducts(limit: Int, offset: Int, fields: [String], sort: [String], search: String, searchFields: [String], scope: [String], query: JSON): [Product]!",
+            },
+        },
+        get: {
+            graphql: {
+                query: "productById(id: String!, fields: [String], scopes: [String]): Product",
+            },
+        },
+        list: {
+            graphql: {
+                query: "listProducts(page: Int, pageSize: Int, fields: [String], sort: [String], search: String, searchFields: [String], scope: [String], query: JSON): ProductListResponse",
             },
         },
         remove: {
             graphql: {
-                mutation: "remove(id: String!): String!",
+                mutation: "removeProduct(id: String!): String!",
+            },
+        },
+        update: {
+            graphql: {
+                mutation:
+                    "updateProduct(id: String!, name: String, quantity: Int, price: Int): Product!",
             },
         },
 
@@ -143,19 +142,18 @@ module.exports = {
             async handler(ctx) {
                 // Get current quantity
                 const adapter = await this.getAdapter(ctx);
+                /** @type {ProductDBEntry} */
                 const dbEntry = await adapter.findById(ctx.params.id);
 
                 // Compute new quantity
                 const newQuantity = dbEntry.quantity + ctx.params.value;
 
-                // Update DB entry
+                // Update DB entry. Will emit an event to clear the cache
+                /** @type {ProductDBEntry} */
                 const doc = await this.updateEntity(ctx, {
                     id: ctx.params.id,
                     quantity: newQuantity,
                 });
-
-                // Clear cache
-                // await this.entityChanged("updated", doc, ctx);
 
                 return doc;
             },
@@ -177,6 +175,7 @@ module.exports = {
             async handler(ctx) {
                 // Get current quantity
                 const adapter = await this.getAdapter(ctx);
+                /** @type {ProductDBEntry} */
                 const dbEntry = await adapter.findById(ctx.params.id);
 
                 // Compute new quantity
@@ -184,7 +183,8 @@ module.exports = {
 
                 if (newQuantity < 0) throw new Error("Quantity cannot be negative");
 
-                // Update DB entry
+                // Update DB entry. Will emit an event to clear the cache
+                /** @type {ProductDBEntry} */
                 const doc = await this.updateEntity(ctx, {
                     id: ctx.params.id,
                     quantity: newQuantity,
@@ -196,9 +196,6 @@ module.exports = {
                     // inventory.service will handle this event
                     this.broker.sendToChannel("order.more", doc);
                 }
-
-                // Clear cache
-                // await this.entityChanged("updated", doc, ctx);
 
                 return doc;
             },
@@ -224,11 +221,12 @@ module.exports = {
             ]);
         },
     },
-
-    /**
-     * Fired after database connection establishing.
-     */
-    async afterConnected() {
-        // await this.adapter.collection.createIndex({ name: 1 });
-    },
 };
+
+/**
+ * @typedef ProductDBEntry DB Entry
+ * @property {String} id Product ID
+ * @property {String} name name of the product
+ * @property {Number} quantity product quantity
+ * @property {Number} price price per unit
+ */
