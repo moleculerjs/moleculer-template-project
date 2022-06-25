@@ -8,6 +8,11 @@ module.exports = {
      * Methods. More info: https://moleculer.services/docs/0.14/services.html#Methods
      */
     methods: {
+        /**
+         * Method that mimics an external API call to order more units of the product
+         *
+         * @param {import('./products.service').ProductDBEntry} payload
+         */
         async orderProduct(payload) {
             // Simulate external API call to order more units...
             await this.Promise.delay(1000);
@@ -25,7 +30,7 @@ module.exports = {
     channels: {
         /**
          * Order more products
-         * @param {Object} payload
+         * @param {import('./products.service').ProductDBEntry} payload
          * @this {import('moleculer').Service}
          */
         async "order.more"(payload) {

@@ -34,11 +34,11 @@ In the terminal, try using [Moleculer REPL](https://moleculer.services/docs/0.14
 ## Services
 - **api**: API Gateway services
 - **greeter**: Sample service with `hello` and `welcome` actions.
-{{#dbService}}- **products**: Sample DB service. To use with MongoDB, set `MONGO_URI` environment variables and install MongoDB adapter with `npm i moleculer-db-adapter-mongo`.
+{{#dbService}}- **products**: Sample DB service. To use with MongoDB, set `MONGO_URI` environment variables and install MongoDB adapter with `npm install mongodb`.
 {{#channels}}- **inventory**: Sample service with a single [`channel` handler](https://github.com/moleculerjs/moleculer-channels) that uses persistent queues to reliably process the messages.{{/channels}}
 
 ## Mixins
-- **db.mixin**: Database access mixin for services. Based on [moleculer-db](https://github.com/moleculerjs/moleculer-db#readme)
+- **db.mixin**: Database access mixin for services. Based on [moleculer/database](https://github.com/moleculerjs/database)
 {{/dbService}}
 
 

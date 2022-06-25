@@ -1,8 +1,6 @@
 "use strict";
 
 const { ServiceBroker } = require("moleculer");
-// const DbService = require("moleculer-db");
-const { Service: DbService, Adapters } = require("@moleculer/database");
 const DbMixin = require("../../../mixins/db.mixin");
 
 describe("Test DB mixin", () => {
