@@ -10,6 +10,8 @@ describe("Test 'products' service", () => {
         const service = broker.createService(TestService);
         service.seedDB = null; // Disable seeding
 
+        broker.sendToChannel = jest.fn();
+
         beforeAll(() => broker.start());
         afterAll(() => broker.stop());
 
@@ -95,6 +97,32 @@ describe("Test 'products' service", () => {
                 price: 499,
                 quantity: 3,
             });
+            expect(broker.sendToChannel).toBeCalledTimes(0);
+        });
+
+        it("should decrease the quantity - and order more products ", async () => {
+            const res = await broker.call("products.decreaseQuantity", { id: newID, value: 3 });
+            expect(res).toEqual({
+                id: expect.any(String),
+                name: "Awesome item",
+                price: 499,
+                quantity: 0,
+            });
+            expect(broker.sendToChannel).toBeCalledTimes(1);
+            expect(broker.sendToChannel).toBeCalledWith("order.more", {
+                id: expect.any(String),
+                name: "Awesome item",
+                price: 499,
+                quantity: 0,
+            });
+        });
+
+        it("should decrease the quantity - should throw an error ", async () => {
+            try {
+                await broker.call("products.decreaseQuantity", { id: newID, value: 3 });
+            } catch (error) {
+                expect(error.message).toEqual("Quantity cannot be negative");
+            }
         });
 
         it("should remove the updated item", async () => {
