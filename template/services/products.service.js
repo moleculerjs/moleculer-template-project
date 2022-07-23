@@ -123,6 +123,12 @@ module.exports = {
                     "updateProduct(id: String!, name: String, quantity: Int, price: Int): Product!",
             },
         },
+        replace: {
+            graphql: {
+                mutation:
+                    "replaceProduct(id: String!, name: String, quantity: Int, price: Int): Product!",
+            },
+        },
 
         // --- ADDITIONAL ACTIONS ---
 

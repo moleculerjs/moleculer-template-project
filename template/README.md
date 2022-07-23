@@ -5,7 +5,7 @@ This is a [Moleculer](https://moleculer.services/)-based microservices project. 
 
 ## Template architecture
 Moleculer supports different [deployment modes](https://moleculer.services/docs/0.14/clustering.html). The figures below represent the deployment and production architectures.
-Switching between the architectures is automatically handled by moleculer. To run in dev mode use `npm run dev`, for production mode run `npm run dc:up`.
+Switching between the architectures is [automatically](https://moleculer.services/docs/0.14/clustering.html) handled by moleculer. To run in dev mode use `npm run dev`, for production mode run `npm run dc:up`.
 
 ### Development architecture view
 ![dev arch](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/{{dirName}}/{{imageName}}.svg)

@@ -21,10 +21,15 @@ describe("Test HTTP API gateway", () => {
     let productsService = broker.createService(ProductsSchema);
     productsService.seedDB = null; // Disable seeding
 
-    beforeAll(() => broker.start());
+    beforeAll(async () => {
+        await broker.start();
+
+        // Add small delay for API service to register product's custom endpoints
+        await broker.Promise.delay(500);
+    });
     afterAll(() => broker.stop());
 
-    let SUPER_PHONE_ID;
+    let PHONE_ID;
 
     describe('Test "greeter" endpoints', () => {
         it("test '/api/greeter/hello'", () => {
@@ -45,9 +50,9 @@ describe("Test HTTP API gateway", () => {
     });
 
     describe('Test "products" endpoints', () => {
-        it("test '/api/products/list'", () => {
+        it("test 'GET /api/products' - 'products.list' action", () => {
             return HTTPrequest(apiService.server)
-                .get("/api/products/list")
+                .get("/api/products/")
                 .then(res => {
                     expect(res.body).toEqual({
                         page: 1,
@@ -59,15 +64,15 @@ describe("Test HTTP API gateway", () => {
                 });
         });
 
-        it("test '/api/products/find'", () => {
+        it("test 'GET /api/products/all' - 'products.find' action - before insertion", () => {
             return HTTPrequest(apiService.server)
-                .get("/api/products/find")
+                .get("/api/products/all")
                 .then(res => {
                     expect(res.body).toEqual([]);
                 });
         });
 
-        it("test '/api/products/count'", () => {
+        it("test 'GET /api/products/count' - 'products.count' action  - before insertion", () => {
             return HTTPrequest(apiService.server)
                 .get("/api/products/count")
                 .then(res => {
@@ -75,12 +80,12 @@ describe("Test HTTP API gateway", () => {
                 });
         });
 
-        it("test '/api/products/create'", () => {
+        it("test 'POST /api/products'- 'products.create' action", () => {
             return HTTPrequest(apiService.server)
-                .post("/api/products/create")
+                .post("/api/products")
                 .send({ name: "Super Phone", price: 123 })
                 .then(res => {
-                    SUPER_PHONE_ID = res.body.id;
+                    PHONE_ID = res.body.id;
                     expect(res.body).toEqual({
                         id: expect.any(String),
                         name: "Super Phone",
@@ -90,10 +95,33 @@ describe("Test HTTP API gateway", () => {
                 });
         });
 
-        it("test '/api/products/update'", () => {
+        it("test 'GET /api/products/all' - 'products.find' action - after insertion", () => {
             return HTTPrequest(apiService.server)
-                .post("/api/products/update")
-                .send({ id: SUPER_PHONE_ID, price: 999 })
+                .get("/api/products/all")
+                .then(res => {
+                    expect(res.body).toEqual([
+                        {
+                            id: expect.any(String),
+                            name: "Super Phone",
+                            price: 123,
+                            quantity: 0,
+                        },
+                    ]);
+                });
+        });
+
+        it("test 'GET /api/products/count' - 'products.count' action - after insertion", () => {
+            return HTTPrequest(apiService.server)
+                .get("/api/products/count")
+                .then(res => {
+                    expect(res.body).toEqual(1);
+                });
+        });
+
+        it("test 'PATCH /api/products/:id' - 'products.update' action", () => {
+            return HTTPrequest(apiService.server)
+                .patch(`/api/products/${PHONE_ID}`)
+                .send({ price: 999 })
                 .then(res => {
                     expect(res.body).toEqual({
                         id: expect.any(String),
@@ -104,40 +132,70 @@ describe("Test HTTP API gateway", () => {
                 });
         });
 
-        it("test '/api/products/increaseQuantity'", () => {
+        it("test 'PUT /api/products/:id' - 'products.replace' action", () => {
             return HTTPrequest(apiService.server)
-                .post("/api/products/increaseQuantity")
-                .send({ id: SUPER_PHONE_ID, value: 10 })
+                .put(`/api/products/${PHONE_ID}`)
+                .send({ name: "Mega Phone", price: 999, quantity: 10 })
                 .then(res => {
                     expect(res.body).toEqual({
                         id: expect.any(String),
-                        name: "Super Phone",
+                        name: "Mega Phone",
                         price: 999,
                         quantity: 10,
                     });
                 });
         });
 
-        it("test '/api/products/decreaseQuantity'", () => {
+        it("test 'PUT /api/products/increaseQuantity' - 'products.increaseQuantity' action ", () => {
             return HTTPrequest(apiService.server)
-                .post("/api/products/decreaseQuantity")
-                .send({ id: SUPER_PHONE_ID, value: 5 })
+                .post("/api/products/increaseQuantity")
+                .send({ id: PHONE_ID, value: 10 })
                 .then(res => {
                     expect(res.body).toEqual({
                         id: expect.any(String),
-                        name: "Super Phone",
+                        name: "Mega Phone",
                         price: 999,
-                        quantity: 5,
+                        quantity: 20,
                     });
                 });
         });
 
-        it("test '/api/products/remove'", () => {
+        it("test 'PUT /api/products/decreaseQuantity' - 'products.decreaseQuantity'", () => {
+            return HTTPrequest(apiService.server)
+                .post("/api/products/decreaseQuantity")
+                .send({ id: PHONE_ID, value: 5 })
+                .then(res => {
+                    expect(res.body).toEqual({
+                        id: expect.any(String),
+                        name: "Mega Phone",
+                        price: 999,
+                        quantity: 15,
+                    });
+                });
+        });
+
+        it("test 'DELETE /api/products/remove' - 'products.remove' action", () => {
             return HTTPrequest(apiService.server)
                 .post("/api/products/remove")
-                .send({ id: SUPER_PHONE_ID })
+                .send({ id: PHONE_ID })
                 .then(res => {
-                    expect(res.body).toEqual(SUPER_PHONE_ID);
+                    expect(res.body).toEqual(PHONE_ID);
+                });
+        });
+
+        it("test 'GET /api/products/all' - 'products.find' action - after removal", () => {
+            return HTTPrequest(apiService.server)
+                .get("/api/products/all")
+                .then(res => {
+                    expect(res.body).toEqual([]);
+                });
+        });
+
+        it("test 'GET /api/products/count' - 'products.count' action  - after removal", () => {
+            return HTTPrequest(apiService.server)
+                .get("/api/products/count")
+                .then(res => {
+                    expect(res.body).toEqual(0);
                 });
         });
     });
@@ -195,7 +253,7 @@ describe("Test Socket.IO API gateway", () => {
     describe('Test "products" actions', () => {
         let client;
         let port;
-        let SUPER_PHONE_ID;
+        let PHONE_ID;
 
         beforeAll(() => {
             port = apiService.io.httpServer.address().port;
@@ -208,12 +266,12 @@ describe("Test Socket.IO API gateway", () => {
             expect(res).toEqual({ page: 1, pageSize: 10, rows: [], total: 0, totalPages: 0 });
         });
 
-        it("test 'products.find'", async () => {
+        it("test 'products.find' - before insertion", async () => {
             const res = await callAwait(client, "products.find");
             expect(res).toEqual([]);
         });
 
-        it("test 'products.count'", async () => {
+        it("test 'products.count' - before insertion", async () => {
             const res = await callAwait(client, "products.count");
             expect(res).toEqual(0);
         });
@@ -223,7 +281,7 @@ describe("Test Socket.IO API gateway", () => {
                 name: "Super Phone",
                 price: 123,
             });
-            SUPER_PHONE_ID = res.id;
+            PHONE_ID = res.id;
 
             expect(res).toEqual({
                 id: expect.any(String),
@@ -233,9 +291,26 @@ describe("Test Socket.IO API gateway", () => {
             });
         });
 
+        it("test 'products.find' - after insertion", async () => {
+            const res = await callAwait(client, "products.find");
+            expect(res).toEqual([
+                {
+                    id: expect.any(String),
+                    name: "Super Phone",
+                    price: 123,
+                    quantity: 0,
+                },
+            ]);
+        });
+
+        it("test 'products.count' - after insertion", async () => {
+            const res = await callAwait(client, "products.count");
+            expect(res).toEqual(1);
+        });
+
         it("test 'products.update'", async () => {
             const res = await callAwait(client, "products.update", {
-                id: SUPER_PHONE_ID,
+                id: PHONE_ID,
                 price: 999,
             });
 
@@ -247,40 +322,66 @@ describe("Test Socket.IO API gateway", () => {
             });
         });
 
-        it("test 'products.increaseQuantity'", async () => {
-            const res = await callAwait(client, "products.increaseQuantity", {
-                id: SUPER_PHONE_ID,
-                value: 10,
+        it("test 'products.replace'", async () => {
+            const res = await callAwait(client, "products.update", {
+                id: PHONE_ID,
+                name: "Mega Phone",
+                price: 999,
+                quantity: 10,
             });
 
             expect(res).toEqual({
                 id: expect.any(String),
-                name: "Super Phone",
+                name: "Mega Phone",
                 price: 999,
                 quantity: 10,
             });
         });
 
+        it("test 'products.increaseQuantity'", async () => {
+            const res = await callAwait(client, "products.increaseQuantity", {
+                id: PHONE_ID,
+                value: 10,
+            });
+
+            expect(res).toEqual({
+                id: expect.any(String),
+                name: "Mega Phone",
+                price: 999,
+                quantity: 20,
+            });
+        });
+
         it("test 'products.decreaseQuantity'", async () => {
             const res = await callAwait(client, "products.decreaseQuantity", {
-                id: SUPER_PHONE_ID,
+                id: PHONE_ID,
                 value: 5,
             });
 
             expect(res).toEqual({
                 id: expect.any(String),
-                name: "Super Phone",
+                name: "Mega Phone",
                 price: 999,
-                quantity: 5,
+                quantity: 15,
             });
         });
 
         it("test 'products.remove'", async () => {
             const res = await callAwait(client, "products.remove", {
-                id: SUPER_PHONE_ID,
+                id: PHONE_ID,
             });
 
-            expect(res).toEqual(SUPER_PHONE_ID);
+            expect(res).toEqual(PHONE_ID);
+        });
+
+        it("test 'products.find' - after removal", async () => {
+            const res = await callAwait(client, "products.find");
+            expect(res).toEqual([]);
+        });
+
+        it("test 'products.count' - after removal", async () => {
+            const res = await callAwait(client, "products.count");
+            expect(res).toEqual(0);
         });
     });
 });
@@ -329,7 +430,7 @@ describe("Test GraphQL API gateway", () => {
 
     describe('Test "product" actions', () => {
         let port;
-        let SUPER_PHONE_ID;
+        let PHONE_ID;
 
         beforeAll(() => {
             port = apiService.server.address().port;
@@ -364,7 +465,7 @@ describe("Test GraphQL API gateway", () => {
             });
         });
 
-        it("test 'product.find'", async () => {
+        it("test 'product.find' - before insertion", async () => {
             const query = gql`
                 query {
                     findProducts {
@@ -381,7 +482,7 @@ describe("Test GraphQL API gateway", () => {
             });
         });
 
-        it("test 'product.count'", async () => {
+        it("test 'product.count' - before insertion", async () => {
             const query = gql`
                 query {
                     countProducts
@@ -406,7 +507,7 @@ describe("Test GraphQL API gateway", () => {
             `;
             const res = await request(`http://localhost:${port}/graphql`, query);
 
-            SUPER_PHONE_ID = res.createProduct.id;
+            PHONE_ID = res.createProduct.id;
 
             expect(res).toEqual({
                 createProduct: {
@@ -418,10 +519,46 @@ describe("Test GraphQL API gateway", () => {
             });
         });
 
+        it("test 'product.find' - after insertion", async () => {
+            const query = gql`
+                query {
+                    findProducts {
+                        id
+                        name
+                        quantity
+                        price
+                    }
+                }
+            `;
+            const res = await request(`http://localhost:${port}/graphql`, query);
+            expect(res).toEqual({
+                findProducts: [
+                    {
+                        id: expect.any(String),
+                        name: "Super Phone",
+                        price: 123,
+                        quantity: 0,
+                    },
+                ],
+            });
+        });
+
+        it("test 'product.count' - after insertion", async () => {
+            const query = gql`
+                query {
+                    countProducts
+                }
+            `;
+            const res = await request(`http://localhost:${port}/graphql`, query);
+            expect(res).toEqual({
+                countProducts: 1,
+            });
+        });
+
         it("test 'product.update'", async () => {
             const query = gql`
                 mutation {
-                    updateProduct(id: "${SUPER_PHONE_ID}", price: 999) {
+                    updateProduct(id: "${PHONE_ID}", price: 999) {
                         id
                         name
                         quantity
@@ -441,10 +578,33 @@ describe("Test GraphQL API gateway", () => {
             });
         });
 
+        it("test 'product.replace'", async () => {
+            const query = gql`
+                mutation {
+                    replaceProduct(id: "${PHONE_ID}", name: "Mega Phone", price: 999, quantity: 10) {
+                        id
+                        name
+                        quantity
+                        price
+                    }
+                }
+            `;
+            const res = await request(`http://localhost:${port}/graphql`, query);
+
+            expect(res).toEqual({
+                replaceProduct: {
+                    id: expect.any(String),
+                    name: "Mega Phone",
+                    price: 999,
+                    quantity: 10,
+                },
+            });
+        });
+
         it("test 'product.increaseQuantity'", async () => {
             const query = gql`
                 mutation {
-                    increaseQuantity(id: "${SUPER_PHONE_ID}", value: 10) {
+                    increaseQuantity(id: "${PHONE_ID}", value: 10) {
                         id
                         name
                         quantity
@@ -457,9 +617,9 @@ describe("Test GraphQL API gateway", () => {
             expect(res).toEqual({
                 increaseQuantity: {
                     id: expect.any(String),
-                    name: "Super Phone",
+                    name: "Mega Phone",
                     price: 999,
-                    quantity: 10,
+                    quantity: 20,
                 },
             });
         });
@@ -467,7 +627,7 @@ describe("Test GraphQL API gateway", () => {
         it("test 'product.decreaseQuantity'", async () => {
             const query = gql`
                 mutation {
-                    decreaseQuantity(id: "${SUPER_PHONE_ID}", value: 5) {
+                    decreaseQuantity(id: "${PHONE_ID}", value: 5) {
                         id
                         name
                         quantity
@@ -480,9 +640,9 @@ describe("Test GraphQL API gateway", () => {
             expect(res).toEqual({
                 decreaseQuantity: {
                     id: expect.any(String),
-                    name: "Super Phone",
+                    name: "Mega Phone",
                     price: 999,
-                    quantity: 5,
+                    quantity: 15,
                 },
             });
         });
@@ -490,13 +650,42 @@ describe("Test GraphQL API gateway", () => {
         it("test 'product.remove'", async () => {
             const query = gql`
                 mutation {
-                    removeProduct(id: "${SUPER_PHONE_ID}")
+                    removeProduct(id: "${PHONE_ID}")
                 }
             `;
             const res = await request(`http://localhost:${port}/graphql`, query);
 
             expect(res).toEqual({
-                removeProduct: SUPER_PHONE_ID,
+                removeProduct: PHONE_ID,
+            });
+        });
+
+        it("test 'product.find' - after removal", async () => {
+            const query = gql`
+                query {
+                    findProducts {
+                        id
+                        name
+                        quantity
+                        price
+                    }
+                }
+            `;
+            const res = await request(`http://localhost:${port}/graphql`, query);
+            expect(res).toEqual({
+                findProducts: [],
+            });
+        });
+
+        it("test 'product.count' - after removal", async () => {
+            const query = gql`
+                query {
+                    countProducts
+                }
+            `;
+            const res = await request(`http://localhost:${port}/graphql`, query);
+            expect(res).toEqual({
+                countProducts: 0,
             });
         });
     });
