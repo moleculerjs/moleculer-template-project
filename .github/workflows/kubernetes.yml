@@ -56,15 +56,11 @@ jobs:
       run: kind load docker-image ci-test:demo ci-test:demo
 
     - name: Install NGINX Ingress
-      run: |
-        kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.5.1/deploy/static/provider/cloud/deploy.yaml
-        kubectl patch deployments -n ingress-nginx ingress-nginx-controller -p '{"spec":{"template":{"spec":{"containers":[{"name":"controller","ports":[{"containerPort":80,"hostPort":80},{"containerPort":443,"hostPort":443}]}],"nodeSelector":{"ingress-ready":"true"},"tolerations":[{"key":"node-role.kubernetes.io/master","operator":"Equal","effect":"NoSchedule"}]}}}}' 
+      run: kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
 
     - name: Kubectl apply
       working-directory: ./ci-test
       run: |
-        # Fix nginx ingress issue: https://github.com/kubernetes/ingress-nginx/issues/5401#issuecomment-662424306
-        kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
         sed 's/image: ci-test/image: ci-test:demo/g' k8s.yaml | kubectl apply -f -
 
     - name: Sleeping 120 secs
