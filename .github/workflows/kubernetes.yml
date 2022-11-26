@@ -62,6 +62,8 @@ jobs:
     - name: Kubectl apply
       working-directory: ./ci-test
       run: |
+        # Fix nginx ingress issue: https://github.com/kubernetes/ingress-nginx/issues/5401#issuecomment-662424306
+        kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
         sed 's/image: ci-test/image: ci-test:demo/g' k8s.yaml | kubectl apply -f -
 
     - name: Sleeping 120 secs
