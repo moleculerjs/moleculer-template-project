@@ -50,9 +50,12 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: api
-          servicePort: 3000
+          service:
+            name: api
+            port:
+              number: 3000
 
 ---
 #########################################################
@@ -75,6 +78,7 @@ spec:
       containers:
       - name: api
         image: {{projectName}}
+        imagePullPolicy: IfNotPresent
         envFrom:
         - configMapRef:
             name: common-env
@@ -104,6 +108,7 @@ spec:
       containers:
       - name: greeter
         image: {{projectName}}
+        imagePullPolicy: IfNotPresent
         envFrom:
         - configMapRef:
             name: common-env
@@ -133,6 +138,7 @@ spec:
       containers:
       - name: products
         image: {{projectName}}
+        imagePullPolicy: IfNotPresent
         envFrom:
         - configMapRef:
             name: common-env

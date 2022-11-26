@@ -144,7 +144,8 @@ describe("Test 'products' service", () => {
 	describe("Test hooks", () => {
 		const broker = new ServiceBroker({ logger: false });
 		const createActionFn = jest.fn();
-		broker.createService(TestService, {
+		broker.createService({
+			mixins: [TestService],
 			actions: {
 				create: {
 					handler: createActionFn
