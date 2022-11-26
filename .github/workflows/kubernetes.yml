@@ -40,7 +40,7 @@ jobs:
       run: docker run -d --restart=always -p 5000:5000 --name registry registry:2
 
     - name: Build Docker image
-      run: docker build -t ci-test .
+      run: docker build -t ci-test:demo .
       working-directory: ./ci-test
 
     - uses: engineerd/setup-kind@v0.5.0
@@ -53,7 +53,7 @@ jobs:
     - run: kubectl get pods -n kube-system
 
     - name: Load Docker image
-      run: kind load docker-image ci-test ci-test:demo
+      run: kind load docker-image ci-test:demo ci-test:demo
 
     - name: Install NGINX Ingress
       run: |
