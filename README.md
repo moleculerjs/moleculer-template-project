@@ -1,5 +1,5 @@
 # Moleculer template: `project`
-:mortar_board: Moleculer-based microservices project template. [Live demo on now.sh](https://moleculer-demo-project.now.sh/)
+:mortar_board: Moleculer-based microservices project template.
 
 ## Features
 - Moleculer v0.14 with full-detailed `moleculer.config.js` file.
@@ -55,6 +55,6 @@ Create 'moleculer-demo' folder...
 moleculer-template-project is available under the [MIT license](https://tldrlegal.com/license/mit-license).
 
 ## Contact
-Copyright (c) 2021 MoleculerJS
+Copyright (c) 2023 MoleculerJS
 
 [![@moleculerjs](https://img.shields.io/badge/github-moleculerjs-green.svg)](https://github.com/moleculerjs) [![@MoleculerJS](https://img.shields.io/badge/twitter-MoleculerJS-blue.svg)](https://twitter.com/MoleculerJS)
