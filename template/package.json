@@ -28,7 +28,7 @@
   },
   "dependencies": {
     {{#apiGW}}
-    "moleculer-web": "^0.10.2",
+    "moleculer-web": "^0.10.4",
     {{/apiGW}}
     {{#dbService}}
     "moleculer-db": "^0.8.20",
