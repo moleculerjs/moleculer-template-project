@@ -9,7 +9,6 @@ jobs:
     strategy:
       matrix:
         transporter: [NATS, Redis, MQTT, AMQP, AMQP10, STAN, Kafka]
-        # transporter: [NATS, Redis, MQTT, AMQP, STAN, Kafka]
       fail-fast: false
 
     steps:
@@ -67,10 +66,6 @@ jobs:
 
     - name: Sleeping 120 secs
       run: sleep 120
-
-    # - name: Sleeping more in case of AMQP transporter
-    #   run: sleep 240
-    #   if: contains(matrix.transporter, 'AMQP')
 
     - name: Check pods
       run: kubectl get all
