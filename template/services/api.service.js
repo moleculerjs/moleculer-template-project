@@ -79,7 +79,7 @@ module.exports = {
 				}, */
 
 				// Calling options. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Calling-options
-				callingOptions: {},
+				callOptions: {},
 
 				bodyParsers: {
 					json: {
