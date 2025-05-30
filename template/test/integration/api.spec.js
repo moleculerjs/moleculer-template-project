@@ -697,4 +697,4 @@ describe("Test GraphQL API gateway", () => {
         });
     });
 });
-{{#apiGQL}}
+{{/apiGQL}}

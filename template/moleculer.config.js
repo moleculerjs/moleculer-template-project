@@ -200,9 +200,9 @@ module.exports = {
 		customCommands: [
 			{
 				command: "hello <name>",
-				description: "Call the 'greeter.hello' action",
+				description: "Call the 'greeter.welcome' action",
 				async action(broker, args) {
-					const res = await broker.call("greeter.hello", args);
+					const res = await broker.call("greeter.welcome", args);
 	 				console.log(res);
 				}
 			}
