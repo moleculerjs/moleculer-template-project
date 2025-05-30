@@ -35,7 +35,7 @@ module.exports = {
 			routeOptions: {
 				path: "/graphql",
 				cors: true,
-				mappingPolicy: "restrict",
+				mappingPolicy: "restrict"
 			},
 
 			typeDefs: `
@@ -44,8 +44,8 @@ module.exports = {
 
 			resolvers: {
 				JSON: GraphQLJSONObject,
-			},
-		}),
+			}
+		})
 		{{/apiGQL}}
 	],
 

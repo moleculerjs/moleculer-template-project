@@ -188,6 +188,10 @@ module.exports = function (values) {
             "test/unit/mixins/db.mixin.spec.js": "dbService",
             "test/integration/products.service.spec.js": "dbService",
             "test/unit/services/products.spec.js": "dbService",
+            
+            "services/inventory.service.js": "needChannels",
+            "test/unit/services/inventory.spec.js": "needChannels",
+
 
             ".eslintrc.js": "lint",
 

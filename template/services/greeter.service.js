@@ -28,9 +28,9 @@ module.exports = {
 				method: "GET",
 				path: "/hello"
 			},
-			graphql: {
+			{{#apiGQL}}graphql: {
 				query: "hello: String"
-			},
+			},{{/apiGQL}}
 			async handler() {
 				return "Hello Moleculer";
 			}
@@ -46,9 +46,9 @@ module.exports = {
 			params: {
 				name: "string"
 			},
-			graphql: {
+			{{#apiGQL}}graphql: {
 				mutation: "welcome(name: String!): String"
-			},
+			},{{/apiGQL}}
 			/** @param {import('moleculer').Context<{name: String}>} ctx */
 			async handler(ctx) {
 				return `Welcome, ${ctx.params.name}`;

@@ -90,44 +90,44 @@ module.exports = {
 		//  Add GraphQL schema to default actions
 		count: {
 			graphql: {
-				query: "countProducts(search: String, searchFields: [String], scope: [String], query: JSON): Int!",
+				query: "countProducts(search: String, searchFields: [String], scope: [String], query: JSON): Int!"
 			}
 		},
 		create: {
 			graphql: {
-				mutation: "createProduct(name: String!, quantity: Int, price: Int): Product!",
+				mutation: "createProduct(name: String!, quantity: Int, price: Int): Product!"
 			}
 		},
 		find: {
 			graphql: {
-				query: "findProducts(limit: Int, offset: Int, fields: [String], sort: [String], search: String, searchFields: [String], scope: [String], query: JSON): [Product]!",
+				query: "findProducts(limit: Int, offset: Int, fields: [String], sort: [String], search: String, searchFields: [String], scope: [String], query: JSON): [Product]!"
 			}
 		},
 		get: {
 			graphql: {
-				query: "productById(id: String!, fields: [String], scopes: [String]): Product",
+				query: "productById(id: String!, fields: [String], scopes: [String]): Product"
 			}
 		},
 		list: {
 			graphql: {
-				query: "listProducts(page: Int, pageSize: Int, fields: [String], sort: [String], search: String, searchFields: [String], scope: [String], query: JSON): ProductListResponse",
+				query: "listProducts(page: Int, pageSize: Int, fields: [String], sort: [String], search: String, searchFields: [String], scope: [String], query: JSON): ProductListResponse"
 			}
 		},
 		remove: {
 			graphql: {
-				mutation: "removeProduct(id: String!): String!",
+				mutation: "removeProduct(id: String!): String!"
 			}
 		},
 		update: {
 			graphql: {
 				mutation:
-					"updateProduct(id: String!, name: String, quantity: Int, price: Int): Product!",
+					"updateProduct(id: String!, name: String, quantity: Int, price: Int): Product!"
 			}
 		},
 		replace: {
 			graphql: {
 				mutation:
-					"replaceProduct(id: String!, name: String, quantity: Int, price: Int): Product!",
+					"replaceProduct(id: String!, name: String, quantity: Int, price: Int): Product!"
 			}
 		},
 		{{/apiGQL}}
