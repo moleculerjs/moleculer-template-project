@@ -196,7 +196,7 @@ module.exports = function (values) {
             ".eslintrc.js": "lint",
 
             ".dockerignore": "docker",
-            "docker compose.*": "docker",
+            "docker-compose.*": "docker",
             Dockerfile: "docker",
             "k8s.yaml": "docker",
         },
