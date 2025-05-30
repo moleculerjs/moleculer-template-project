@@ -44,6 +44,7 @@
     {{/apiGW}}
     {{#dbService}}
     "@moleculer/database": "^0.2.1",
+    "mongodb": "^6.16.0",
     "nedb": "^1.8.0",
     {{/dbService}}
     {{#if_eq transporter "NATS"}}
