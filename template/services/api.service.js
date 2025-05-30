@@ -115,11 +115,11 @@ module.exports = {
 				bodyParsers: {
 					json: {
 						strict: false,
-						limit: "1MB",
+						limit: "1MB"
 					},
 					urlencoded: {
 						extended: true,
-						limit: "1MB",
+						limit: "1MB"
 					},
 				},
 
@@ -127,8 +127,8 @@ module.exports = {
 				mappingPolicy: "all", // Available values: "all", "restrict"
 
 				// Enable/disable logging
-				logging: true,
-			},
+				logging: true
+			}
 		],
 
 		// Do not log client side errors (does not log an error response when the error.code is 400<=X<500)
@@ -143,8 +143,8 @@ module.exports = {
 			folder: "public",
 
 			// Options to `server-static` module
-			options: {},
-		},
+			options: {}
+		}
 
 		/** @type {import('moleculer-io').IOSetting} */
 		// io: {},
@@ -208,6 +208,6 @@ module.exports = {
 			if (req.$action.auth == "required" && !user) {
 				throw new ApiGateway.Errors.UnAuthorizedError("NO_RIGHTS");
 			}
-		},
-	},
+		}
+	}
 };

@@ -26,14 +26,14 @@ module.exports = {
 		hello: {
 			rest: {
 				method: "GET",
-				path: "/hello",
+				path: "/hello"
 			},
 			graphql: {
-				query: "hello: String",
+				query: "hello: String"
 			},
 			async handler() {
 				return "Hello Moleculer";
-			},
+			}
 		},
 
 		/**
@@ -44,15 +44,15 @@ module.exports = {
 		welcome: {
 			rest: "/welcome",
 			params: {
-				name: "string",
+				name: "string"
 			},
 			graphql: {
-				mutation: "welcome(name: String!): String",
+				mutation: "welcome(name: String!): String"
 			},
 			/** @param {import('moleculer').Context<{name: String}>} ctx */
 			async handler(ctx) {
 				return `Welcome, ${ctx.params.name}`;
-			},
+			}
 		},
 	},
 
@@ -93,5 +93,5 @@ module.exports = {
 	 * More info: https://moleculer.services/docs/0.15/lifecycle.html#stopped-event-handler
 	 * @this {import('moleculer').Service}
 	 */
-	async stopped() {},
+	async stopped() {}
 };

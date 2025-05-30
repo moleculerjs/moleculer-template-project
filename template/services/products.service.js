@@ -22,7 +22,7 @@ module.exports = {
 			id: { type: "string", primaryKey: true, columnName: "_id" },
 			name: { type: "string", required: true, min: 5 },
 			quantity: { type: "number", required: false },
-			price: { type: "number", required: false },
+			price: { type: "number", required: false }
 		},
 
 		{{#apiGQL}}
@@ -49,8 +49,8 @@ module.exports = {
 					pageSize: Int!
 					totalPages: Int!
 				}
-			`,
-		},
+			`
+		}
 		{{/apiGQL}}
 	},
 
@@ -67,8 +67,8 @@ module.exports = {
 			 */
 			create(ctx) {
 				if (!ctx.params.quantity) ctx.params.quantity = 0;
-			},
-		},
+			}
+		}
 	},
 
 	/**
@@ -93,44 +93,44 @@ module.exports = {
 		count: {
 			graphql: {
 				query: "countProducts(search: String, searchFields: [String], scope: [String], query: JSON): Int!",
-			},
+			}
 		},
 		create: {
 			graphql: {
 				mutation: "createProduct(name: String!, quantity: Int, price: Int): Product!",
-			},
+			}
 		},
 		find: {
 			graphql: {
 				query: "findProducts(limit: Int, offset: Int, fields: [String], sort: [String], search: String, searchFields: [String], scope: [String], query: JSON): [Product]!",
-			},
+			}
 		},
 		get: {
 			graphql: {
 				query: "productById(id: String!, fields: [String], scopes: [String]): Product",
-			},
+			}
 		},
 		list: {
 			graphql: {
 				query: "listProducts(page: Int, pageSize: Int, fields: [String], sort: [String], search: String, searchFields: [String], scope: [String], query: JSON): ProductListResponse",
-			},
+			}
 		},
 		remove: {
 			graphql: {
 				mutation: "removeProduct(id: String!): String!",
-			},
+			}
 		},
 		update: {
 			graphql: {
 				mutation:
 					"updateProduct(id: String!, name: String, quantity: Int, price: Int): Product!",
-			},
+			}
 		},
 		replace: {
 			graphql: {
 				mutation:
 					"replaceProduct(id: String!, name: String, quantity: Int, price: Int): Product!",
-			},
+			}
 		},
 		{{/apiGQL}}
 
@@ -143,10 +143,10 @@ module.exports = {
 			rest: "PUT /:id/quantity/increase",
 			params: {
 				id: "string",
-				value: "number|integer|positive",
+				value: "number|integer|positive"
 			},
 			{{#apiGQL}}graphql: {
-				mutation: "increaseQuantity(id: String!, value: Int!): Product",
+				mutation: "increaseQuantity(id: String!, value: Int!): Product"
 			},{{/apiGQL}}
 			/** @param {import('moleculer').Context<{id: String, value: Number}>} ctx */
 			async handler(ctx) {
@@ -166,7 +166,7 @@ module.exports = {
 				});
 
 				return doc;
-			},
+			}
 		},
 
 		/**
@@ -176,10 +176,10 @@ module.exports = {
 			rest: "PUT /:id/quantity/decrease",
 			params: {
 				id: "string",
-				value: "number|integer|positive",
+				value: "number|integer|positive"
 			},
 			{{#apiGQL}}graphql: {
-				mutation: "decreaseQuantity(id: String!, value: Int!): Product",
+				mutation: "decreaseQuantity(id: String!, value: Int!): Product"
 			},{{/apiGQL}}
 			/** @param {import('moleculer').Context<{id: String, value: Number}>} ctx */
 			async handler(ctx) {
@@ -208,8 +208,8 @@ module.exports = {
 				}
 
 				return doc;
-			},
-		},
+			}
+		}
 	},
 
 	/**
@@ -229,8 +229,8 @@ module.exports = {
 				{ name: "iPhone 11 Pro", quantity: 25, price: 999 },
 				{ name: "Huawei P30 Pro", quantity: 15, price: 679 },
 			]);
-		},
-	},
+		}
+	}
 };
 
 /**

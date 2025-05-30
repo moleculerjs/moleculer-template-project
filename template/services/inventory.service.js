@@ -21,7 +21,7 @@ module.exports = {
 
 			this.logger.info(`Ordered more "${orderedQuantity}" units of ${payload.name}.
 			Expected Arrival date ${new Date(new Date().setDate(Math.round(Math.random() * 10)))}`);
-		},
+		}
 	},
 
 	/**
@@ -35,6 +35,6 @@ module.exports = {
 		 */
 		async "order.more"(payload) {
 			await this.orderProduct(payload);
-		},
-	},
+		}
+	}
 };
