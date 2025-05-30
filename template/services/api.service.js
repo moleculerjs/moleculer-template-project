@@ -120,7 +120,7 @@ module.exports = {
 					urlencoded: {
 						extended: true,
 						limit: "1MB"
-					},
+					}
 				},
 
 				// Mapping policy setting. More info: https://moleculer.services/docs/0.15/moleculer-web.html#Mapping-policy

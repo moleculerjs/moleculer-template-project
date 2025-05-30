@@ -53,7 +53,7 @@ module.exports = {
 			async handler(ctx) {
 				return `Welcome, ${ctx.params.name}`;
 			}
-		},
+		}
 	},
 
 	/**
@@ -62,8 +62,8 @@ module.exports = {
 	events: {},
 
 	/**
-     * Methods. More info: https://moleculer.services/docs/0.15/services.html#Methods
-     */
+	 * Methods. More info: https://moleculer.services/docs/0.15/services.html#Methods
+	 */
 	methods: {},
 
 	/**
@@ -74,11 +74,11 @@ module.exports = {
 	created() {},
 
 	/**
-     * Service merged lifecycle event handler
-     * More info: https://moleculer.services/docs/0.15/lifecycle.html#merged-event-handler
-     * @param {import('moleculer').ServiceSchema} schema Service schema after all mixins has been merged
-     * @this {Partial<import('moleculer').Service>}
-     */
+	 * Service merged lifecycle event handler
+	 * More info: https://moleculer.services/docs/0.15/lifecycle.html#merged-event-handler
+	 * @param {import('moleculer').ServiceSchema} schema Service schema after all mixins has been merged
+	 * @this {Partial<import('moleculer').Service>}
+	 */
 	merged(schema) {},
 
 	/**

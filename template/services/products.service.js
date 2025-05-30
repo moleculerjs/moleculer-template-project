@@ -23,9 +23,8 @@ module.exports = {
 			name: { type: "string", required: true, min: 5 },
 			quantity: { type: "number", required: false },
 			price: { type: "number", required: false }
-		},
+		}{{#apiGQL}},
 
-		{{#apiGQL}}
 		// GraphQL Schema definition of a Product
 		graphql: {
 			type: `
@@ -50,8 +49,7 @@ module.exports = {
 					totalPages: Int!
 				}
 			`
-		}
-		{{/apiGQL}}
+		}{{/apiGQL}}
 	},
 
 	/**
@@ -87,8 +85,8 @@ module.exports = {
 		 *
 		 * More info: https://github.com/moleculerjs/database
 		 */
-
 		{{#apiGQL}}
+
 		//  Add GraphQL schema to default actions
 		count: {
 			graphql: {
@@ -162,7 +160,7 @@ module.exports = {
 				/** @type {ProductDBEntry} */
 				const doc = await this.updateEntity(ctx, {
 					id: ctx.params.id,
-					quantity: newQuantity,
+					quantity: newQuantity
 				});
 
 				return doc;
@@ -197,7 +195,7 @@ module.exports = {
 				/** @type {ProductDBEntry} */
 				const doc = await this.updateEntity(ctx, {
 					id: ctx.params.id,
-					quantity: newQuantity,
+					quantity: newQuantity
 				});
 
 				if (doc.quantity === 0) {
@@ -227,7 +225,7 @@ module.exports = {
 			await adapter.insertMany([
 				{ name: "Samsung Galaxy S10 Plus", quantity: 10, price: 704 },
 				{ name: "iPhone 11 Pro", quantity: 25, price: 999 },
-				{ name: "Huawei P30 Pro", quantity: 15, price: 679 },
+				{ name: "Huawei P30 Pro", quantity: 15, price: 679 }
 			]);
 		}
 	}
