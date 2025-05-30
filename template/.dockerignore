@@ -1,5 +1,5 @@
-docker-compose.env
-docker-compose.yml
+docker compose.env
+docker compose.yml
 Dockerfile
 node_modules
 test

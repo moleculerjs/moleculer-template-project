@@ -36,8 +36,8 @@ jobs:
       run: npm test
       working-directory: ./ci-test
 
-    - run: cat ./ci-test/docker-compose.env
-    - run: cat ./ci-test/docker-compose.yml
+    - run: cat ./ci-test/docker compose.env
+    - run: cat ./ci-test/docker compose.yml
 
     - name: Start containers
       run: npm run dc:up
@@ -47,14 +47,14 @@ jobs:
       run: sleep 30
 
     - name: Check containers
-      run: docker-compose ps
+      run: docker compose ps
       working-directory: ./ci-test
 
     - run: curl --silent --show-error --fail http://localhost:3000/api/greeter/hello
     - run: curl --silent --show-error --fail http://localhost:3000/api/products
 
     - name: Check logs
-      run: docker-compose logs
+      run: docker compose logs
       working-directory: ./ci-test
       if: failure()
 
