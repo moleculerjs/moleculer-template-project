@@ -391,51 +391,6 @@ spec:
           name: rabbitmq
 {{/if_eq}}
 
-{{#if_eq transporter "STAN"}}
----
-#########################################################
-# NATS Streaming transporter service
-#########################################################
-apiVersion: v1
-kind: Service
-metadata:
-  name: stan
-spec:
-  selector:
-    app: stan
-  ports:
-  - port: 4222
-    name: stan
-    targetPort: 4222
-
----
-#########################################################
-# NATS Streaming transporter
-#########################################################
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: stan
-spec:
-  selector:
-    matchLabels:
-      app: stan
-  replicas: 1
-  strategy:
-    type: Recreate  
-  template:
-    metadata:
-      labels:
-        app: stan
-    spec:
-      containers:
-      - name: stan
-        image: nats-streaming
-        ports:
-        - containerPort: 4222
-          name: stan
-{{/if_eq}}
-
 {{#if_eq transporter "Kafka"}}
 ---
 #########################################################

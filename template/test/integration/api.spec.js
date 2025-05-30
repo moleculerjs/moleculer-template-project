@@ -3,8 +3,12 @@
 process.env.PORT = 0; // Use random ports during tests
 
 const HTTPrequest = require("supertest");
+{{#apiIO}}
 const io = require("socket.io-client");
+{{/apiIO}}
+{{#apiGQL}}
 const { request, gql } = require("graphql-request");
+{{/apiGQL}}
 
 const { ServiceBroker } = require("moleculer");
 // Load service schemas
@@ -201,6 +205,7 @@ describe("Test HTTP API gateway", () => {
     });
 });
 
+{{#apiIO}}
 describe("Test Socket.IO API gateway", () => {
     let broker = new ServiceBroker({ logger: false });
     broker.sendToChannel = jest.fn();
@@ -385,7 +390,9 @@ describe("Test Socket.IO API gateway", () => {
         });
     });
 });
+{{/apiIO}}
 
+{{#apiGQL}}
 describe("Test GraphQL API gateway", () => {
     let broker = new ServiceBroker({ logger: false });
     broker.sendToChannel = jest.fn();
@@ -690,3 +697,4 @@ describe("Test GraphQL API gateway", () => {
         });
     });
 });
+{{#apiGQL}}

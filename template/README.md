@@ -1,11 +1,11 @@
 [![Moleculer](https://badgen.net/badge/Powered%20by/Moleculer/0e83cd)](https://moleculer.services)
 
 # {{projectName}}
-This is a [Moleculer](https://moleculer.services/)-based microservices project. Generated with the [Moleculer CLI](https://moleculer.services/docs/0.14/moleculer-cli.html).
+This is a [Moleculer](https://moleculer.services/)-based microservices project. Generated with the [Moleculer CLI](https://moleculer.services/docs/0.15/moleculer-cli.html).
 
 ## Template architecture
-Moleculer supports different [deployment modes](https://moleculer.services/docs/0.14/clustering.html). The figures below represent the deployment and production architectures.
-Switching between the architectures is [automatically](https://moleculer.services/docs/0.14/clustering.html) handled by moleculer. To run in dev mode use `npm run dev`, for production mode run `npm run dc:up`.
+Moleculer supports different [deployment modes](https://moleculer.services/docs/0.15/clustering.html). The figures below represent the deployment and production architectures.
+Switching between the architectures is [automatically](https://moleculer.services/docs/0.15/clustering.html) handled by moleculer. To run in dev mode use `npm run dev`, for production mode run `npm run dc:up`.
 
 ### Development architecture view
 ![dev arch](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/{{dirName}}/{{imageName}}.svg)
@@ -21,7 +21,7 @@ After starting, open the http://localhost:3000/ URL in your browser.
 On the welcome page you can test the generated services via API Gateway and check the nodes & services.
 
 {{/apiGW}}
-In the terminal, try using [Moleculer REPL](https://moleculer.services/docs/0.14/moleculer-repl.html) by running the following commands:
+In the terminal, try using [Moleculer REPL](https://moleculer.services/docs/0.15/moleculer-repl.html) by running the following commands:
 - `nodes` - List all connected nodes.
 - `services` - List all the available services.
 - `actions` - List all registered service actions.
@@ -45,8 +45,8 @@ In the terminal, try using [Moleculer REPL](https://moleculer.services/docs/0.14
 ## Useful links
 
 * Moleculer website: https://moleculer.services/
-* Moleculer Documentation: https://moleculer.services/docs/0.14/
-{{#apiGW}}* Moleculer API Gateway: https://moleculer.services/docs/0.14/moleculer-web.html{{/apiGW}}
+* Moleculer Documentation: https://moleculer.services/docs/0.15/
+{{#apiGW}}* Moleculer API Gateway: https://moleculer.services/docs/0.15/moleculer-web.html{{/apiGW}}
 {{#apiGQL}}* Moleculer GraphQL Gateway: https://github.com/moleculerjs/moleculer-apollo-server{{/apiGQL}}
 {{#apiIO}}* Moleculer Socket.IO Gateway: https://github.com/moleculerjs/moleculer-io{{/apiIO}}
 {{#channels}}* Moleculer Channels: https://github.com/moleculerjs/moleculer-channels{{/channels}}

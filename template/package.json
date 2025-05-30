@@ -78,7 +78,7 @@
     "moleculer": "^0.14.19"
   },
   "engines": {
-    "node": ">= 12.x.x"
+    "node": ">= 20.x.x"
   },
   "jest": {
     "coverageDirectory": "../coverage",

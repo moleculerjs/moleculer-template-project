@@ -14,13 +14,13 @@ module.exports = function (values) {
                 type: "confirm",
                 name: "apiGQL",
                 message: "Add GraphQL Gateway?",
-                default: true,
+                default: false,
             },
             {
                 type: "confirm",
                 name: "apiIO",
                 message: "Add Socket.Io Gateway?",
-                default: true,
+                default: false,
             },
             {
                 type: "confirm",
@@ -38,9 +38,8 @@ module.exports = function (values) {
                     { name: "MQTT", value: "MQTT" },
                     { name: "AMQP", value: "AMQP" },
                     { name: "TCP", value: "TCP" },
-                    { name: "NATS Streaming", value: "STAN" },
                     { name: "Kafka", value: "Kafka" },
-                    { name: "AMQP 1.0 (experimental)", value: "AMQP10" },
+                    { name: "AMQP 1.0", value: "AMQP10" },
                 ],
                 when(answers) {
                     return answers.needTransporter;
@@ -169,7 +168,7 @@ module.exports = function (values) {
                 // Folder name for local development
                 data.dirName = data.transporter ? "base_trans" : "base";
 
-                data.redis = data.cacher == "Redis" || data.transporter == "Redis";
+                data.redis = data.cacher == "Redis" || data.transporter == "Redis" || data.channels == "Redis";
                 data.hasDepends =
                     (data.needCacher && data.cacher !== "Memory") ||
                     (data.needTransporter && data.transporter != "TCP");
