@@ -67,9 +67,9 @@ module.exports = {
 	{{#if needCacher}}cacher: "{{cacher}}"{{/if}}{{#unless needCacher}}cacher: null{{/unless}},
 
 	// Define a serializer.
-	// Available values: "JSON", "Avro", "ProtoBuf", "MsgPack", "Notepack", "Thrift".
+	// Available values: "JSON", "JSONExt", "MsgPack", "Notepack", "CBOR".
 	// More info: https://moleculer.services/docs/0.15/networking.html#Serialization
-	serializer: "JSON",
+	serializer: "JSONExt",
 
 	// Number of milliseconds to wait before reject a request with a RequestTimeout error. Disabled: 0
 	requestTimeout: 10 * 1000,
@@ -194,8 +194,20 @@ module.exports = {
 	// Register custom middlewares
 	middlewares: [],
 
-	// Register custom REPL commands.
-	replCommands: null,
+	// REPL options
+	replOptions: {
+		// Custom REPL commands
+		customCommands: [
+			{
+				command: "hello <name>",
+				description: "Call the 'greeter.hello' action",
+				async action(broker, args) {
+					const res = await broker.call("greeter.hello", args);
+	 				console.log(res);
+				}
+			}
+		]
+	},
 
 	// Called after broker created.
 	created(broker) {
