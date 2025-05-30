@@ -52,6 +52,8 @@ jobs:
 
     - run: curl --silent --show-error --fail http://localhost:3000/api/greeter/hello
     - run: curl --silent --show-error --fail http://localhost:3000/api/products
+    - run: |
+        curl --silent --show-error --fail -H "Content-Type: application/json" --data '{"query": "query { hello } "}' http://localhost:3000/graphql
 
     - name: Check logs
       run: docker compose logs

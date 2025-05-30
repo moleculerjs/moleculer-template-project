@@ -1,5 +1,9 @@
 "use strict";
 
+{{#needChannels}}
+const ChannelMiddleware = require("@moleculer/channels").Middleware;
+{{/needChannels}}
+
 /**
  * Moleculer ServiceBroker configuration file
  *
@@ -106,7 +110,7 @@ module.exports = {
 		// Enable feature
 		enabled: false,
 		// Number of milliseconds to wait before shuting down the process.
-		shutdownTimeout: 5000,
+		shutdownTimeout: 5000
 	},
 
 	// Disable built-in request & emit balancer. (Transporter must support it, as well.). More info: https://moleculer.services/docs/0.15/networking.html#Disabled-balancer
@@ -144,7 +148,7 @@ module.exports = {
 		// Maximum concurrent executions.
 		concurrency: 10,
 		// Maximum size of queue
-		maxQueueSize: 100,
+		maxQueueSize: 100
 	},
 
 	// Enable action & event parameter validation. More info: https://moleculer.services/docs/0.15/validating.html
@@ -192,7 +196,12 @@ module.exports = {
 	},
 
 	// Register custom middlewares
-	middlewares: [],
+	middlewares: [
+		{{#needChannels}}
+		ChannelMiddleware({
+			adapter: process.env.CHANNEL_URL || "Fake"
+		}){{/needChannels}}
+	],
 
 	// REPL options
 	replOptions: {
@@ -203,7 +212,7 @@ module.exports = {
 				description: "Call the 'greeter.welcome' action",
 				async action(broker, args) {
 					const res = await broker.call("greeter.welcome", args);
-	 				console.log(res);
+					console.log(res);
 				}
 			}
 		]

@@ -47,21 +47,21 @@
     "mongodb": "^6.16.0",
     "nedb": "^1.8.0",
     {{/dbService}}
-    {{#if_eq transporter "NATS"}}
+    {{#nats}}
     "nats": "^2.29.3",
-    {{/if_eq}}
+    {{/nats}}
     {{#if_eq transporter "MQTT"}}
     "mqtt": "^5.13.0",
     {{/if_eq}}
-    {{#if_eq transporter "AMQP"}}
+    {{#rabbitmq}}
     "amqplib": "^0.10.8",
-    {{/if_eq}}
+    {{/rabbitmq}}
     {{#if_eq transporter "AMQP10"}}
     "rhea-promise": "^3.0.3",
     {{/if_eq}}
-    {{#if_eq transporter "Kafka"}}
+    {{#kafka}}
     "kafkajs": "^2.2.4",
-    {{/if_eq}}
+    {{/kafka}}
     {{#redis}}
     "ioredis": "^5.6.1",
     {{/redis}}

@@ -169,6 +169,9 @@ module.exports = function (values) {
                 data.dirName = data.transporter ? "base_trans" : "base";
 
                 data.redis = data.cacher == "Redis" || data.transporter == "Redis" || data.channels == "Redis";
+                data.nats = data.transporter == "NATS" || data.channels == "NATS";
+                data.rabbitmq = data.transporter == "AMQP" || data.channels == "AMQP";
+                data.kafka = data.transporter == "Kafka" || data.channels == "Kafka";
                 data.hasDepends =
                     (data.needCacher && data.cacher !== "Memory") ||
                     (data.needTransporter && data.transporter != "TCP");

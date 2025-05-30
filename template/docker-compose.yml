@@ -1,5 +1,3 @@
-version: "3.3"
-
 services:
 
 {{#apiGW}}
@@ -14,27 +12,24 @@ services:
 {{#hasDepends}}
     depends_on:
 {{/hasDepends}}
-{{#if_eq transporter "NATS"}}
+{{#nats}}
       - nats
-{{/if_eq}}
+{{/nats}}
 {{#redis}}
       - redis
 {{/redis}}
 {{#if_eq transporter "MQTT"}}
       - mqtt
 {{/if_eq}}
-{{#if_eq transporter "AMQP"}}
+{{#rabbitmq}}
       - rabbitmq
-{{/if_eq}}
+{{/rabbitmq}}
 {{#if_eq transporter "AMQP10"}}
       - activemq
 {{/if_eq}}
-{{#if_eq transporter "STAN"}}
-      - stan
-{{/if_eq}}
-{{#if_eq transporter "Kafka"}}
+{{#kafka}}
       - zookeeper
-{{/if_eq}}
+{{/kafka}}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.api-gw.rule=PathPrefix(`/`)"
@@ -53,31 +48,53 @@ services:
 {{#hasDepends}}
     depends_on:
 {{/hasDepends}}
-{{#if_eq transporter "NATS"}}
+{{#nats}}
       - nats
-{{/if_eq}}
+{{/nats}}
 {{#redis}}
       - redis
 {{/redis}}
 {{#if_eq transporter "MQTT"}}
       - mqtt
 {{/if_eq}}
-{{#if_eq transporter "AMQP"}}
+{{#rabbitmq}}
       - rabbitmq
-{{/if_eq}}
+{{/rabbitmq}}
 {{#if_eq transporter "AMQP10"}}
       - activemq
 {{/if_eq}}
-{{#if_eq transporter "STAN"}}
-      - stan
-{{/if_eq}}
-{{#if_eq transporter "Kafka"}}
+{{#kafka}}
       - zookeeper
-{{/if_eq}}
+{{/kafka}}
     networks:
       - internal
-{{#dbService}}
 
+{{#needChannels}}
+  inventory:
+    build:
+      context: .
+    image: {{projectName}}
+    env_file: docker-compose.env
+    environment:
+      SERVICES: inventory
+    depends_on:
+{{#nats}}
+      - nats
+{{/nats}}
+{{#redis}}
+      - redis
+{{/redis}}
+{{#rabbitmq}}
+      - rabbitmq
+{{/rabbitmq}}
+{{#kafka}}
+      - zookeeper
+{{/kafka}}
+    networks:
+      - internal
+{{/needChannels}}
+
+{{#dbService}}
   products:
     build:
       context: .
@@ -87,44 +104,41 @@ services:
       SERVICES: products
     depends_on:
       - mongo
-{{#if_eq transporter "NATS"}}
+{{#nats}}
       - nats
-{{/if_eq}}
+{{/nats}}
 {{#redis}}
       - redis
 {{/redis}}
 {{#if_eq transporter "MQTT"}}
       - mqtt
 {{/if_eq}}
-{{#if_eq transporter "AMQP"}}
+{{#rabbitmq}}
       - rabbitmq
-{{/if_eq}}
+{{/rabbitmq}}
 {{#if_eq transporter "AMQP10"}}
       - activemq
 {{/if_eq}}
-{{#if_eq transporter "STAN"}}
-      - stan
-{{/if_eq}}
-{{#if_eq transporter "Kafka"}}
+{{#kafka}}
       - zookeeper
-{{/if_eq}}
+{{/kafka}}
     networks:
       - internal
 
   mongo:
-    image: mongo:4
+    image: mongo:6
     volumes:
       - data:/data/db
     networks:
       - internal
 {{/dbService}}
-{{#if_eq transporter "NATS"}}
+{{#nats}}
 
   nats:
     image: nats:2
     networks:
       - internal
-{{/if_eq}}
+{{/nats}}
 {{#redis}}
 
   redis:
@@ -139,13 +153,13 @@ services:
     networks:
       - internal
 {{/if_eq}}
-{{#if_eq transporter "AMQP"}}
+{{#rabbitmq}}
 
   rabbitmq:
     image: rabbitmq:3
     networks:
       - internal
-{{/if_eq}}
+{{/rabbitmq}}
 {{#if_eq transporter "AMQP10"}}
 
   activemq:
@@ -153,24 +167,17 @@ services:
     networks:
       - internal
 {{/if_eq}}
-{{#if_eq transporter "STAN"}}
-
-  stan:
-    image: nats-streaming
-    networks:
-      - internal
-{{/if_eq}}
-{{#if_eq transporter "Kafka"}}
+{{#kafka}}
 
   zookeeper:
-    image: bitnami/zookeeper
+    image: bitnami/zookeeper:3.9
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
     networks:
       - internal
 
   kafka:
-    image: bitnami/kafka
+    image: bitnami/kafka:3.9
     environment:
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
@@ -179,7 +186,7 @@ services:
       - zookeeper
     networks:
       - internal
-{{/if_eq}}
+{{/kafka}}
 
 {{#apiGW}}
   traefik:
