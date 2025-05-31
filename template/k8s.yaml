@@ -220,7 +220,7 @@ spec:
 
 {{/dbService}}
 
-{{#if_eq transporter "NATS"}}
+{{#nats}}
 ---
 #########################################################
 # NATS transporter service
@@ -263,7 +263,7 @@ spec:
         ports:
         - containerPort: 4222
           name: nats
-{{/if_eq}}
+{{/nats}}
 
 {{#redis}}
 ---
@@ -355,7 +355,7 @@ spec:
           name: mqtt
 {{/if_eq}}
 
-{{#if_eq transporter "AMQP"}}
+{{#rabbitmq}}
 ---
 #########################################################
 # AMQP (RabbitMQ) transporter service
@@ -398,9 +398,9 @@ spec:
         ports:
         - containerPort: 5672
           name: rabbitmq
-{{/if_eq}}
+{{/rabbitmq}}
 
-{{#if_eq transporter "Kafka"}}
+{{#kafka}}
 ---
 #########################################################
 # Zookeeper service
@@ -496,7 +496,7 @@ spec:
           value: PLAINTEXT://kafka:9092
         - name: ALLOW_PLAINTEXT_LISTENER
           value: "yes"
-{{/if_eq}}
+{{/kafka}}
 
 {{#if_eq transporter "AMQP10"}}
 ---
