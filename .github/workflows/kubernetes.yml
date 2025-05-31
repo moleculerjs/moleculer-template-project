@@ -73,17 +73,14 @@ jobs:
 
     - name: Kubectl apply
       working-directory: ./ci-test
-      run: kubectl apply -f k8s.yaml
-
-    - name: Sleeping 180 secs
-      run: sleep 180
-
-    # - name: Sleeping more in case of AMQP transporter
-    #   run: sleep 240
-    #   if: contains(matrix.transporter, 'AMQP')
+      run: |
+        kubectl apply -f k8s.yaml
+        kubectl rollout status deployment greeter --timeout=180s
 
     - name: Check pods
-      run: kubectl get all
+      run: |
+        kubectl get all
+        kubectl describe pod greeter
 
     - run: curl --silent --show-error --fail http://ci-test.127.0.0.1.nip.io/api/greeter/hello
     - run: curl --silent --show-error --fail http://ci-test.127.0.0.1.nip.io/api/products
@@ -92,5 +89,5 @@ jobs:
       run: kubectl describe pod greeter
       if: failure()
     - name: Check logs
-      run: kubectl logs deployment/products
+      run: kubectl logs deployment/greeter
       if: failure()
