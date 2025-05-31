@@ -36,16 +36,6 @@ jobs:
       run: npm test
       working-directory: ./ci-test
 
-    - name: Start a local Docker Registry
-      run: docker run -d --restart=always -p 5000:5000 --name registry registry:2
-
-    - name: Set Registry IP for KinD
-      run: |
-        REGISTRY_IP=$(docker inspect -f '{{.NetworkSettings.IPAddress}}' registry)
-        echo $REGISTRY_IP
-        sed -i "s/registry:5000/$REGISTRY_IP:5000/g" test/ci/kind-config.yaml
-        cat test/ci/kind-config.yaml
-
     - name: Build Docker image
       run: docker build -t ci-test .
       working-directory: ./ci-test
@@ -77,10 +67,12 @@ jobs:
         kubectl apply -f k8s.yaml
         kubectl rollout status deployment greeter --timeout=180s
 
+    - name: Sleeping 90 secs (for Redis, Mongo...etc)
+      run: sleep 90
+
     - name: Check pods
       run: |
         kubectl get all
-        kubectl describe pod greeter
 
     - run: curl --silent --show-error --fail http://ci-test.127.0.0.1.nip.io/api/greeter/hello
     - run: curl --silent --show-error --fail http://ci-test.127.0.0.1.nip.io/api/products
