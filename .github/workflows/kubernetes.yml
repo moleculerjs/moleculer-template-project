@@ -50,12 +50,6 @@ jobs:
       run: docker build -t ci-test .
       working-directory: ./ci-test
 
-    - name: Tagging
-      run: docker tag ci-test localhost:5000/ci-test
-
-    - name: Push Docker image
-      run: docker push localhost:5000/ci-test
-
     - uses: engineerd/setup-kind@v0.5.0
       with:
         version: "v0.29.0"
@@ -63,7 +57,10 @@ jobs:
 
     - run: kubectl cluster-info
     - run: kubectl get nodes
-    - run: kubectl get pods -n kube-system
+    - run: kubectl get pods --all-namespaces
+
+    - name: Load built image
+      run: kind load docker-image ci-test
 
     - name: Install NGINX Ingress
       run: |
@@ -76,9 +73,7 @@ jobs:
 
     - name: Kubectl apply
       working-directory: ./ci-test
-      run: |
-        sed 's/image: ci-test/image: localhost:5000\/ci-test/g' k8s.yaml
-        sed 's/image: ci-test/image: localhost:5000\/ci-test/g' k8s.yaml | kubectl apply -f -
+      run: kubectl apply -f k8s.yaml
 
     - name: Sleeping 180 secs
       run: sleep 180
@@ -93,6 +88,9 @@ jobs:
     - run: curl --silent --show-error --fail http://ci-test.127.0.0.1.nip.io/api/greeter/hello
     - run: curl --silent --show-error --fail http://ci-test.127.0.0.1.nip.io/api/products
 
+    - name: Check Pod
+      run: kubectl describe pod greeter
+      if: failure()
     - name: Check logs
       run: kubectl logs deployment/products
       if: failure()
