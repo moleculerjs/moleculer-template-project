@@ -1,6 +1,10 @@
 name: Test with Kubernetes
 
-on: [push, pull_request]
+on: 
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 10 * * 3'
 
 jobs:
   test:

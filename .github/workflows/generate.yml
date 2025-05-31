@@ -1,6 +1,10 @@
 name: Generate a demo project
 
-on: [push, pull_request]
+on: 
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 10 * * 3'
 
 jobs:
   generate:
