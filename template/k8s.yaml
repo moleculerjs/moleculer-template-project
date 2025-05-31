@@ -18,10 +18,10 @@ data:
   {{#if_eq cacher "Memory"}}CACHER: Memory{{/if_eq}}
   {{#if_eq cacher "Redis"}}CACHER: redis://redis:6379{{/if_eq}}
   {{#dbService}}MONGO_URI: mongodb://mongo/{{projectName}}{{/dbService}}
-  {{#if_eq channels "NATS"}}CHANNEL_URL=nats://nats:4222{{/if_eq}}
-  {{#if_eq channels "Redis"}}CHANNEL_URL=redis://redis:6379{{/if_eq}}
-  {{#if_eq channels "AMQP"}}CHANNEL_URL=amqp://rabbitmq:5672{{/if_eq}}
-  {{#if_eq channels "Kafka"}}CHANNEL_URL=kafka://kafka:9092{{/if_eq}}
+  {{#if_eq channels "NATS"}}CHANNEL_URL: nats://nats:4222{{/if_eq}}
+  {{#if_eq channels "Redis"}}CHANNEL_URL: redis://redis:6379{{/if_eq}}
+  {{#if_eq channels "AMQP"}}CHANNEL_URL: amqp://rabbitmq:5672{{/if_eq}}
+  {{#if_eq channels "Kafka"}}CHANNEL_URL: kafka://kafka:9092{{/if_eq}}
 
 {{#apiGW}}
 ---
