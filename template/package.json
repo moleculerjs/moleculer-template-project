@@ -45,7 +45,7 @@
     {{#dbService}}
     "@moleculer/database": "^0.3.0",
     "mongodb": "^6.16.0",
-    "nedb": "^1.8.0",
+    "@seald-io/nedb": "^4.1.1",
     {{/dbService}}
     {{#nats}}
     "nats": "^2.29.3",
