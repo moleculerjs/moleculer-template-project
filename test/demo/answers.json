@@ -3,7 +3,7 @@
     "apiGQL": true,
     "apiIO": true,
     "needTransporter": true,
-    "transporter": "Redis",
+    "transporter": "TCP",
     "needCacher": true,
     "cacher": "Memory",
     "dbService": true,

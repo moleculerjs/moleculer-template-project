@@ -11,7 +11,6 @@ services:
       PORT: 3000
 {{#hasDepends}}
     depends_on:
-{{/hasDepends}}
 {{#nats}}
       - nats
 {{/nats}}
@@ -30,6 +29,7 @@ services:
 {{#kafka}}
       - zookeeper
 {{/kafka}}
+{{/hasDepends}}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.api-gw.rule=PathPrefix(`/`)"
@@ -47,7 +47,6 @@ services:
       SERVICES: greeter
 {{#hasDepends}}
     depends_on:
-{{/hasDepends}}
 {{#nats}}
       - nats
 {{/nats}}
@@ -66,6 +65,7 @@ services:
 {{#kafka}}
       - zookeeper
 {{/kafka}}
+{{/hasDepends}}
     networks:
       - internal
 

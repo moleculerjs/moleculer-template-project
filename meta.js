@@ -174,7 +174,8 @@ module.exports = function (values) {
                 data.kafka = data.transporter == "Kafka" || data.channels == "Kafka";
                 data.hasDepends =
                     (data.needCacher && data.cacher !== "Memory") ||
-                    (data.needTransporter && data.transporter != "TCP");
+                    (data.needTransporter && data.transporter != "TCP") ||
+                    data.needChannels;
             },
         },
 
