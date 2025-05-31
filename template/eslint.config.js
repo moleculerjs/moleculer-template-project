@@ -32,7 +32,7 @@ module.exports = [
 			"no-trailing-spaces": ["error"],
 			"no-process-exit": ["off"],
 			"node/no-unpublished-require": 0
-		},
+		}
 	},
 	{
 		files: ["test/**/*.js"],

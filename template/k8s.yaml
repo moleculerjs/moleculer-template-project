@@ -13,12 +13,15 @@ data:
   {{#if_eq transporter "Redis"}}TRANSPORTER: redis://redis:6379{{/if_eq}}
   {{#if_eq transporter "MQTT"}}TRANSPORTER: mqtt://mqtt:1883{{/if_eq}}
   {{#if_eq transporter "AMQP"}}TRANSPORTER: amqp://rabbitmq:5672{{/if_eq}}
-  {{#if_eq transporter "STAN"}}TRANSPORTER: stan://stan:4222{{/if_eq}}
   {{#if_eq transporter "Kafka"}}TRANSPORTER: kafka://kafka:9092{{/if_eq}}
   {{#if_eq transporter "AMQP10"}}TRANSPORTER: amqp10://guest:guest@activemq:5672{{/if_eq}}
   {{#if_eq cacher "Memory"}}CACHER: Memory{{/if_eq}}
   {{#if_eq cacher "Redis"}}CACHER: redis://redis:6379{{/if_eq}}
   {{#dbService}}MONGO_URI: mongodb://mongo/{{projectName}}{{/dbService}}
+  {{#if_eq channels "NATS"}}CHANNEL_URL=nats://nats:4222{{/if_eq}}
+  {{#if_eq channels "Redis"}}CHANNEL_URL=redis://redis:6379{{/if_eq}}
+  {{#if_eq channels "AMQP"}}CHANNEL_URL=amqp://rabbitmq:5672{{/if_eq}}
+  {{#if_eq channels "Kafka"}}CHANNEL_URL=kafka://kafka:9092{{/if_eq}}
 
 {{#apiGW}}
 ---
@@ -40,7 +43,7 @@ spec:
 #########################################################
 # Ingress for Moleculer API Gateway
 #########################################################
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress
@@ -49,10 +52,13 @@ spec:
   - host: {{projectName}}.127.0.0.1.nip.io
     http:
       paths:
-      - path: /
+      - pathType: Prefix
+        path: /
         backend:
-          serviceName: api
-          servicePort: 3000
+          service:
+            name: api
+            port: 
+              number: 3000
 
 ---
 #########################################################
@@ -430,7 +436,7 @@ spec:
     spec:
       containers:
       - name: zookeeper
-        image: bitnami/zookeeper
+        image: bitnami/zookeeper:3.9
         ports:
         - containerPort: 2181
           name: zookeeper
@@ -476,7 +482,7 @@ spec:
     spec:
       containers:
       - name: kafka
-        image: bitnami/kafka
+        image: bitnami/kafka:3.9
         ports:
         - containerPort: 9092
           name: kafka

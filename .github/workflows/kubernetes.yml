@@ -56,9 +56,9 @@ jobs:
     - name: Push Docker image
       run: docker push localhost:5000/ci-test
 
-    - uses: engineerd/setup-kind@v0.5.0
+    - uses: engineerd/setup-kind@v0.6.0
       with:
-        version: "v0.11.1"
+        version: "v0.29.0"
         config: ./test/ci/kind-config.yaml
 
     - run: kubectl cluster-info
@@ -67,9 +67,11 @@ jobs:
 
     - name: Install NGINX Ingress
       run: |
-        # kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.27.0/deploy/static/mandatory.yaml
-        # kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.27.0/deploy/static/provider/baremetal/service-nodeport.yaml
-        kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/refs/heads/main/deploy/static/provider/kind/deploy.yaml
+        kubectl apply -f https://kind.sigs.k8s.io/examples/ingress/deploy-ingress-nginx.yaml
+        kubectl wait --namespace ingress-nginx \
+          --for=condition=ready pod \
+          --selector=app.kubernetes.io/component=controller \
+          --timeout=90s
         # kubectl patch deployments -n ingress-nginx ingress-nginx-controller -p '{"spec":{"template":{"spec":{"containers":[{"name":"nginx-ingress-controller","ports":[{"containerPort":80,"hostPort":80},{"containerPort":443,"hostPort":443}]}],"nodeSelector":{"ingress-ready":"true"},"tolerations":[{"key":"node-role.kubernetes.io/master","operator":"Equal","effect":"NoSchedule"}]}}}}' 
 
     - name: Kubectl apply
