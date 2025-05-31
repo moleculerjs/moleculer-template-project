@@ -76,6 +76,8 @@ jobs:
 
     - run: curl --silent --show-error --fail http://ci-test.127.0.0.1.nip.io/api/greeter/hello
     - run: curl --silent --show-error --fail http://ci-test.127.0.0.1.nip.io/api/products
+    - run: |
+        curl --silent --show-error --fail -H "Content-Type: application/json" --data '{"query": "query { hello } "}' http://ci-test.127.0.0.1.nip.io/graphql
 
     - name: Check Pod
       run: kubectl describe pod greeter
