@@ -14,7 +14,9 @@ const { ServiceBroker } = require("moleculer");
 // Load service schemas
 const APISchema = require("../../services/api.service");
 const GreeterSchema = require("../../services/greeter.service");
+{{#dbService}}
 const ProductsSchema = require("../../services/products.service");
+{{/dbService}}
 
 describe("Test HTTP API gateway", () => {
 	let broker = new ServiceBroker({ logger: false });
@@ -22,8 +24,10 @@ describe("Test HTTP API gateway", () => {
 
 	let greeterService = broker.createService(GreeterSchema);
 	let apiService = broker.createService(APISchema);
+	{{#dbService}}
 	let productsService = broker.createService(ProductsSchema);
 	productsService.seedDB = null; // Disable seeding
+	{{/dbService}}
 
 	beforeAll(async () => {
 		await broker.start();
@@ -53,6 +57,7 @@ describe("Test HTTP API gateway", () => {
 		});
 	});
 
+	{{#dbService}}
 	describe('Test "products" endpoints', () => {
 		it("test 'GET /api/products' - 'products.list' action", () => {
 			return HTTPrequest(apiService.server)
@@ -203,6 +208,7 @@ describe("Test HTTP API gateway", () => {
 				});
 		});
 	});
+	{{/dbService}}
 });
 
 {{#apiIO}}
@@ -255,6 +261,7 @@ describe("Test Socket.IO API gateway", () => {
 		});
 	});
 
+	{{#dbService}}
 	describe('Test "products" actions', () => {
 		let client;
 		let port;
@@ -389,6 +396,7 @@ describe("Test Socket.IO API gateway", () => {
 			expect(res).toEqual(0);
 		});
 	});
+	{{/dbService}}
 });
 {{/apiIO}}
 
@@ -435,6 +443,7 @@ describe("Test GraphQL API gateway", () => {
 		});
 	});
 
+	{{#dbService}}
 	describe('Test "product" actions', () => {
 		let port;
 		let PHONE_ID;
@@ -696,5 +705,6 @@ describe("Test GraphQL API gateway", () => {
 			});
 		});
 	});
+	{{/dbService}}
 });
 {{/apiGQL}}
