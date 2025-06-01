@@ -10,7 +10,7 @@ describe("Test 'inventory' service", () => {
 		middlewares: [
 			ChannelMiddleware({
 				adapter: {
-					type: "NATS"
+					type: "Fake"
 				}
 			})
 		]
