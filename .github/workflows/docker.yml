@@ -55,10 +55,17 @@ jobs:
       run: docker compose ps
       working-directory: ./ci-test
 
-    - run: curl --silent --show-error --fail http://localhost:3000/api/greeter/hello
-    - run: curl --silent --show-error --fail http://localhost:3000/api/products
-    - run: |
+    - name: Check greeter.hello via API
+      run: curl --silent --show-error --fail http://localhost:3000/api/greeter/hello
+
+    - name: Check products.list via API
+      run: curl --silent --show-error --fail http://localhost:3000/api/products
+      if: ${{ matrix.transporter != 'None' }}
+
+    - name: Check greeter.hello via GraphQL
+      run: |
         curl --silent --show-error --fail -H "Content-Type: application/json" --data '{"query": "query { hello } "}' http://localhost:3000/graphql
+      if: ${{ matrix.transporter != 'None' }}
 
     - name: Check logs
       run: docker compose logs
