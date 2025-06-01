@@ -33,10 +33,10 @@ data:
 apiVersion: v1
 kind: Service
 metadata:
-  name: api
+  name: services
 spec:
   selector:
-    app: api
+    app: services
   ports:
   - port: 3000
     targetPort: 3000
@@ -58,7 +58,7 @@ spec:
         path: /
         backend:
           service:
-            name: api
+            name: services
             port: 
               number: 3000
 {{/apiGW}}
@@ -75,7 +75,7 @@ spec:
   selector:
     matchLabels:
       app: services
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
