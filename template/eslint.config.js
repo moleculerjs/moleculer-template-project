@@ -27,7 +27,6 @@ module.exports = [
 		},
 		rules: {
 			"no-var": ["error"],
-			"no-console": ["error"],
 			"no-unused-vars": ["warn"],
 			"no-trailing-spaces": ["error"],
 			"no-process-exit": ["off"],
@@ -37,7 +36,6 @@ module.exports = [
 	{
 		files: ["test/**/*.js"],
 		rules: {
-			"no-console": ["off"],
 			"no-unused-vars": ["off"]
 		}
 	}

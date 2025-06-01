@@ -73,6 +73,9 @@
     {{#needChannels}}
     "@moleculer/channels": "^0.2.0",
     {{/needChannels}}
+    {{#needWorkflows}}
+    "@moleculer/workflows": "^0.1.1",
+    {{/needWorkflows}}
     {{#apiIO}}
     "moleculer-io": "^2.0.0",
     {{/apiIO}}

@@ -4,6 +4,10 @@
 const ChannelMiddleware = require("@moleculer/channels").Middleware;
 {{/needChannels}}
 
+{{#needWorkflows}}
+const WorkflowsMiddleware = require("@moleculer/workflows").Middleware;
+{{/needWorkflows}}
+
 /**
  * Moleculer ServiceBroker configuration file
  *
@@ -200,7 +204,12 @@ module.exports = {
 		{{#needChannels}}
 		ChannelMiddleware({
 			adapter: process.env.CHANNEL_URL || "Fake"
-		}){{/needChannels}}
+		}),{{/needChannels}}
+		{{#needWorkflows}}
+		WorkflowsMiddleware({
+			adapter: process.env.WORKFLOWS_URL || "Redis",
+			tracing: {{#if tracing}}true{{/if}}{{#unless tracing}}false{{/unless}}
+		}){{/needWorkflows}}
 	],
 
 	// REPL options

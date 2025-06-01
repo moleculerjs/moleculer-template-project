@@ -74,7 +74,7 @@ module.exports = function (values) {
             {
                 type: "confirm",
                 name: "needChannels",
-                message: "Add Moleculer-Channels middleware?",
+                message: "Add Moleculer Channels middleware?",
                 when(answers) {
                     return answers.dbService;
                 },
@@ -94,6 +94,12 @@ module.exports = function (values) {
                     return answers.needChannels;
                 },
                 default: "NATS",
+            },
+            {
+                type: "confirm",
+                name: "needWorkflows",
+                message: "Add Moleculer Workflows middleware?",
+                default: false,
             },
             {
                 type: "confirm",
@@ -133,6 +139,7 @@ module.exports = function (values) {
                  * @property {Boolean} needCacher
                  * @property {Boolean} dbService
                  * @property {Boolean} needChannels
+                 * @property {Boolean} needWorkflows
                  * @property {String} channels
                  * @property {Boolean} metrics
                  * @property {Boolean} tracing
@@ -168,14 +175,14 @@ module.exports = function (values) {
                 // Folder name for local development
                 data.dirName = data.transporter ? "base_trans" : "base";
 
-                data.redis = data.cacher == "Redis" || data.transporter == "Redis" || data.channels == "Redis";
+                data.redis = data.cacher == "Redis" || data.transporter == "Redis" || data.channels == "Redis" || data.needWorkflows;
                 data.nats = data.transporter == "NATS" || data.channels == "NATS";
                 data.rabbitmq = data.transporter == "AMQP" || data.channels == "AMQP";
                 data.kafka = data.transporter == "Kafka" || data.channels == "Kafka";
                 data.hasDepends =
                     (data.needCacher && data.cacher !== "Memory") ||
                     (data.needTransporter && data.transporter != "TCP") ||
-                    data.needChannels;
+                    data.needChannels || data.needWorkflows;
             },
         },
 
@@ -196,8 +203,10 @@ module.exports = function (values) {
             "services/inventory.service.js": "needChannels",
             "test/unit/services/inventory.spec.js": "needChannels",
 
+            "services/orders.service.js": "needWorkflows",
 
-            ".eslintrc.js": "lint",
+            "eslint.config.js": "lint",
+            "prettier.config.js": "lint",
 
             ".dockerignore": "docker",
             "docker-compose.*": "docker",

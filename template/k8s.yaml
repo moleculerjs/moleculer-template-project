@@ -22,6 +22,7 @@ data:
   {{#if_eq channels "Redis"}}CHANNEL_URL: redis://redis:6379{{/if_eq}}
   {{#if_eq channels "AMQP"}}CHANNEL_URL: amqp://rabbitmq:5672{{/if_eq}}
   {{#if_eq channels "Kafka"}}CHANNEL_URL: kafka://kafka:9092{{/if_eq}}
+  {{#needWorkflows}}WORKFLOWS_URL: redis://redis:6379{{/needWorkflows}}
 
 {{#apiGW}}
 ---

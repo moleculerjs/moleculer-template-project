@@ -23,7 +23,7 @@ jobs:
       run: npm i
 
     - name: Generate project
-      run: node_modules/.bin/moleculer init --answers test/demo/answers.json --no-install . project-demo
+      run: node_modules/.bin/moleculer init --answers test/ci/answers.full.json --no-install . project-demo
 
     - name: Initialize Git repo
       run: git init
