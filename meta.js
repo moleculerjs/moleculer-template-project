@@ -183,6 +183,8 @@ module.exports = function (values) {
                     (data.needCacher && data.cacher !== "Memory") ||
                     (data.needTransporter && data.transporter != "TCP") ||
                     data.needChannels || data.needWorkflows;
+
+                data.monolith = data.transporter == "None" || !data.needTransporter;
             },
         },
 

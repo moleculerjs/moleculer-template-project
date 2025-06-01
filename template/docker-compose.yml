@@ -38,6 +38,31 @@ services:
       - internal
 {{/apiGW}}
 
+{{#monolith}}
+  services:
+    build:
+      context: .
+    image: {{projectName}}
+    env_file: docker-compose.env
+{{#hasDepends}}
+    depends_on:
+{{#nats}}
+      - nats
+{{/nats}}
+{{#redis}}
+      - redis
+{{/redis}}
+{{#rabbitmq}}
+      - rabbitmq
+{{/rabbitmq}}
+{{#kafka}}
+      - zookeeper
+{{/kafka}}
+{{/hasDepends}}
+    networks:
+      - internal
+{{/monolith}}
+
   greeter:
     build:
       context: .
