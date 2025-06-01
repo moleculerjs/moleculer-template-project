@@ -1,10 +1,17 @@
 const fs = require("fs");
-const answers = require("./answers.json");
+
+let answers;
 
 if (process.env.TRANSPORTER) {
-    answers.transporter = process.env.TRANSPORTER == "None" ? null : process.env.TRANSPORTER
+    if (process.env.TRANSPORTER == "None") {
+        answers = require("./answers.simple.json");
+        answers.transporter = null;
+    } else {
+        answers = require("./answers.full.json");
+        answers.transporter = process.env.TRANSPORTER;
+    }
 }
 
-fs.writeFileSync(process.env.TRANSPORTER == "None" ? "./answers.simple.json" : "./answers.full.json", JSON.stringify(answers, null, 4), "utf8");
+fs.writeFileSync("./answers.json", JSON.stringify(answers, null, 4), "utf8");
 
 console.log("Done", answers);
