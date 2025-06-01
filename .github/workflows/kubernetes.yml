@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         # transporter: [NATS, Redis, MQTT, AMQP, AMQP10, Kafka]
-        transporter: [NATS, Redis, MQTT, AMQP, Kafka]
+        transporter: [None, NATS, Redis, MQTT, AMQP, Kafka]
       fail-fast: false
 
     steps:
@@ -35,10 +35,6 @@ jobs:
 
     - name: Generate project with '${{ matrix.transporter }}' transporter
       run: npm test
-
-    - name: Run tests in the generated project
-      run: npm test
-      working-directory: ./ci-test
 
     - name: Build Docker image
       run: docker build -t ci-test .
@@ -78,14 +74,22 @@ jobs:
       run: |
         kubectl get all
 
-    - run: curl --silent --show-error --fail http://ci-test.127.0.0.1.nip.io/api/greeter/hello
-    - run: curl --silent --show-error --fail http://ci-test.127.0.0.1.nip.io/api/products
-    - run: |
+    - name: Check greeter.hello via API
+      run: curl --silent --show-error --fail http://ci-test.127.0.0.1.nip.io/api/greeter/hello
+
+    - name: Check products.list via API
+      run: curl --silent --show-error --fail http://ci-test.127.0.0.1.nip.io/api/products
+      if: ${{ matrix.transporter != 'None' }}
+
+    - name: Check greeter.hello via GraphQL
+      run: |
         curl --silent --show-error --fail -H "Content-Type: application/json" --data '{"query": "query { hello } "}' http://ci-test.127.0.0.1.nip.io/graphql
+      if: ${{ matrix.transporter != 'None' }}
 
     - name: Check Pod
       run: kubectl describe pod greeter
       if: failure()
+
     - name: Check logs
       run: kubectl logs deployment/greeter
       if: failure()
