@@ -1,5 +1,42 @@
 services:
 
+{{#monolith}}
+  services:
+    build:
+      context: .
+    image: {{projectName}}
+    env_file: docker-compose.env
+    {{#apiGW}}
+    environment:
+      PORT: 3000
+    {{/apiGW}}
+{{#hasDepends}}
+    depends_on:
+{{#nats}}
+      - nats
+{{/nats}}
+{{#redis}}
+      - redis
+{{/redis}}
+{{#rabbitmq}}
+      - rabbitmq
+{{/rabbitmq}}
+{{#kafka}}
+      - zookeeper
+{{/kafka}}
+{{/hasDepends}}
+{{#apiGW}}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api-gw.rule=PathPrefix(`/`)"
+      - "traefik.http.services.api-gw.loadbalancer.server.port=3000"
+{{/apiGW}}
+    networks:
+      - internal
+{{/monolith}}
+
+{{#unless monolith}}
+
 {{#apiGW}}
   api:
     build:
@@ -38,30 +75,6 @@ services:
       - internal
 {{/apiGW}}
 
-{{#monolith}}
-  services:
-    build:
-      context: .
-    image: {{projectName}}
-    env_file: docker-compose.env
-{{#hasDepends}}
-    depends_on:
-{{#nats}}
-      - nats
-{{/nats}}
-{{#redis}}
-      - redis
-{{/redis}}
-{{#rabbitmq}}
-      - rabbitmq
-{{/rabbitmq}}
-{{#kafka}}
-      - zookeeper
-{{/kafka}}
-{{/hasDepends}}
-    networks:
-      - internal
-{{/monolith}}
 
   greeter:
     build:
@@ -182,6 +195,7 @@ services:
     networks:
       - internal
 {{/dbService}}
+{{#unless monolith}}
 {{#nats}}
 
   nats:
@@ -257,6 +271,7 @@ services:
 
 networks:
   internal:
-
+{{#dbService}}
 volumes:
   data:
+{{/dbService}}
