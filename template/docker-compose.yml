@@ -195,7 +195,7 @@ services:
     networks:
       - internal
 {{/dbService}}
-{{#unless monolith}}
+{{/unless}}
 {{#nats}}
 
   nats:
