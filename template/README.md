@@ -37,7 +37,8 @@ In the terminal, try using [Moleculer REPL](https://moleculer.services/docs/0.15
 - **api**: API Gateway services
 - **greeter**: Sample service with `hello` and `welcome` actions.
 {{#dbService}}- **products**: Sample DB service. To use with MongoDB, set `MONGO_URI` environment variables and install MongoDB adapter with `npm install mongodb`.
-{{#channels}}- **inventory**: Sample service with a single [`channel` handler](https://github.com/moleculerjs/moleculer-channels) that uses persistent queues to reliably process the messages.{{/channels}}
+{{#needChannels}}- **inventory**: Sample service with a single [`channel` handler](https://github.com/moleculerjs/moleculer-channels) that uses persistent queues to reliably process the messages.{{/needChannels}}
+{{#needWorkflows}}- **workflows**: Workflow sample service.{{/needWorkflows}}
 
 ## Mixins
 - **db.mixin**: Database access mixin for services. Based on [moleculer/database](https://github.com/moleculerjs/database)
@@ -52,8 +53,8 @@ In the terminal, try using [Moleculer REPL](https://moleculer.services/docs/0.15
 {{#apiGW}}* Moleculer API Gateway: https://moleculer.services/docs/0.15/moleculer-web.html{{/apiGW}}
 {{#apiGQL}}* Moleculer GraphQL Gateway: https://github.com/moleculerjs/moleculer-apollo-server{{/apiGQL}}
 {{#apiIO}}* Moleculer Socket.IO Gateway: https://github.com/moleculerjs/moleculer-io{{/apiIO}}
-{{#channels}}* Moleculer Channels: https://github.com/moleculerjs/moleculer-channels{{/channels}}
-{{#workflows}}* Moleculer Workflows: https://github.com/moleculerjs/workflows{{/workflows}}
+{{#needChannels}}* Moleculer Channels: https://github.com/moleculerjs/moleculer-channels{{/needChannels}}
+{{#needWorkflows}}* Moleculer Workflows: https://github.com/moleculerjs/workflows{{/needWorkflows}}
 
 ## NPM scripts
 
