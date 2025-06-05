@@ -481,8 +481,8 @@
 						if(item.params[key].hidden===true) continue;
 						const dataType =  item.params[key].type || item.params[key];
 						const hidden = item.params[key].hidden || false;
-						const required = item.params[key].required || false;
-						const optional = Array.isArray(item.params[key]) ? item.params[key].every(xx=>xx.optional===true) : item.params[key].optional || false;
+						const required = (item.params[key].required && item.params[key].default === undefined) || false;
+						const optional = Array.isArray(item.params[key]) ? item.params[key].every(xx=>xx.optional===true || xx.default !== undefined) : (item.params[key].optional===true || item.params[key].default !== undefined) || false;
 						const maxLength = item.params[key].max || undefined;
 						const minLength = item.params[key].min || undefined;
 						const pattern = item.params[key].pattern || undefined;

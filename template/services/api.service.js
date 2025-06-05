@@ -43,7 +43,7 @@ module.exports = {
 			`,
 
 			resolvers: {
-				JSON: GraphQLJSONObject,
+				JSON: GraphQLJSONObject
 			}
 		})
 		{{/apiGQL}}
