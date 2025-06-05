@@ -5,6 +5,8 @@
 - Moleculer v0.15 with full-detailed `moleculer.config.js` file.
 - Common mono-repo project with a `greeter` demo service.
 - Sample database `products` service (with file-based NeDB in development & MongoDB in production).
+- Sample service with Moleculer Channels middleware.
+- Sample service with Moleculer Workflows middleware.
 - Optional API Gateway service with detailed service settings.
 - Beautiful static welcome page to test generated services & watch nodes and services.
 - Optional Transporter & Cacher.
