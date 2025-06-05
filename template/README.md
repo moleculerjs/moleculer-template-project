@@ -20,6 +20,8 @@ Start the project with `npm run dev` command.
 After starting, open the http://localhost:3000/ URL in your browser. 
 On the welcome page you can test the generated services via API Gateway and check the nodes & services.
 
+{{#apiGQL}}Open the http://localhost:3000/graphql URL in your browser to access the GraphQL Playground.{{/apiGQL}}
+
 {{/apiGW}}
 In the terminal, try using [Moleculer REPL](https://moleculer.services/docs/0.15/moleculer-repl.html) by running the following commands:
 - `nodes` - List all connected nodes.
@@ -46,10 +48,12 @@ In the terminal, try using [Moleculer REPL](https://moleculer.services/docs/0.15
 
 * Moleculer website: https://moleculer.services/
 * Moleculer Documentation: https://moleculer.services/docs/0.15/
+{{#dbService}}* Moleculer Database service: https://github.com/moleculerjs/database{{/dbService}}
 {{#apiGW}}* Moleculer API Gateway: https://moleculer.services/docs/0.15/moleculer-web.html{{/apiGW}}
 {{#apiGQL}}* Moleculer GraphQL Gateway: https://github.com/moleculerjs/moleculer-apollo-server{{/apiGQL}}
 {{#apiIO}}* Moleculer Socket.IO Gateway: https://github.com/moleculerjs/moleculer-io{{/apiIO}}
 {{#channels}}* Moleculer Channels: https://github.com/moleculerjs/moleculer-channels{{/channels}}
+{{#workflows}}* Moleculer Workflows: https://github.com/moleculerjs/workflows{{/workflows}}
 
 ## NPM scripts
 
