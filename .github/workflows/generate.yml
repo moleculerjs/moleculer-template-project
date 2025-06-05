@@ -42,7 +42,7 @@ jobs:
       working-directory: ./project-demo
 
     - name: Commit
-      run: git commit -m "Generated files"
+      run: git commit -m "Generated files (${{ github.sha }})"
       working-directory: ./project-demo
     
     - name: Git push
