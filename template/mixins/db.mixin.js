@@ -22,26 +22,26 @@ module.exports = function (collection) {
 					// In production use MongoDB
 					process.env.DB_URI?.startsWith("mongodb://")
 						? {
-							type: "MongoDB",
-							options: {
-								uri: process.env.DB_URI,
-							},
-						}
+								type: "MongoDB",
+								options: {
+									uri: process.env.DB_URI
+								}
+							}
 						: {
-							type: "NeDB",
-							options:
-								// In unit/integration tests use in-memory DB. Jest sets the NODE_ENV automatically
-								// During dev use file storage
-								process.env.NODE_ENV === "test"
-									? {
-										neDB: {
-											inMemoryOnly: true,
-										},
-									}
-									: `./data/${collection}.db`,
-						},
-				strict: false,
-			}),
+								type: "NeDB",
+								options:
+									// In unit/integration tests use in-memory DB. Jest sets the NODE_ENV automatically
+									// During dev use file storage
+									process.env.NODE_ENV === "test"
+										? {
+												neDB: {
+													inMemoryOnly: true
+												}
+											}
+										: `./data/${collection}.db`
+							},
+				strict: false
+			})
 		],
 
 		/**
@@ -58,7 +58,7 @@ module.exports = function (collection) {
 				if (this.broker.cacher) {
 					await this.broker.cacher.clean(`${this.fullName}.*`);
 				}
-			},
+			}
 		},
 
 		/**
@@ -76,7 +76,7 @@ module.exports = function (collection) {
 			 */
 			async entityChanged(type, data, oldData, ctx, opts) {
 				ctx.broadcast(cacheCleanEventName);
-			},
+			}
 		},
 
 		/**
@@ -98,7 +98,7 @@ module.exports = function (collection) {
 					this.logger.info("Seeding is done. Number of records:", await adapter.count());
 				}
 			}
-		},
+		}
 	};
 
 	return schema;
