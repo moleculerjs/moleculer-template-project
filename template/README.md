@@ -36,7 +36,7 @@ In the terminal, try using [Moleculer REPL](https://moleculer.services/docs/0.15
 ## Services
 - **api**: API Gateway services
 - **greeter**: Sample service with `hello` and `welcome` actions.
-{{#dbService}}- **products**: Sample DB service. To use with MongoDB, set `MONGO_URI` environment variables and install MongoDB adapter with `npm install mongodb`.
+{{#dbService}}- **products**: Sample DB service. To use with MongoDB, set `DB_URI` environment variables and install MongoDB adapter with `npm install mongodb`.
 {{#needChannels}}- **inventory**: Sample service with a single [`channel` handler](https://github.com/moleculerjs/moleculer-channels) that uses persistent queues to reliably process the messages.{{/needChannels}}
 {{#needWorkflows}}- **workflows**: Workflow sample service.{{/needWorkflows}}
 

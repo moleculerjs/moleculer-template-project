@@ -20,11 +20,11 @@ module.exports = function (collection) {
 			DbService({
 				adapter:
 					// In production use MongoDB
-					process.env.NODE_ENV === "production"
+					process.env.DB_URI?.startsWith("mongodb://")
 						? {
 							type: "MongoDB",
 							options: {
-								uri: process.env.MONGO_URI,
+								uri: process.env.DB_URI,
 							},
 						}
 						: {
