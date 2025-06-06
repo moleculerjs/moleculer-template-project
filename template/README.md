@@ -8,11 +8,141 @@ Moleculer supports different [deployment modes](https://moleculer.services/docs/
 Switching between the architectures is [automatically](https://moleculer.services/docs/0.15/clustering.html) handled by moleculer. To run in dev mode use `npm run dev`, for production mode run `npm run dc:up`.
 
 ### Development architecture view
-![dev arch](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/{{dirName}}/{{imageName}}.svg)
+
+```mermaid
+flowchart LR
+    classDef svc fill:lightblue
+    classDef brk fill:#fff2cc
+    classDef ext fill:violet
+
+    {{#apiGW}}
+    U(User browser)
+    U --> A
+    
+    subgraph node1 [Monolith Node]
+    style node1 fill:#dae8fc,stroke:#c9d7eb
+    A("**API Gateway**
+    -HTTP Server
+    {{#apiGQL}}-GraphQL Server{{/apiGQL}}
+    {{#apiIO}}-Socket.IO Server{{/apiIO}}
+    ")
+    A --> B
+    {{/apiGW}}
+
+    B((Service Broker))
+
+    G(Greeter Service):::svc
+    B <--> G
+    
+    {{#dbService}}
+    P(Products Service):::svc
+    DA(Database Adapter)
+    B <--> P
+    P <--> DA
+    DB[(MongoDB server)]:::ext
+    DA <--> DB
+    {{/dbService}}
+    
+    {{#needChannels}}
+    I(Inventory Service):::svc
+    CH(Channel Adapter)
+    B <--> I
+    I <--> CH
+    CH <--> {{channels}}:::ext
+    {{/needChannels}}
+    
+    {{#needWorkflows}}
+    O(Orders Service):::svc
+    WF(Workflow Adapter)
+    B <--> O
+    O <--> WF
+    WF <--> Redis:::ext
+    {{/needWorkflows}}
+    
+    end
+
+    style B fill:orange
+    style A fill:lightgreen
+    style U fill:lightcyan
+    style node1 fill:#dae8fc,stroke:#c9d7eb
+```
 
 ### Production architecture view
-![distributed arch](https://raw.githubusercontent.com/moleculerjs/moleculer-template-project/next/media/dist/{{imageName}}.svg)
 
+```mermaid
+flowchart LR
+    classDef svc fill:lightblue
+    classDef brk fill:#fff2cc
+    classDef ext fill:violet
+
+    TX{ {{transporter}} Transporter}:::ext
+
+{{#apiGW}}
+    subgraph node1 [Node 1]
+    style node1 fill:#dae8fc,stroke:#c9d7eb
+    A("**API Gateway**
+    -HTTP Server
+    {{#apiGQL}}-GraphQL Server{{/apiGQL}}
+    {{#apiIO}}-Socket.IO Server{{/apiIO}}
+    ")
+    style A fill:lightgreen
+    B1((Service Broker)):::brk
+    A --> B1
+    end
+    B1 --> TX
+    U(User browser)
+    style U fill:lightcyan
+    U --> A
+{{/apiGW}}
+
+    subgraph node2 [Node 2]
+    style node2 fill:#dae8fc,stroke:#c9d7eb
+    B2((Service Broker)):::brk
+    G(Greeter Service):::svc
+    B2 <--> G
+    end
+    TX --> B2
+
+{{#dbService}}
+    subgraph node3 [Node 3]
+    style node3 fill:#dae8fc,stroke:#c9d7eb
+    B3((Service Broker)):::brk
+    P(Products Service):::svc
+    DA(Database Adapter)
+    B3 <--> P
+    P <--> DA
+    end
+    TX --> B3
+    DB[(MongoDB server)]:::ext
+    DA <--> DB
+{{/dbService}}
+
+{{#needChannels}}
+    subgraph node4 [Node 4]
+    style node4 fill:#dae8fc,stroke:#c9d7eb
+    B4((Service Broker)):::brk
+    I(Inventory Service):::svc
+    CH(Channel Adapter)
+    B4 <--> I
+    I <--> CH
+    end
+    TX --> B4
+    CH <--> {{channels}}:::ext
+{{/needChannels}}
+
+{{#needWorkflows}}
+    subgraph node5 [Node 5]
+    style node5 fill:#dae8fc,stroke:#c9d7eb
+    B5((Service Broker)):::brk
+    O(Orders Service):::svc
+    WF(Workflow Adapter)
+    B5 <--> O
+    O <--> WF
+    end
+    TX --> B5
+    WF <--> Redis:::ext
+{{/needWorkflows}}
+```
 
 ## Usage
 Start the project with `npm run dev` command. 
