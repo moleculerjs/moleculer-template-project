@@ -150,31 +150,6 @@ module.exports = function (values) {
                 /** @type {Metadata} */
                 const data = metalsmith.metadata();
 
-                //// Flags for distributed mode ////
-                // File: channels-db
-                data.distChannelsDbGreeter =
-                    data.channels && data.dbService && !data.apiGW && !data.apiIO && !data.apiGQL;
-
-                let selectedOpts = [];
-
-                if (data.channels) selectedOpts.push("channels");
-                if (data.apiIO) selectedOpts.push("io");
-                if (data.apiGQL) selectedOpts.push("gql");
-                if (data.apiGW) selectedOpts.push("http");
-                if (data.dbService) selectedOpts.push("db");
-
-                // If channels=true then the DB is already enabled
-                if (selectedOpts.includes("channels")) {
-                    selectedOpts.splice(selectedOpts.indexOf("db"), 1);
-                }
-
-                // Basic option. Only greeter is enabled
-                if (selectedOpts.length === 0) selectedOpts.push("greeter");
-                data.imageName = selectedOpts.join("-");
-
-                // Folder name for local development
-                data.dirName = data.transporter ? "base_trans" : "base";
-
                 data.redis = data.cacher == "Redis" || data.transporter == "Redis" || data.channels == "Redis" || data.needWorkflows;
                 data.nats = data.transporter == "NATS" || data.channels == "NATS";
                 data.rabbitmq = data.transporter == "AMQP" || data.channels == "AMQP";

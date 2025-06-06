@@ -11,4 +11,4 @@ RUN npm install --production --legacy-peer-deps
 
 COPY . .
 
-CMD ["npm", "start"]
+CMD ["node", "node_modules/moleculer/bin/moleculer-runner.js"]
