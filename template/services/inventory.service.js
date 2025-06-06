@@ -40,6 +40,9 @@ module.exports = {
 		 */
 		reserve: {
 			rest: "POST /reserve",
+			{{#apiGQL}}graphql: {
+				mutation: "inventoryReserve(productId: String!, quantity: Int!): Boolean!"
+			},{{/apiGQL}}
 			params: {
 				productId: { type: "string" },
 				quantity: { type: "number" }
@@ -54,7 +57,7 @@ module.exports = {
 					{ ctx }
 				);
 
-				return { status: "reservation.started" };
+				return true;
 			}
 		}
 	}
