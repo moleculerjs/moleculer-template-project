@@ -1,6 +1,6 @@
 "use strict";
 
-const { ServiceBroker } = require("moleculer");
+const { ServiceBroker, Context } = require("moleculer");
 const ChannelMiddleware = require("@moleculer/channels").Middleware;
 const TestService = require("../../../services/inventory.service");
 
@@ -23,6 +23,8 @@ describe("Test 'inventory' service", () => {
 	broker.channelAdapter.unsubscribe = jest.fn();
 	broker.channelAdapter.publish = jest.fn();
 
+	broker.emit = jest.fn();
+
 	const service = broker.createService(TestService);
 
 	// Store the reference to the original orderProduct method
@@ -32,29 +34,33 @@ describe("Test 'inventory' service", () => {
 	beforeAll(() => broker.start());
 	afterAll(() => broker.stop());
 
-	it("should call orderProduct method", async () => {
+	it("should emit reserved event", async () => {
 		const payload = {
-			_id: "123456789",
-			name: "iPhone"
+			productId: "123",
+			quantity: 10
 		};
 
 		// Use helper method to trigger the handler
-		service.emitLocalChannelHandler("order.more", payload);
+		const ctx = Context.create(broker, null, payload);
+		await service.emitLocalChannelHandler("inventory.reserve", ctx);
 
 		// Check if inventory's method was called
-		expect(service.orderProduct).toBeCalledTimes(1);
-		expect(service.orderProduct).toBeCalledWith(payload);
+		expect(broker.emit).toBeCalledTimes(1);
+		expect(broker.emit).toBeCalledWith("inventory.reserved", payload, expect.any(Object));
 	});
 
-	it("should orderProduct", async () => {
-		const roundSpy = jest.spyOn(Math, "round");
-		const randomSpy = jest.spyOn(Math, "random");
-		const loggerSpy = jest.spyOn(service.logger, "info");
+	it("should send msg to 'inventory.reserve' channel", async () => {
+		broker.sendToChannel = jest.fn();
 
-		await ORIGINAL_ORDER_PRODUCT({ name: "My Product" });
-
-		expect(roundSpy).toBeCalledTimes(2);
-		expect(randomSpy).toBeCalledTimes(2);
-		expect(loggerSpy).toBeCalledTimes(1);
+		await broker.call("inventory.reserve", {
+			productId: "123",
+			quantity: 10
+		});
+		expect(broker.sendToChannel).toBeCalledTimes(1);
+		expect(broker.sendToChannel).toBeCalledWith(
+			"inventory.reserve",
+			{ productId: "123", quantity: 10 },
+			{ ctx: expect.any(Context) }
+		);
 	});
 });
