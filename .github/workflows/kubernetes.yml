@@ -89,9 +89,9 @@ jobs:
       if: ${{ matrix.transporter != 'None' }}
 
     - name: Check Pod
-      run: kubectl describe pod greeter
+      run: kubectl describe pod ${{ matrix.transporter != 'None' && 'greeter' || 'services' }}
       if: failure()
 
     - name: Check logs
-      run: kubectl logs deployment/greeter
+      run: kubectl logs deployment/${{ matrix.transporter != 'None' && 'greeter' || 'services' }}
       if: failure()
