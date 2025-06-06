@@ -107,7 +107,7 @@ module.exports = {
 		},
 
 		/**
-		 *  Simulate inventory update
+		 *  Simulate inventory reservation
 		 */
 		inventory: {
 			params: {
@@ -115,7 +115,7 @@ module.exports = {
 				quantity: "number"
 			},
 			async handler(ctx) {
-				this.logger.info("Updating inventory for product", ctx.params.productId);
+				this.logger.info("Reserving inventory for product", ctx.params.productId);
 				// Simulate inventory update
 				return {
 					status: "success",

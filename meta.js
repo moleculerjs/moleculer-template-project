@@ -75,9 +75,6 @@ module.exports = function (values) {
                 type: "confirm",
                 name: "needChannels",
                 message: "Add Moleculer Channels middleware?",
-                when(answers) {
-                    return answers.dbService;
-                },
                 default: false,
             },
             {

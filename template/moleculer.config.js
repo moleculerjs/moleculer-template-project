@@ -2,6 +2,7 @@
 
 {{#needChannels}}
 const ChannelMiddleware = require("@moleculer/channels").Middleware;
+{{#tracing}}const ChannelTracing = require("@moleculer/channels").Tracing;{{/tracing}}
 {{/needChannels}}
 
 {{#needWorkflows}}
@@ -204,7 +205,9 @@ module.exports = {
 		{{#needChannels}}
 		ChannelMiddleware({
 			adapter: process.env.CHANNEL_URL || "Fake"
-		}),{{/needChannels}}
+		}),
+		{{#tracing}}ChannelTracing(),{{/tracing}}
+		{{/needChannels}}
 		{{#needWorkflows}}
 		WorkflowsMiddleware({
 			adapter: process.env.WORKFLOWS_URL || "Redis",
