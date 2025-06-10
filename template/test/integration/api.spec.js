@@ -218,8 +218,10 @@ describe("Test Socket.IO API gateway", () => {
 
 	let greeterService = broker.createService(GreeterSchema);
 	let apiService = broker.createService(APISchema);
+	{{#dbService}}
 	let productsService = broker.createService(ProductsSchema);
 	productsService.seedDB = null; // Disable seeding
+	{{/dbService}}
 
 	beforeAll(() => broker.start());
 	afterAll(() => broker.stop());
@@ -407,8 +409,10 @@ describe("Test GraphQL API gateway", () => {
 
 	let greeterService = broker.createService(GreeterSchema);
 	let apiService = broker.createService(APISchema);
+	{{#dbService}}
 	let productsService = broker.createService(ProductsSchema);
 	productsService.seedDB = null; // Disable seeding
+	{{/dbService}}
 
 	beforeAll(() => broker.start());
 	afterAll(() => broker.stop());
