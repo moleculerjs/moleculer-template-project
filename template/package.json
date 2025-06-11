@@ -21,7 +21,7 @@
   "author": "",
   "devDependencies": {
     {{#lint}}
-    "eslint": "^9.27.0",
+    "eslint": "^9.28.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.4.1",
     "prettier": "^3.5.3",
@@ -45,7 +45,7 @@
     {{/apiGW}}
     {{#dbService}}
     "@moleculer/database": "^0.3.0",
-    "mongodb": "^6.16.0",
+    "mongodb": "^6.17.0",
     "@seald-io/nedb": "^4.1.1",
     {{/dbService}}
     {{#nats}}
@@ -78,7 +78,7 @@
     "@moleculer/workflows": "^0.1.1",
     {{/needWorkflows}}
     {{#apiIO}}
-    "moleculer-io": "^2.0.0",
+    "moleculer-io": "^2.2.0",
     {{/apiIO}}
     "moleculer": "^0.15.0-beta1"
   },
