@@ -158,6 +158,12 @@ module.exports = function (values) {
 
                 data.monolith = data.transporter == "None" || !data.needTransporter;
             },
+
+            async complete(metalsmith, helpers) {
+                if (values.lint && values.wasNpmInstall && helpers.exec) {
+                    await exec("npm run lint:fix");
+                }
+            }
         },
 
         skipInterpolation: [
