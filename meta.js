@@ -167,7 +167,7 @@ module.exports = function (values) {
         },
 
         skipInterpolation: [
-            //"public/index.html"
+            "public/favicon.ico"
         ],
 
         filters: {
