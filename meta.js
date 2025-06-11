@@ -161,7 +161,9 @@ module.exports = function (values) {
 
             async complete(metalsmith, helpers) {
                 if (values.lint && values.wasNpmInstall && helpers.exec) {
-                    await exec("npm run lint:fix");
+                    try {
+                        await helpers.exec([`cd ${values.projectPath}`, "npm run lint:fix"]);
+                    } catch {}
                 }
             }
         },
