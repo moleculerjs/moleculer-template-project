@@ -1,6 +1,11 @@
 "use strict";
 
-/** @type {import('moleculer').ServiceSchema} Moleculer's Service Schema */
+/**
+ * @typedef {import('moleculer').ServiceSchema} ServiceSchema Moleculer's Service Schema
+ * @typedef {import('moleculer').Context} Context Moleculer's Context
+ */
+
+/** @type {ServiceSchema} */
 module.exports = {
 	name: "greeter",
 

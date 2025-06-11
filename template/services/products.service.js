@@ -2,7 +2,12 @@
 
 const DbMixin = require("../mixins/db.mixin");
 
-/** @type {import('moleculer').ServiceSchema} Moleculer's Service Schema */
+/**
+ * @typedef {import('moleculer').ServiceSchema} ServiceSchema Moleculer's Service Schema
+ * @typedef {import('moleculer').Context} Context Moleculer's Context
+ */
+
+/** @type {ServiceSchema} */
 module.exports = {
 	name: "products",
 	// version: 1
@@ -146,7 +151,7 @@ module.exports = {
 			{{#apiGQL}}graphql: {
 				mutation: "increaseQuantity(id: String!, value: Int!): Product"
 			},{{/apiGQL}}
-			/** @param {import('moleculer').Context<{id: String, value: Number}>} ctx */
+			/** @param {Context<{id: String, value: Number}>} ctx */
 			async handler(ctx) {
 				// Get current quantity
 				const adapter = await this.getAdapter(ctx);
@@ -179,7 +184,7 @@ module.exports = {
 			{{#apiGQL}}graphql: {
 				mutation: "decreaseQuantity(id: String!, value: Int!): Product"
 			},{{/apiGQL}}
-			/** @param {import('moleculer').Context<{id: String, value: Number}>} ctx */
+			/** @param {Context<{id: String, value: Number}>} ctx */
 			async handler(ctx) {
 				// Get current quantity
 				const adapter = await this.getAdapter(ctx);
