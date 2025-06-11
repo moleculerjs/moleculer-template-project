@@ -2,7 +2,9 @@ name: Generate a demo project
 
 on: 
   push:
-  pull_request:
+    branches:
+      - master
+      - next
   schedule:
     - cron: '0 10 * * 3'
 
