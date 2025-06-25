@@ -203,12 +203,13 @@ module.exports = {
 					quantity: newQuantity
 				});
 
+				{{#needChannels}}
 				if (doc.quantity === 0) {
 					this.logger.info(`Stock of ${doc.name} depleted... Ordering more`);
 					// Emit a persistent event to order more products
 					// inventory.service will handle this event
 					this.broker.sendToChannel("order.more", doc);
-				}
+				}{{/needChannels}}
 
 				return doc;
 			}
