@@ -1,6 +1,7 @@
 "use strict";
 
 const { Service: DbService } = require("@moleculer/database");
+const _ = require("lodash");
 
 /**
  * @typedef {import('moleculer').ServiceSchema} ServiceSchema Moleculer's Service Schema

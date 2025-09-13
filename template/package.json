@@ -80,6 +80,7 @@
     {{#apiIO}}
     "moleculer-io": "^2.2.0",
     {{/apiIO}}
+    "lodash": "^4.17.21",
     "moleculer": "^0.15.0-beta1"
   },
   {{#apiGQL}}
