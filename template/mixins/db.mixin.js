@@ -5,10 +5,43 @@ const { Service: DbService } = require("@moleculer/database");
 /**
  * @typedef {import('moleculer').ServiceSchema} ServiceSchema Moleculer's Service Schema
  * @typedef {import('moleculer').Context} Context Moleculer's Context
- * @typedef {import('moleculer-db').MoleculerDB} MoleculerDB  Moleculer's DB Service Schema
+ * @typedef {import('@moleculer/database').DatabaseMixinOptions} DatabaseMixinOptions  Moleculer's Database Service Mixin Options
  */
 
-module.exports = function (collection) {
+/**
+ *
+ * @param {DatabaseMixinOptions} opts
+ * @returns ServiceSchema
+ */
+module.exports = function (opts) {
+	const collection = opts?.collection;
+
+	opts = _.defaultsDeep(opts, {
+		adapter:
+			// In production use MongoDB
+			process.env.DB_URI?.startsWith("mongodb://")
+				? {
+						type: "MongoDB",
+						options: {
+							uri: process.env.DB_URI
+						}
+					}
+				: {
+						type: "NeDB",
+						options:
+							// In unit/integration tests use in-memory DB. Jest sets the NODE_ENV automatically
+							// During dev use file storage
+							process.env.NODE_ENV === "test"
+								? {
+										neDB: {
+											inMemoryOnly: true
+										}
+									}
+								: `./data/${collection}.db`
+					},
+		strict: false
+	});
+
 	const cacheCleanEventName = `cache.clean.${collection}`;
 
 	/** @type {MoleculerDB & ServiceSchema} */
@@ -18,31 +51,7 @@ module.exports = function (collection) {
 		 */
 		mixins: [
 			// @moleculer/database config: More info: https://github.com/moleculerjs/database
-			DbService({
-				adapter:
-					// In production use MongoDB
-					process.env.DB_URI?.startsWith("mongodb://")
-						? {
-								type: "MongoDB",
-								options: {
-									uri: process.env.DB_URI
-								}
-							}
-						: {
-								type: "NeDB",
-								options:
-									// In unit/integration tests use in-memory DB. Jest sets the NODE_ENV automatically
-									// During dev use file storage
-									process.env.NODE_ENV === "test"
-										? {
-												neDB: {
-													inMemoryOnly: true
-												}
-											}
-										: `./data/${collection}.db`
-							},
-				strict: false
-			})
+			DbService(opts)
 		],
 
 		/**
@@ -56,27 +65,7 @@ module.exports = function (collection) {
 			 * @param {Context} ctx
 			 */
 			async [cacheCleanEventName]() {
-				if (this.broker.cacher) {
-					await this.broker.cacher.clean(`${this.fullName}.*`);
-				}
-			}
-		},
-
-		/**
-		 * Methods. More info: https://moleculer.services/docs/0.15/services.html#Methods
-		 */
-		methods: {
-			/**
-			 * Send a cache clearing event when an entity changed.
-			 *
-			 * @param {String} type
-			 * @param {object} data
-			 * @param {object} oldData
-			 * @param {Context} ctx
-			 * @param {object} opts
-			 */
-			async entityChanged(type, data, oldData, ctx, opts) {
-				ctx.broadcast(cacheCleanEventName);
+				await this.broker.cacher?.clean(`${this.fullName}.*`);
 			}
 		},
 

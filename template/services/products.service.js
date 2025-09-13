@@ -15,7 +15,7 @@ module.exports = {
 	/**
 	 * Mixins. More info: https://moleculer.services/docs/0.15/services.html#Mixins
 	 */
-	mixins: [DbMixin("products")],
+	mixins: [DbMixin({ collection: "products" })],
 
 	/**
 	 * Settings. More info: https://moleculer.services/docs/0.15/services.html#Settings
