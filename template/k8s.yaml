@@ -396,6 +396,7 @@ spec:
       containers:
       - name: nats
         image: nats
+        args: ["-js"]
         ports:
         - containerPort: 4222
           name: nats

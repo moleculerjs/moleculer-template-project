@@ -200,6 +200,7 @@ services:
 
   nats:
     image: nats:2
+    command: ["-js"]
     networks:
       - internal
 {{/nats}}
