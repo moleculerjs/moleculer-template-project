@@ -10,13 +10,12 @@
 	<link rel="shortcut icon" type="image/png" href="https://moleculer.services/icon/favicon-16x16.png"/>
 	<script src="https://unpkg.com/vue@3.2.34/dist/vue.global.js"></script>
 	<link rel="stylesheet" href="./main.css">
-</style>
 </head>
 <body>
 	{{{{projectName}}}}
 	<div id="app">
 		<header>
-			<a href="https://moleculer.services/docs/0.14/" target="_blank">
+			<a href="https://moleculer.services/docs/0.15/" target="_blank">
 				<img class="logo" src="https://moleculer.services/images/logo/logo_with_text_horizontal_100h_shadow.png" /></a>
 			<nav>
 				<ul>
@@ -29,7 +28,7 @@
 			<section id="home" v-if="page == 'home'">
 				<div class="content">
 					<h1>Welcome to your Moleculer microservices project!</h1>
-					<p>Check out the <a href="https://moleculer.services/docs/0.14/" target="_blank">Moleculer documentation</a> to learn how to customize this project.</p>
+					<p>Check out the <a href="https://moleculer.services/docs/0.15/" target="_blank">Moleculer documentation</a> to learn how to customize this project.</p>
 
 					<template v-if="broker">
 						<h3>Configuration</h3>
@@ -246,7 +245,7 @@
 
 		<footer>
 			<div class="footer-copyright">
-				Copyright &copy; 2016-2022 - Moleculer
+				Copyright &copy; 2016-2026 - Moleculer
 			</div>
 			<div class="footer-links">
 				<a href="https://github.com/moleculerjs/moleculer" class="footer-link" target="_blank">Github</a>
@@ -488,8 +487,8 @@
 						if(item.params[key].hidden===true) continue;
 						const dataType =  item.params[key].type || item.params[key];
 						const hidden = item.params[key].hidden || false;
-						const required = item.params[key].required || false;
-						const optional = Array.isArray(item.params[key]) ? item.params[key].every(xx=>xx.optional===true) : item.params[key].optional || false;
+						const required = (item.params[key].required && item.params[key].default === undefined) || false;
+						const optional = Array.isArray(item.params[key]) ? item.params[key].every(xx=>xx.optional===true || xx.default !== undefined) : (item.params[key].optional===true || item.params[key].default !== undefined) || false;
 						const maxLength = item.params[key].max || undefined;
 						const minLength = item.params[key].min || undefined;
 						const pattern = item.params[key].pattern || undefined;

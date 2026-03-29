@@ -1,6 +1,13 @@
 "use strict";
 
 const ApiGateway = require("moleculer-web");
+{{#apiIO}}
+const SocketIOService = require("moleculer-io");
+{{/apiIO}}
+{{#apiGQL}}
+const { ApolloService } = require("moleculer-apollo-server");
+const { GraphQLJSONObject } = require("graphql-type-json");
+{{/apiGQL}}
 
 /**
  * @typedef {import('moleculer').ServiceSchema} ServiceSchema Moleculer's Service Schema
@@ -10,11 +17,39 @@ const ApiGateway = require("moleculer-web");
  * @typedef {import('moleculer-web').ApiSettingsSchema} ApiSettingsSchema API Setting Schema
  */
 
+/** @type {ServiceSchema} */
 module.exports = {
 	name: "api",
-	mixins: [ApiGateway],
 
-	/** @type {ApiSettingsSchema} More info about settings: https://moleculer.services/docs/0.14/moleculer-web.html */
+	/**
+	 * Mixins. More info: https://moleculer.services/docs/0.15/services.html#Mixins
+	 */
+	mixins: [
+		ApiGateway,
+		{{#apiIO}}
+		SocketIOService,
+		{{/apiIO}}
+		{{#apiGQL}}
+		ApolloService({
+			// API Gateway route options
+			routeOptions: {
+				path: "/graphql",
+				cors: true,
+				mappingPolicy: "restrict"
+			},
+
+			typeDefs: `
+				scalar JSON
+			`,
+
+			resolvers: {
+				JSON: GraphQLJSONObject
+			}
+		})
+		{{/apiGQL}}
+	],
+
+	/** @type {ApiSettingsSchema} More info: https://moleculer.services/docs/0.15/moleculer-web.html */
 	settings: {
 		// Exposed port
 		port: process.env.PORT || 3000,
@@ -22,36 +57,32 @@ module.exports = {
 		// Exposed IP
 		ip: "0.0.0.0",
 
-		// Global Express middlewares. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Middlewares
+		// Global Express middlewares. More info: https://moleculer.services/docs/0.15/moleculer-web.html#Middlewares
 		use: [],
 
 		routes: [
 			{
 				path: "/api",
 
-				whitelist: [
-					"**"
-				],
+				whitelist: ["**"],
 
-				// Route-level Express middlewares. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Middlewares
+				// Route-level Express middlewares. More info: https://moleculer.services/docs/0.15/moleculer-web.html#Middlewares
 				use: [],
 
-				// Enable/disable parameter merging method. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Disable-merging
+				// Enable/disable parameter merging method. More info: https://moleculer.services/docs/0.15/moleculer-web.html#Disable-merging
 				mergeParams: true,
 
-				// Enable authentication. Implement the logic into `authenticate` method. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Authentication
+				// Enable authentication. Implement the logic into `authenticate` method. More info: https://moleculer.services/docs/0.15/moleculer-web.html#Authentication
 				authentication: false,
 
-				// Enable authorization. Implement the logic into `authorize` method. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Authorization
+				// Enable authorization. Implement the logic into `authorize` method. More info: https://moleculer.services/docs/0.15/moleculer-web.html#Authorization
 				authorization: false,
 
 				// The auto-alias feature allows you to declare your route alias directly in your services.
 				// The gateway will dynamically build the full routes from service schema.
 				autoAliases: true,
 
-				aliases: {
-
-				},
+				aliases: {},
 
 				/**
 				 * Before call hook. You can check the request.
@@ -78,7 +109,7 @@ module.exports = {
 					return doSomething(ctx, res, data);
 				}, */
 
-				// Calling options. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Calling-options
+				// Calling options. More info: https://moleculer.services/docs/0.15/moleculer-web.html#Calling-options
 				callOptions: {},
 
 				bodyParsers: {
@@ -92,7 +123,7 @@ module.exports = {
 					}
 				},
 
-				// Mapping policy setting. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Mapping-policy
+				// Mapping policy setting. More info: https://moleculer.services/docs/0.15/moleculer-web.html#Mapping-policy
 				mappingPolicy: "all", // Available values: "all", "restrict"
 
 				// Enable/disable logging
@@ -107,18 +138,22 @@ module.exports = {
 		// Logging the response data. Set to any log level to enable it. E.g. "info"
 		logResponseData: null,
 
-
-		// Serve assets from "public" folder. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Serve-static-files
+		// Serve assets from "public" folder. More info: https://moleculer.services/docs/0.15/moleculer-web.html#Serve-static-files
 		assets: {
 			folder: "public",
 
 			// Options to `server-static` module
 			options: {}
 		}
+
+		/** @type {import('moleculer-io').IOSetting} */
+		// io: {},
 	},
 
+	/**
+	 * Methods. More info: https://moleculer.services/docs/0.15/services.html#Methods
+	 */
 	methods: {
-
 		/**
 		 * Authenticate the request. It check the `Authorization` token value in the request header.
 		 * Check the token value & resolve the user by the token.
@@ -142,12 +177,12 @@ module.exports = {
 				if (token == "123456") {
 					// Returns the resolved user. It will be set to the `ctx.meta.user`
 					return { id: 1, name: "John Doe" };
-
 				} else {
 					// Invalid token
-					throw new ApiGateway.Errors.UnAuthorizedError(ApiGateway.Errors.ERR_INVALID_TOKEN);
+					throw new ApiGateway.Errors.UnAuthorizedError(
+						ApiGateway.Errors.ERR_INVALID_TOKEN
+					);
 				}
-
 			} else {
 				// No token. Throw an error or do nothing if anonymous access is allowed.
 				// throw new E.UnAuthorizedError(E.ERR_NO_TOKEN);
@@ -174,6 +209,5 @@ module.exports = {
 				throw new ApiGateway.Errors.UnAuthorizedError("NO_RIGHTS");
 			}
 		}
-
 	}
 };

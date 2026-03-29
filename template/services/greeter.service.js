@@ -10,22 +10,19 @@ module.exports = {
 	name: "greeter",
 
 	/**
-	 * Settings
+	 * Settings. More info: https://moleculer.services/docs/0.15/services.html#Settings
 	 */
-	settings: {
-
-	},
+	settings: {},
 
 	/**
-	 * Dependencies
+	 * Dependencies. More info: https://moleculer.services/docs/0.15/services.html#Dependencies
 	 */
 	dependencies: [],
 
 	/**
-	 * Actions
+	 * Actions. More info: https://moleculer.services/docs/0.15/actions.html
 	 */
 	actions: {
-
 		/**
 		 * Say a 'Hello' action.
 		 *
@@ -36,6 +33,9 @@ module.exports = {
 				method: "GET",
 				path: "/hello"
 			},
+			{{#apiGQL}}graphql: {
+				query: "hello: String"
+			},{{/apiGQL}}
 			async handler() {
 				return "Hello Moleculer";
 			}
@@ -51,7 +51,10 @@ module.exports = {
 			params: {
 				name: "string"
 			},
-			/** @param {Context} ctx  */
+			{{#apiGQL}}graphql: {
+				mutation: "welcome(name: String!): String"
+			},{{/apiGQL}}
+			/** @param {import('moleculer').Context<{name: String}>} ctx */
 			async handler(ctx) {
 				return `Welcome, ${ctx.params.name}`;
 			}
@@ -59,37 +62,33 @@ module.exports = {
 	},
 
 	/**
-	 * Events
+	 * Events. More info: https://moleculer.services/docs/0.15/events.html
 	 */
-	events: {
-
-	},
+	events: {},
 
 	/**
-	 * Methods
+	 * Methods. More info: https://moleculer.services/docs/0.15/services.html#Methods
 	 */
-	methods: {
-
-	},
+	methods: {},
 
 	/**
 	 * Service created lifecycle event handler
+	 * More info: https://moleculer.services/docs/0.15/lifecycle.html#created-event-handler
+	 * @this {import('moleculer').Service}
 	 */
-	created() {
-
-	},
+	created() {},
 
 	/**
 	 * Service started lifecycle event handler
+	 * More info: https://moleculer.services/docs/0.15/lifecycle.html#started-event-handler
+	 * @this {import('moleculer').Service}
 	 */
-	async started() {
-
-	},
+	async started() {},
 
 	/**
 	 * Service stopped lifecycle event handler
+	 * More info: https://moleculer.services/docs/0.15/lifecycle.html#stopped-event-handler
+	 * @this {import('moleculer').Service}
 	 */
-	async stopped() {
-
-	}
+	async stopped() {}
 };
