@@ -37,15 +37,15 @@
     {{#apiGQL}}
     "graphql-request": "^6.1.0",
     {{/apiGQL}}
-    "moleculer-repl": "^0.7.4"
+    "moleculer-repl": "^0.8.0"
   },
   "dependencies": {
     {{#apiGW}}
-    "moleculer-web": "^0.11.0-beta2",
+    "moleculer-web": "^0.11.0",
     {{/apiGW}}
     {{#dbService}}
-    "@moleculer/database": "^0.3.0",
-    "mongodb": "^6.17.0",
+    "@moleculer/database": "^0.4.0",
+    "mongodb": "^7.1.1",
     "@seald-io/nedb": "^4.1.1",
     {{/dbService}}
     {{#nats}}
@@ -67,21 +67,21 @@
     "ioredis": "^5.6.1",
     {{/redis}}
     {{#apiGQL}}
-    "graphql": "^15.10.0",
-    "moleculer-apollo-server": "^0.3.8",
+    "graphql": "^16.10.0",
+    "moleculer-apollo-server": "^0.4.1",
     "graphql-type-json": "^0.3.2",
     {{/apiGQL}}
     {{#needChannels}}
-    "@moleculer/channels": "^0.2.0",
+    "@moleculer/channels": "^0.3.0",
     {{/needChannels}}
     {{#needWorkflows}}
-    "@moleculer/workflows": "^0.1.1",
+    "@moleculer/workflows": "^0.2.0",
     {{/needWorkflows}}
     {{#apiIO}}
     "moleculer-io": "^2.2.0",
     {{/apiIO}}
     "lodash": "^4.17.21",
-    "moleculer": "^0.15.0-beta1"
+    "moleculer": "^0.15.0"
   },
   {{#apiGQL}}
   "overrides": {
