@@ -99,7 +99,7 @@
     }
   },{{/apiGQL}}
   "engines": {
-    "node": ">= 20.x.x"
+    "node": ">= 22.x.x"
   },
   "jest": {
     "coverageDirectory": "../coverage",
