@@ -78,7 +78,7 @@
     "@moleculer/workflows": "^0.2.0",
     {{/needWorkflows}}
     {{#apiIO}}
-    "moleculer-io": "^2.2.0",
+    "moleculer-io": "^3.0.0",
     {{/apiIO}}
     "lodash": "^4.17.21",
     "moleculer": "^0.15.0"
